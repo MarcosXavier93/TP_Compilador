@@ -21,7 +21,7 @@ public class Main {
 		Lexer L = null;
 		int line = -5;
 		try {
-			L = new Lexer("teste7.m");
+			L = new Lexer("codigos_teste/Teste5.txt");
 			System.out.println("**** Tokens lidos ****");
 			// Apenas para entrar no laço
 			Token T = new Token(0, line);

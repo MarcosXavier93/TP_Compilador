@@ -74,6 +74,16 @@ public class Lexer {
 			} else if (ch == '\n') {
 				line++; //conta linhas
 
+		    } else if (ch == '*') {
+				readch();
+				// operador de multiplicacao
+				return new Token(Tag.MUL, line);
+
+			} else if(ch == '/'){
+				readch();
+				// operador de divisao
+				return new Token(Tag.DIV, line);
+
 			} else if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b' || is_comentario)
 				continue;
 			else break;

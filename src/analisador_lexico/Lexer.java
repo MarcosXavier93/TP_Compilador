@@ -22,6 +22,7 @@ public class Lexer {
 
 	/** Método construtor */
 	public Lexer(String fileName) throws FileNotFoundException {
+
 		try {
 			file = new FileReader(fileName);
 		} catch(FileNotFoundException e){
@@ -29,19 +30,7 @@ public class Lexer {
 			throw e;
 		}
 
-		// Insere palavras reservadas na HashTable
-		reserve(new Word("program", Tag.PRG,0));
-		reserve(new Word("end", Tag.END,0));
-		reserve(new Word("int", Tag.INT,0));
-		reserve(new Word("string", Tag.STR,0));
-		reserve(new Word("if", Tag.IF,0));
-		reserve(new Word("then", Tag.THEN,0));
-		reserve(new Word("else", Tag.ELSE,0));
-		reserve(new Word("do", Tag.DO,0));
-		reserve(new Word("while", Tag.WHILE,0));
-		reserve(new Word("scan", Tag.SCAN,0));
-		reserve(new Word("print", Tag.PRINT, 0));
-		reserve(new Word("is", Tag.IS, 0));
+	
 	}
 
 
@@ -181,6 +170,23 @@ public class Lexer {
 			throw new InvalidTokenException(line, ch);
 		}
 	}
+
+	public void adicionapalavras() {
+		// Insere palavras reservadas na HashTable
+		reserve(new Word("program", Tag.PRG,0));
+		reserve(new Word("end", Tag.END,0));
+		reserve(new Word("int", Tag.INT,0));
+		reserve(new Word("string", Tag.STR,0));
+		reserve(new Word("if", Tag.IF,0));
+		reserve(new Word("then", Tag.THEN,0));
+		reserve(new Word("else", Tag.ELSE,0));
+		reserve(new Word("do", Tag.DO,0));
+		reserve(new Word("while", Tag.WHILE,0));
+		reserve(new Word("scan", Tag.SCAN,0));
+		reserve(new Word("print", Tag.PRINT, 0));
+		reserve(new Word("is", Tag.IS, 0));
+	}
+
 
 	/* Imprime todas as entradas da tabela de símbolos */
 	public void imprimirTabela() {

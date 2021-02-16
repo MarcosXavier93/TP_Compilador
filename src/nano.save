@@ -1,0 +1,13 @@
+**** Tokens lidos **** Error(1): Token '%' inválido < id, Programa > < id, de > < id, Teste > < id, Calculo > < id, de > < id, 
+idade > Error(2): Token '%' inválido < id, INIT > < id, cont > < id, is > < int > < ponto_virgula > < id, media > < virgula > < 
+id, idade > < virgula > < id, soma > < id, is > < id, integer > < ponto_virgula > < id, begin > < id, cont > Error(7): Token ':' 
+inválido < assign > < num, 5 > < ponto_virgula > < id, soma > Error(8): Token ':' inválido < assign > < num, 0 > < ponto_virgula > 
+< do > < id, write > < abre_parent > < literal, "Altura:" > < fecha_parent > < ponto_virgula > < id, read > < abre_parent > < id, 
+altura > < fecha_parent > < ponto_virgula > < id, soma > Error(12): Token ':' inválido < assign > < id, soma > < soma > < id, 
+altura > < ponto_virgula > < id, cont > Error(13): Token ':' inválido < assign > < id, cont > < menos > < num, 1 > < ponto_virgula 
+>
+< while > < abre_parent > < id, cont > < greater_than > < num, 0 > < fecha_parent > < id, media > Error(15): Token ':' inválido < 
+assign > < id, soma > < div > < id, qts > < id, write > < abre_parent > < literal, "Media: " > < fecha_parent > < ponto_virgula > 
+< id, write > < abre_parent > < id, media > < fecha_parent > < ponto_virgula > < id, STOP > **** Tabela de símbolos **** Entrada | 
+Mais info STOP string int INIT cont print end altura idade media is program Programa qts soma scan if while do read integer else 
+write Teste then begin de Calculo

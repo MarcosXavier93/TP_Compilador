@@ -60,37 +60,21 @@ public class Lexer {
 
 
 	public Token scan() throws IOException, InvalidTokenException{
-		boolean is_comentario_linha = false;
-		boolean is_comentario_bloco = false;
+		boolean is_comentario = false;
 		//Desconsidera delimitadores na entrada
 		for (;; readch()) {
 			if (ch == (char)Tag.EOF) {
-				if (is_comentario_bloco)
+				if (is_comentario)
 					throw new InvalidTokenException("Error(" + line + "): comentário não fechado");
 				break;
-			}
-			if(ch == '/'){
-				readch();
-				if(ch == '/' && !is_comentario_linha) {
-					is_comentario_linha = true;
-				} else if (ch == '*'){
-					is_comentario_bloco = true;
-				} else {
-					// operador de divisao
-					return new Token(Tag.DIV, line);
-				}
+			
+			} else if (ch == '%') {
+				is_comentario = !is_comentario;
+
 			} else if (ch == '\n') {
-				is_comentario_linha = false;
 				line++; //conta linhas
-			} else if (ch == '*') {
-				readch();
-				if(ch == '/' && is_comentario_bloco) {
-					is_comentario_bloco = false;
-				} else {
-					// operador de multiplicacao
-					return new Token(Tag.MUL, line);
-				}
-			} else if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b' || is_comentario_linha || is_comentario_bloco)
+
+			} else if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b' || is_comentario)
 				continue;
 			else break;
 		}

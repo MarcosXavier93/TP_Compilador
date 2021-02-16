@@ -1,5 +1,5 @@
 % Programa de Teste
-Calculo de idade%
+Calculo de idade %
 INIT
 cont is int;
 media, idade, soma is integer;

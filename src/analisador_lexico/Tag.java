@@ -19,7 +19,7 @@ public class Tag {
 		WHILE = 264,
 		SCAN  = 265,
 		PRINT = 266,
-		IS = 304,
+	
 		//Operadores e pontuação
 		PV 	= (int)';',
 		VRG = (int)',',
@@ -46,6 +46,12 @@ public class Tag {
 		ID    = 301,
 		LIT = 302,
 		VOID = 303,
+		IS = 304,
+		STOP = 305,
+		REAL = 306,
+		END_ELSE = 307,
+		
+		
 		EOF = 65535;
 
 

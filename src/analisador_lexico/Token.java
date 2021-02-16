@@ -126,10 +126,13 @@ public class Token {
 			case Tag.LIT:
 				valor = "literal";
 				break;
+                        case Tag.IS:
+                                valor = "decl";
+                                break;
 			default:
 				valor = "" + (char)tag;
 		}
-		if (tag == Tag.LIT || tag == Tag.ID){
+		if (tag == Tag.LIT || tag == Tag.ID || tag == Tag.IS){
 			System.out.println("< " + valor + ", " + T.getLexeme() + " >");
 		}
 		else if(tag == Tag.NUM){

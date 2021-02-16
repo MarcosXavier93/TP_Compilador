@@ -40,7 +40,8 @@ public class Lexer {
 		reserve(new Word("do", Tag.DO,0));
 		reserve(new Word("while", Tag.WHILE,0));
 		reserve(new Word("scan", Tag.SCAN,0));
-		reserve(new Word("print", Tag.PRINT,0));
+		reserve(new Word("print", Tag.PRINT, 0));
+		reserve(new Word("is", Tag.IS, 0));
 	}
 
 

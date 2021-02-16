@@ -15,4 +15,5 @@ while(cont > 0)
 media := soma / qts
 write("Media: ");
 write (media);
+
 STOP

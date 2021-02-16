@@ -121,7 +121,7 @@ public class Token {
 				valor = "num";
 				break;
 			case Tag.ID:
-				valor = "id";
+				valor = "identifier";
 				break;
 			case Tag.LIT:
 				valor = "literal";

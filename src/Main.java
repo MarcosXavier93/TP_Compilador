@@ -2,7 +2,7 @@
 Na etapa 1, o compilador deverá exibir a sequência de tokens identificados e os símbolos (identificadores e
 palavras reservadas) instalados na Tabela de Símbolos. Nas etapas seguintes, isso não deverá ser exibido.
  */
-
+//Commit para reparar possíveis bugs//
 import analisador_lexico.Lexer;
 import analisador_lexico.Tag;
 import analisador_lexico.Token;

@@ -8,51 +8,47 @@ public class Tag {
 
 	public final static int
 		//Palavras reservadas
-		PRG   = 256,
-		END   = 257,
-		INT   = 258,
-		STR   = 259,
-		IF    = 260,
-		THEN  = 261,
-		ELSE  = 262,
-		DO 	  = 263,
-		WHILE = 264,
-		SCAN  = 265,
-		PRINT = 266,
-	
+		INIT    = 256,
+                STOP    = 257,
+                IS      = 258,
+                INT     = 259, //integer
+                STR     = 260, //string
+                REAL    = 261,
+                IF      = 262,
+                BEGIN   = 263,
+		END     = 264,
+		ELSE    = 265,
+		DO 	= 266,
+                WHILE   = 267,
+                READ    = 268,
+                WRITE   = 269,
+                NOT     = 270,
+              
 		//Operadores e pontuação
 		PV 	= (int)';',
-		VRG = (int)',',
-		SUM = (int)'+',
-		ASS = (int)'=',
+		VRG     = (int)',',
+                PPV     = 271, // := assign
 		AP 	= (int)'(',
 		FP	= (int)')',
-		MIN = (int)'-',
+                EQ      = (int)'=',
+                GT	= (int)'>',
+                GE      = 272, // >=
+                LT	= (int)'<',
+                LE      = 273, // <=
+                GL      = 274, // <>
+                SUM     = (int)'+',		
+		MIN     = (int)'-',
+                OR      = 275, // or
 		MUL	= (int)'*',
-		DIV = (int)'/',
-		GT	= (int)'>',
-		LT	= (int)'<',
-		NOT	= (int)'!',
-
-		EQ  = 288, // ==
-		GE  = 289, // >=
-		LE  = 290, // <=
-		NE  = 291, // !=
-		AND = 292, // &&
-		OR  = 293, // ||
+		DIV     = (int)'/',
+                AND     = 276, // and
 
 		//Outros tokens
-		NUM   = 300,
-		ID    = 301,
-		LIT = 302,
-		VOID = 303,
-		IS = 304,
-		STOP = 305,
-		REAL = 306,
-		END_ELSE = 307,
-		
-		
-		EOF = 65535;
+		NUM     = 300,
+		ID      = 301,
+		LIT     = 302,
+		//VOID  = 303,		
+		EOF     = 65535;
 
 
 

@@ -30,23 +30,32 @@ public class Token {
 	public void imprimeToken(Token T) {
 		String valor;
 		switch (tag) {
-			case Tag.PRG:
-				valor = "program";
+			case Tag.INIT:
+				valor = "init_program";
 				break;
-			case Tag.END:
-				valor = "end";
+                        case Tag.STOP:
+				valor = "stop_program";
 				break;
+                        case Tag.IS:
+                                valor = "is_decl";
+                                break;
 			case Tag.INT:
-				valor = "int";
+				valor = "integer_type";
 				break;
 			case Tag.STR:
-				valor = "string";
+				valor = "string_type";
+				break;
+                        case Tag.REAL:
+				valor = "real_type";
 				break;
 			case Tag.IF:
 				valor = "if";
 				break;
-			case Tag.THEN:
-				valor = "then";
+			case Tag.BEGIN:
+				valor = "begin";
+				break;
+                        case Tag.END:
+				valor = "end";
 				break;
 			case Tag.ELSE:
 				valor = "else";
@@ -57,11 +66,14 @@ public class Token {
 			case Tag.WHILE:
 				valor = "while";
 				break;
-			case Tag.SCAN:
-				valor = "scan";
+			case Tag.READ:
+				valor = "read";
 				break;
-			case Tag.PRINT:
-				valor = "print";
+			case Tag.WRITE:
+				valor = "write";
+				break;
+                        case Tag.NOT:
+				valor = "not";
 				break;
 			case Tag.PV:
 				valor = "ponto_virgula";
@@ -69,54 +81,51 @@ public class Token {
 			case Tag.VRG:
 				valor = "virgula";
 				break;
-			case Tag.SUM:
-				valor = "soma";
+                        case Tag.PPV:
+				valor = "assign"; // :=
 				break;
-			case Tag.ASS:
-				valor = "assign";
-				break;
-			case Tag.AP:
+                        case Tag.AP:
 				valor = "abre_parent";
 				break;
 			case Tag.FP:
 				valor = "fecha_parent";
 				break;
+                        case Tag.EQ:
+				valor = "equal_relop";
+				break;
+                        case Tag.GT:
+				valor = "greater_than_relop";
+				break;
+                        case Tag.GE:
+				valor = "greater_equals_relop";
+				break;
+                        case Tag.LT:
+				valor = "less_than_relop";
+				break;
+                        case Tag.LE:
+				valor = "less_equals_relop";
+				break;
+                        case Tag.GL:
+                                valor = "greater_less_relop";
+                                break;
+			case Tag.SUM:
+				valor = "soma_addop";
+				break;
 			case Tag.MIN:
-				valor = "menos";
+				valor = "menos_addop";
+				break;
+                        case Tag.OR:
+				valor = "or_addop";
 				break;
 			case Tag.MUL:
-				valor = "mult";
+				valor = "mult_mulop";
 				break;
 			case Tag.DIV:
-				valor = "div";
+				valor = "div_mulop";
 				break;
-			case Tag.GT:
-				valor = "greater_than";
-				break;
-			case Tag.LT:
-				valor = "less_than";
-				break;
-			case Tag.NOT:
-				valor = "not";
-				break;
-			case Tag.EQ:
-				valor = "equals";
-				break;
-			case Tag.GE:
-				valor = "greater_equals";
-				break;
-			case Tag.LE:
-				valor = "less_equals";
-				break;
-			case Tag.NE:
-				valor = "not_equals";
-				break;
-			case Tag.AND:
-				valor = "and";
-				break;
-			case Tag.OR:
-				valor = "or";
-				break;
+                        case Tag.AND:
+                                valor = "and_mulop";
+                                break;
 			case Tag.NUM:
 				valor = "num";
 				break;
@@ -126,13 +135,11 @@ public class Token {
 			case Tag.LIT:
 				valor = "literal";
 				break;
-                        case Tag.IS:
-                                valor = "decl";
-                                break;
+                        
 			default:
 				valor = "" + (char)tag;
 		}
-		if (tag == Tag.LIT || tag == Tag.ID || tag == Tag.IS){
+		if (tag == Tag.LIT || tag == Tag.ID ){
 			System.out.println("< " + valor + ", " + T.getLexeme() + " >");
 		}
 		else if(tag == Tag.NUM){

@@ -82,24 +82,26 @@ public class Lexer {
 
 		switch(ch){
 			//Operadores
-			case '&':
+			/*case '&': //usamos é "and"
 				if (readch('&'))
 					return new Token(Word.and, line);
 				else
 					throw new InvalidTokenException(line, '&');
-			case '|':
+			case '|': //usamos é "or"
 				if (readch('|'))
 					return new Token(Word.or, line);
 				else
-					throw new InvalidTokenException(line, '|');
-			case '=':
+					throw new InvalidTokenException(line, '|');*/
+			/*case '=': // "=" não existe na classe word pois não usamos "=="
 				if (readch('='))
 					return new Token(Word.eq, line);
 				else
-					return new Token('=', line);
+					return new Token('=', line);*/
 			case '<':
 				if (readch('='))
 					return new Token(Word.le, line);
+                                else if (readch('>'))
+					return new Token(Word.gl, line);
 				else
 					return new Token('<', line);
 			case '>':
@@ -107,13 +109,18 @@ public class Lexer {
 					return new Token(Word.ge, line);
 				else
 					return new Token('>', line);
-			case '!':
+                        case ':':
+				if (readch('='))
+					return new Token(Word.ppv, line);
+				else
+					throw new InvalidTokenException(line, ':');
+			/*case '!': //usamos é "not"
 				if (readch('='))
 					return new Token(Word.ne, line);
 				else
-					return new Token('!', line);
-			case '*':
-				return new Token('*', line);
+					return new Token('!', line);*/
+			//case '*':
+				//return new Token('*', line);
 		}
 
 		//	Números
@@ -173,18 +180,23 @@ public class Lexer {
 
 	public void adicionapalavras() {
 		// Insere palavras reservadas na HashTable
-		reserve(new Word("program", Tag.PRG,0));
-		reserve(new Word("end", Tag.END,0));
-		reserve(new Word("int", Tag.INT,0));
+		reserve(new Word("init", Tag.INIT,0));
+                reserve(new Word("stop", Tag.STOP,0));
+                reserve(new Word("is", Tag.IS,0));
+		reserve(new Word("integer", Tag.INT,0));
 		reserve(new Word("string", Tag.STR,0));
+                reserve(new Word("real", Tag.REAL,0));
 		reserve(new Word("if", Tag.IF,0));
-		reserve(new Word("then", Tag.THEN,0));
+		reserve(new Word("begin", Tag.BEGIN,0));
+                reserve(new Word("end", Tag.END,0));
 		reserve(new Word("else", Tag.ELSE,0));
 		reserve(new Word("do", Tag.DO,0));
 		reserve(new Word("while", Tag.WHILE,0));
-		reserve(new Word("scan", Tag.SCAN,0));
-		reserve(new Word("print", Tag.PRINT, 0));
-		reserve(new Word("is", Tag.IS, 0));
+		reserve(new Word("read", Tag.READ,0));
+		reserve(new Word("write", Tag.WRITE, 0));
+		reserve(new Word("not", Tag.NOT, 0));
+                reserve(new Word("or", Tag.OR, 0));
+                reserve(new Word("and", Tag.AND, 0));
 	}
 
 

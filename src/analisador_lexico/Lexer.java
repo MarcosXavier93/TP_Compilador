@@ -1,5 +1,8 @@
 package analisador_lexico;
-
+/**
+ *
+ * @author  Alan Ferreira , Marcos Junio & Samuel Santos
+ */
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;

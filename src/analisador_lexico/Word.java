@@ -1,5 +1,8 @@
 package analisador_lexico;
-
+/**
+ *
+ * @author  Alan Ferreira , Marcos Junio & Samuel Santos
+ */
 public class Word extends Token{
 
 	private String lexeme = "";

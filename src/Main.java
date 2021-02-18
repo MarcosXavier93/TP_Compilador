@@ -3,6 +3,10 @@ Na etapa 1, o compilador deverá exibir a sequência de tokens identificados e o
 palavras reservadas) instalados na Tabela de Símbolos. Nas etapas seguintes, isso não deverá ser exibido.
  */
 //Commit para reparar possíveis bugs//
+/**
+ *
+ * @author  Alan Ferreira , Marcos Junio & Samuel Santos
+ */
 import analisador_lexico.Lexer;
 import analisador_lexico.Tag;
 import analisador_lexico.Token;

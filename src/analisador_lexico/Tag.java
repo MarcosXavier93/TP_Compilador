@@ -1,5 +1,8 @@
 package analisador_lexico;
-
+/**
+ *
+ * @author  Alan Ferreira , Marcos Junio & Samuel Santos
+ */
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

@@ -1,0 +1,7 @@
+init
+	a;
+	%Declarando errado  avariavel a%
+	
+	read(a);
+	
+stop

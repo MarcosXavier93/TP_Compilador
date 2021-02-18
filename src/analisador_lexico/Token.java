@@ -72,7 +72,7 @@ public class Token {
 			case Tag.WRITE:
 				valor = "write";
 				break;
-                        case Tag.NOT:
+            case Tag.NOT:
 				valor = "not";
 				break;
 			case Tag.PV:
@@ -81,10 +81,10 @@ public class Token {
 			case Tag.VRG:
 				valor = "virgula";
 				break;
-                        case Tag.PPV:
+            case Tag.PPV:
 				valor = "assign"; // :=
 				break;
-                        case Tag.AP:
+            case Tag.AP:
 				valor = "abre_parent";
 				break;
 			case Tag.FP:

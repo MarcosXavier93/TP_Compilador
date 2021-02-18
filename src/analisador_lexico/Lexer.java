@@ -125,7 +125,7 @@ public class Lexer {
 
 		//	Números
 		if (Character.isDigit(ch)){
-			int value=0;
+			int value=0; 
 			do{
 				value = 10*value + Character.digit(ch,10);
 				readch();
@@ -151,21 +151,24 @@ public class Lexer {
 		}
 
 		// Identificadores
-		if (Token.isLetter(ch)){
+		if (Token.isLetter(ch) || Token.isUnderscore(ch)){
 			StringBuffer sb = new StringBuffer();
 			do {
 				sb.append(ch);
-				readch();
-			} while(Token.isLetterOrDigit(ch));
-			String s = sb.toString();
-			Word w = words.get(s);
-			if (w != null) {
-				Token T = new Token(w, line);        //palavra já existe na HashTable
-				return T;
+				readch(); 
+			} while(Token.isLetterOrDigitOrUnderscore(ch));
+			
+			if (Token.isLetter(sb.charAt(0)) == true) {  // O identificador não será aceito se começar com "_".
+				String s = sb.toString();
+				Word w = words.get(s);
+				if (w != null) {
+					Token T = new Token(w, line);        //palavra já existe na HashTable
+					return T;
+				}
+				w = new Word (s, Tag.ID, line);
+				words.put(s, w);
+				return w;
 			}
-			w = new Word (s, Tag.ID, line);
-			words.put(s, w);
-			return w;
 		}
 
 		// Caracteres ASCII validos
@@ -181,22 +184,22 @@ public class Lexer {
 	public void adicionapalavras() {
 		// Insere palavras reservadas na HashTable
 		reserve(new Word("init", Tag.INIT,0));
-                reserve(new Word("stop", Tag.STOP,0));
-                reserve(new Word("is", Tag.IS,0));
+        reserve(new Word("stop", Tag.STOP,0));
+        reserve(new Word("is", Tag.IS,0));
 		reserve(new Word("integer", Tag.INT,0));
 		reserve(new Word("string", Tag.STR,0));
-                reserve(new Word("real", Tag.REAL,0));
+        reserve(new Word("real", Tag.REAL,0));
 		reserve(new Word("if", Tag.IF,0));
 		reserve(new Word("begin", Tag.BEGIN,0));
-                reserve(new Word("end", Tag.END,0));
+        reserve(new Word("end", Tag.END,0));
 		reserve(new Word("else", Tag.ELSE,0));
 		reserve(new Word("do", Tag.DO,0));
 		reserve(new Word("while", Tag.WHILE,0));
 		reserve(new Word("read", Tag.READ,0));
 		reserve(new Word("write", Tag.WRITE, 0));
 		reserve(new Word("not", Tag.NOT, 0));
-                reserve(new Word("or", Tag.OR, 0));
-                reserve(new Word("and", Tag.AND, 0));
+        reserve(new Word("or", Tag.OR, 0));
+        reserve(new Word("and", Tag.AND, 0));
 	}
 
 

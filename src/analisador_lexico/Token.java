@@ -33,19 +33,19 @@ public class Token {
 			case Tag.INIT:
 				valor = "init_program";
 				break;
-                        case Tag.STOP:
+            case Tag.STOP:
 				valor = "stop_program";
 				break;
-                        case Tag.IS:
-                                valor = "is_decl";
-                                break;
+            case Tag.IS:
+                valor = "is_decl";
+                break;
 			case Tag.INT:
 				valor = "integer_type";
 				break;
 			case Tag.STR:
 				valor = "string_type";
 				break;
-                        case Tag.REAL:
+            case Tag.REAL:
 				valor = "real_type";
 				break;
 			case Tag.IF:
@@ -54,7 +54,7 @@ public class Token {
 			case Tag.BEGIN:
 				valor = "begin";
 				break;
-                        case Tag.END:
+            case Tag.END:
 				valor = "end";
 				break;
 			case Tag.ELSE:
@@ -72,7 +72,7 @@ public class Token {
 			case Tag.WRITE:
 				valor = "write";
 				break;
-                        case Tag.NOT:
+            case Tag.NOT:
 				valor = "not";
 				break;
 			case Tag.PV:
@@ -81,40 +81,40 @@ public class Token {
 			case Tag.VRG:
 				valor = "virgula";
 				break;
-                        case Tag.PPV:
+            case Tag.PPV:
 				valor = "assign"; // :=
 				break;
-                        case Tag.AP:
+            case Tag.AP:
 				valor = "abre_parent";
 				break;
 			case Tag.FP:
 				valor = "fecha_parent";
 				break;
-                        case Tag.EQ:
+            case Tag.EQ:
 				valor = "equal_relop";
 				break;
-                        case Tag.GT:
+            case Tag.GT:
 				valor = "greater_than_relop";
 				break;
-                        case Tag.GE:
+            case Tag.GE:
 				valor = "greater_equals_relop";
 				break;
-                        case Tag.LT:
+            case Tag.LT:
 				valor = "less_than_relop";
 				break;
-                        case Tag.LE:
+            case Tag.LE:
 				valor = "less_equals_relop";
 				break;
-                        case Tag.GL:
-                                valor = "greater_less_relop";
-                                break;
+            case Tag.GL:
+                valor = "greater_less_relop";
+                break;
 			case Tag.SUM:
 				valor = "soma_addop";
 				break;
 			case Tag.MIN:
 				valor = "menos_addop";
 				break;
-                        case Tag.OR:
+            case Tag.OR:
 				valor = "or_addop";
 				break;
 			case Tag.MUL:
@@ -123,9 +123,9 @@ public class Token {
 			case Tag.DIV:
 				valor = "div_mulop";
 				break;
-                        case Tag.AND:
-                                valor = "and_mulop";
-                                break;
+            case Tag.AND:
+                valor = "and_mulop";
+                break;
 			case Tag.NUM:
 				valor = "num";
 				break;
@@ -159,20 +159,37 @@ public class Token {
 		int Z = (int)'Z';
 		int a = (int)'a';
 		int z = (int)'z';
-
+        
 		if (((int)ch >= A && (int)ch <= Z) || ((int)ch >= a && (int)ch <= z)) {
 			return true;
-		}
+
+		} 
 		return false;
 	}
+    
+	public static boolean isUnderscore(char ch) {
+		int udsc = (int) '_';
 
-
-	public static boolean isLetterOrDigit(char ch) {
-		int zero = (int) '0';
-		int nove = (int) '9';
-		if (isLetter(ch) || ((int) ch >= zero && (int) ch <= nove)) {
+		if ((int) ch == udsc ) {
 			return true;
 		}
 		return false;
 	}
+
+	public static boolean isLetterOrDigitOrUnderscore(char ch) {
+		int zero = (int) '0';
+		int nove = (int) '9';
+
+		if (isLetter(ch) || ((int) ch >= zero && (int) ch <= nove)) {
+			return true;
+
+		} else if (isLetter(ch) || isLetter(ch)) {
+			return true;
+
+		} else if (isLetter(ch) || ch == (int)'_') {
+            return true;
+		}
+		return false;
+	}
+
 }

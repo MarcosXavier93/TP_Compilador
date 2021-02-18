@@ -1,8 +1,5 @@
 package exception;
-/**
- *
- * @author  Alan Ferreira , Marcos Junio & Samuel Santos
- */
+
 public class InvalidTokenException extends Exception {
 
     public InvalidTokenException(String message)

@@ -1,8 +1,5 @@
 package analisador_lexico;
-/**
- *
- * @author  Alan Ferreira , Marcos Junio & Samuel Santos
- */
+
 public class Num extends Token{
 	
 	public final int value;

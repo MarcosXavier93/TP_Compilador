@@ -1,8 +1,5 @@
 package analisador_lexico;
-/**
- *
- * @author  Alan Ferreira , Marcos Junio & Samuel Santos
- */
+
 public class Token {
 
 	public final int tag; //constante que representa o token

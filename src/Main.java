@@ -11,7 +11,6 @@ import analisador_lexico.Token;
 import exception.InvalidTokenException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.ArrayList;
 public class Main {
 	public static void main(String[] args) {
@@ -19,10 +18,7 @@ public class Main {
 		Lexer L = null;
 		int line = -5;
 		try {
-			//L = new Lexer("D:\\- Particular\\Estudos\\Cefet\\OneDrive - aluno.cefetmg.br\\2020.2\\compil\\trab\\TP_Compilador\\src\\codigos_teste\\Teste1.txt");
 			L = new Lexer("codigos_teste/Teste2.txt");
-			L = new Lexer("codigos_teste/Teste7.txt");
-
 			L.adicionapalavras();//Inicia adicionando palavras reservadas
 			System.out.println("**** Tokens lidos ****");
 			// Apenas para entrar no laço

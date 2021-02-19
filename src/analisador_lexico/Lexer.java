@@ -75,21 +75,6 @@ public class Lexer {
 
 		switch(ch){
 			//Operadores
-			/*case '&': //usamos é "and"
-				if (readch('&'))
-					return new Token(Word.and, line);
-				else
-					throw new InvalidTokenException(line, '&');
-			case '|': //usamos é "or"
-				if (readch('|'))
-					return new Token(Word.or, line);
-				else
-					throw new InvalidTokenException(line, '|');*/
-			/*case '=': // "=" não existe na classe word pois não usamos "=="
-				if (readch('='))
-					return new Token(Word.eq, line);
-				else
-					return new Token('=', line);*/
 			case '<':
 				if (readch('='))
 					return new Token(Word.le, line);
@@ -107,13 +92,6 @@ public class Lexer {
 					return new Token(Word.ppv, line);
 				else
 					throw new InvalidTokenException(line, ':');
-			/*case '!': //usamos é "not"
-				if (readch('='))
-					return new Token(Word.ne, line);
-				else
-					return new Token('!', line);*/
-			//case '*':
-				//return new Token('*', line);
 		}
 
 		//	Números
@@ -177,22 +155,22 @@ public class Lexer {
 	public void adicionapalavras() {
 		// Insere palavras reservadas na HashTable
 		adiciona_palavra_reservada(new Word("init", Tag.INIT,0));
-        adiciona_palavra_reservada(new Word("stop", Tag.STOP,0));
-        adiciona_palavra_reservada(new Word("is", Tag.IS,0));
+                adiciona_palavra_reservada(new Word("stop", Tag.STOP,0));
+                adiciona_palavra_reservada(new Word("is", Tag.IS,0));
 		adiciona_palavra_reservada(new Word("integer", Tag.INT,0));
 		adiciona_palavra_reservada(new Word("string", Tag.STR,0));
-        adiciona_palavra_reservada(new Word("real", Tag.REAL,0));
+                adiciona_palavra_reservada(new Word("real", Tag.REAL,0));
 		adiciona_palavra_reservada(new Word("if", Tag.IF,0));
 		adiciona_palavra_reservada(new Word("begin", Tag.BEGIN,0));
-        adiciona_palavra_reservada(new Word("end", Tag.END,0));
+                adiciona_palavra_reservada(new Word("end", Tag.END,0));
 		adiciona_palavra_reservada(new Word("else", Tag.ELSE,0));
 		adiciona_palavra_reservada(new Word("do", Tag.DO,0));
 		adiciona_palavra_reservada(new Word("while", Tag.WHILE,0));
 		adiciona_palavra_reservada(new Word("read", Tag.READ,0));
 		adiciona_palavra_reservada(new Word("write", Tag.WRITE, 0));
 		adiciona_palavra_reservada(new Word("not", Tag.NOT, 0));
-        adiciona_palavra_reservada(new Word("or", Tag.OR, 0));
-        adiciona_palavra_reservada(new Word("and", Tag.AND, 0));
+                adiciona_palavra_reservada(new Word("or", Tag.OR, 0));
+                adiciona_palavra_reservada(new Word("and", Tag.AND, 0));
 	}
 
 
@@ -205,7 +183,7 @@ public class Lexer {
 	}
 	/** Método para inserir palavras reservadas na HashTable */
 	private void adiciona_palavra_reservada(Word w) {
-		words.put(w.getLexeme(), w); // lexema é a chave para entrada na
+		words.put(w.getLexeme(), w); // lexema é a chave para entrada
 	}
 
 }

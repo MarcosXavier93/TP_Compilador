@@ -1,0 +1,307 @@
+\ProvidesPackage{definitions}
+
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\usepackage{enumitem}
+
+\usepackage[colorlinks]{hyperref}
+\usepackage{glossaries}
+\makeglossaries
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %\usepackage{amstext}
+    \usepackage{amsmath}
+    \usepackage{amsfonts}
+    \usepackage{amssymb}
+    \usepackage{graphicx}
+    \usepackage[lofdepth, lotdepth]{subfig}
+    \usepackage{fancyhdr}
+    \usepackage[portuguese]{babel}
+    \usepackage{url}
+    \usepackage{epstopdf}
+    \graphicspath{{img/}}
+    \usepackage[utf8]{inputenc}
+    \usepackage{setspace}
+    \usepackage{titlesec}
+    \usepackage[acronym]{glossaries}
+    \usepackage{titlecaps}
+    \usepackage{float}
+    \usepackage{nomencl}
+    \setcounter{secnumdepth}{3}
+    \usepackage{datetime}
+    \usepackage{lipsum}
+    \usepackage{chngcntr}
+    \usepackage{array,tabularx}
+    \usepackage{indentfirst}
+    \usepackage[autostyle, portuguese=brazilian]{csquotes} 
+    \usepackage{changepage}
+
+    \onehalfspacing
+    
+    
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Configura o sumário
+
+%\usepackage{titletoc}
+%\usepackage[title]{tocloft}
+\usepackage[subfigure]{tocloft}
+\usepackage{subfig}
+
+\renewcommand{\cfttoctitlefont}{\hfill\Large}
+\renewcommand{\cftaftertoctitle}{\hfill}
+\renewcommand{\cftchapaftersnum}{.}
+\renewcommand{\cftsecaftersnum}{.}
+\renewcommand{\cftchapfont}{\normalfont\large}
+\renewcommand{\cftchapnumwidth}{2em}
+\renewcommand{\cftchappagefont}{\normalfont}
+\setcounter{tocdepth}{1}
+\addto\captionsportuguese{
+  \renewcommand{\contentsname}%
+    {Sumário}%
+}
+\makeatletter
+\patchcmd{\l@chapter}{#1}{\MakeUppercase{#1}}{}{}
+\makeatother
+
+\setlength{\cftbeforetoctitleskip}{-3em}
+\setlength{\cftaftertoctitleskip}{1em}
+
+\renewcommand{\cftchapdotsep}{2}
+\renewcommand{\cftsecdotsep}{2}
+\renewcommand{\cftsubsecdotsep}{2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Configura lista de figuras
+%\setcounter{lofdepth}{1}
+\renewcommand{\cftloftitlefont}{\bfseries\hfill\Large}
+\renewcommand{\cftafterloftitle}{\hfill}
+\setlength{\cftbeforeloftitleskip}{-3em}
+\setlength{\cftafterloftitleskip}{1em}
+\renewcommand{\cftfigfont}{Figura }
+\renewcommand{\cftfigaftersnum}{ –}
+\counterwithout{figure}{chapter}
+\counterwithout{figure}{section}
+\counterwithout{figure}{subsection}
+\renewcommand{\cftfignumwidth}{1.7em}
+
+\addto\captionsportuguese{
+  \renewcommand{\listfigurename}%
+    {\MakeUppercase{Lista de figuras}}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Configura lista de figuras
+%\setcounter{lotdepth}{0}
+\renewcommand{\cftlottitlefont}{\bfseries\hfill\Large}
+\renewcommand{\cftafterlottitle}{\hfill}
+\setlength{\cftbeforelottitleskip}{-3em}
+\setlength{\cftafterlottitleskip}{1em}
+\renewcommand{\cfttabfont}{Tabela }
+\renewcommand{\cfttabaftersnum}{ –}
+\counterwithout{table}{chapter}
+\counterwithout{table}{section}
+\counterwithout{table}{subsection}
+\renewcommand{\cfttabnumwidth}{1.7em}
+
+
+\addto\captionsportuguese{
+  \renewcommand{\listtablename}%
+    {\MakeUppercase{Lista de tabelas}}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%configura lista de simbolos
+\renewcommand{\nomname}{Lista de Simbolos}
+
+
+
+\newcommand{\secref}[1]{\autoref{#1}. \nameref{#1}}
+
+%\titlecontents{chapter}[0 cm]
+%  {\vspace{10pt}}
+%  {\contentslabel[\thecontentslabel.]{2em}\MakeUppercase}
+%  {\hspace*{-2.3em}\MakeUppercase}
+%  {\titlerule*[.5pc]{.}\contentspage}
+%  
+%\titlecontents{section}[2em]
+%  {}
+%  {\contentslabel[\thecontentslabel.]{2em}}
+%  {\hspace*{-2.3em}\MakeUppercase}
+%  {\titlerule*[.5pc]{.}\contentspage}
+%
+%\makeatletter
+%\renewcommand\tableofcontents{%
+%  \section*{\centerline{\MakeUppercase{\contentsname}}
+%    \@mkboth
+%      {\MakeUppercase\contentsname}
+%      {\MakeUppercase\contentsname}
+%  }%
+%  \@starttoc{toc}%
+%}
+%\makeatother
+%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%configura citação
+    \usepackage[
+        backend=biber,
+        style=bwl-FU,
+        sorting=ynt,
+        maxcitenames=4, 
+        minnames=3 
+    ]{biblatex}
+
+    \addbibresource{refs.bib}
+    
+    
+    \newrobustcmd{\TExtcite}{%
+        \AtNextCite{\defcounter{maxnames}{3}\defcounter{minnames}{1}}\textcite}
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Edita footer and header
+    
+    \usepackage[a4paper,top=3cm,bottom=2cm, left=3cm, right=2cm]{geometry}
+    \renewcommand{\headrulewidth}{1.25cm}
+    \renewcommand{\footrulewidth}{1.25cm}
+    \fancypagestyle{plain}{
+        \fancyhf{} % clear all header and footer fields
+        \fancyhead[R]{\thepage}
+        \renewcommand{\headrulewidth}{0pt}
+        \renewcommand{\footrulewidth}{0pt}
+    }
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{conditions*}
+  {\par\vspace{\abovedisplayskip}\noindent
+   \tabularx{\columnwidth}{>{$}l<{$} @{\ : } >{\raggedright\arraybackslash}X}}
+  {\endtabularx\par\vspace{\belowdisplayskip}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\titleformat{\chapter}[block]{}{\bfseries\Large\MakeUppercase\thechapter.\;}{0.5ex}{\formatchaptertitle}
+\newcommand{\formatchaptertitle}[1]{\bfseries\Large\MakeUppercase{#1}}
+\titlespacing*{\chapter}{0pt}{-1.5em}{1.5em}
+
+
+\titleformat{\section}[block]{}{\hspace{1em}\bfseries\large\MakeUppercase\thesection.\;}{0pt}{\formatsectiontitle}
+\newcommand{\formatsectiontitle}[1]{\bfseries\large\MakeUppercase{#1}}
+
+\titleformat{\subsection}[block]{}{\hspace{2em}\bfseries\thesubsection.\;}{0pt}{\formatsubsectiontitle}
+\newcommand{\formatsubsectiontitle}[1]{\bfseries\titlecap{#1}}
+
+\titleformat{\subsubsection}[block]{}{\hspace{3em}\bfseries\thesubsubsection.\;}{0pt}{\formatsubsubsectiontitle}
+\newcommand{\formatsubsubsectiontitle}[1]{\bfseries\titlecap{#1}}
+
+
+ 
+\captionsetup[figure]{labelfont={bf},labelformat={default},labelsep=endash}
+\captionsetup[table]{labelfont={bf},labelformat={default},labelsep=endash}
+
+
+\newdateformat{monthyeardate}{%
+  \monthname[\THEMONTH], \THEYEAR}
+
+%\cftsetindents{chapter}{0cm}{.3cm}
+%\cftsetindents{section}{0cm}{.6cm}
+%\cftsetindents{subsection}{0cm}{.9cm}
+%\cftsetindents{subsubsection}{0cm}{1.2cm}
+%\cftsetindents{paragraph}{0cm}{1.5cm}
+ 
+
+
+%\fancypagestyle{novo}{
+%\fancyhead[L]{}% Empty left header
+%\fancyhead[C]{\thepage} % Page numbering for center header  
+%\fancyhead[R]{}% Empty right header
+%\fancyfoot[L]{}% Empty left footer
+%\fancyfoot[C]{}% Empty center footer
+%\fancyfoot[R]{}% Empty left footer
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\newcommand{\titulo}{}
+%\newcommand{\nomeAutor}{}
+%\newcommand{\nomeOrientador}{}
+%
+%\newcommand{\nomeCoOrientador1}{Coorientador}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\mathgloss}[2]{%
+    \newglossaryentry{#1}{name={#1},description={#2}}%
+    \begin{description}[labelwidth=5em]%
+      \item[\gls{#1}]#2%
+    \end{description}%
+}
+\newcommand*{\WrapLR}[3]% #1=left image, #2=right image, #3=text (1 paragraph)
+{\bgroup
+  \sbox0{\raisebox{-\height}{\hspace*{-1.5cm} #1}}% align tops
+  \sbox1{\raisebox{-\height\width}{\hspace*{-2.3cm} #2}}% measure width and height (depth)
+  \sbox2{\raisebox{\depth}{\makebox[\textwidth]{\usebox0\hfill\usebox1}}}% total height
+  
+  \par\noindent\usebox2\vspace{\dimexpr \ht\strutbox-\ht2-\baselineskip-\parskip}\par% overlay pictures
+    
+  \dimen0=\dimexpr \wd0-0.6cm+\columnsep\relax% indent
+  \dimen1=\dimexpr \textwidth-\wd0-\wd1-2\columnsep\relax% width
+  
+  \edef\shape{\the\dimen0 \the\dimen1}% set up \parshape arguments in loop
+  \dimen2=\ht\strutbox
+  \count1=2
+  \loop\ifdim\dimen2<\ht2
+    \ifdim\dimen2>\dp0\relax% end of left image
+      \dimen0=0
+      \dimen1=\dimexpr \textwidth-\wd1-\columnsep\relax
+    \fi
+    \ifdim\dimen2>\dp1\relax% end of right image
+      \dimen1=\dimexpr \textwidth-\wd0-\columnsep\relax
+    \fi
+    \advance\dimen2 by \baselineskip
+    \advance\count1 by 1
+    \edef\shape{\shape\space\the\dimen0 \the\dimen1}%
+  \repeat
+  \edef\shape{\the\count1 \space\shape\space 0pt \the\textwidth}%
+  \parshape=\shape
+  #3\par
+\egroup}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Diagramas
+
+\usepackage{tikz}
+\usetikzlibrary{calc,trees,positioning,arrows,chains,shapes.geometric,%
+    decorations.pathreplacing,decorations.pathmorphing,shapes,%
+    matrix,shapes.symbols}
+
+\tikzset{
+>=stealth',
+  punktchain/.style={
+    rectangle, 
+    rounded corners, 
+    % fill=black!10,
+    draw=black, very thick,
+    text width=10em, 
+    minimum height=3em, 
+    text centered, 
+    on chain},
+  line/.style={draw, thick, <-},
+  element/.style={
+    tape,
+    top color=white,
+    bottom color=blue!50!black!60!,
+    minimum width=8em,
+    draw=blue!40!black!90, very thick,
+    text width=10em, 
+    minimum height=3.5em, 
+    text centered, 
+    on chain},
+  every join/.style={->, thick,shorten >=1pt},
+  decoration={brace},
+  tuborg/.style={decorate},
+  tubnode/.style={midway, right=2pt},
+}
+

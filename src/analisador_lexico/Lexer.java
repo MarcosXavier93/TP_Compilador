@@ -13,13 +13,6 @@ public class Lexer {
 	private char ch = ' '; 			//caractere lido do arquivo
 	private FileReader file;
 	private Hashtable<String, Word> words = new Hashtable<>();
-
-	/** Método para inserir palavras reservadas na HashTable */
-	private void reserve(Word w) {
-		words.put(w.getLexeme(), w); // lexema é a chave para entrada na
-	}
-
-
 	/** Método construtor */
 	public Lexer(String fileName) throws FileNotFoundException {
 
@@ -183,32 +176,36 @@ public class Lexer {
 
 	public void adicionapalavras() {
 		// Insere palavras reservadas na HashTable
-		reserve(new Word("init", Tag.INIT,0));
-        reserve(new Word("stop", Tag.STOP,0));
-        reserve(new Word("is", Tag.IS,0));
-		reserve(new Word("integer", Tag.INT,0));
-		reserve(new Word("string", Tag.STR,0));
-        reserve(new Word("real", Tag.REAL,0));
-		reserve(new Word("if", Tag.IF,0));
-		reserve(new Word("begin", Tag.BEGIN,0));
-        reserve(new Word("end", Tag.END,0));
-		reserve(new Word("else", Tag.ELSE,0));
-		reserve(new Word("do", Tag.DO,0));
-		reserve(new Word("while", Tag.WHILE,0));
-		reserve(new Word("read", Tag.READ,0));
-		reserve(new Word("write", Tag.WRITE, 0));
-		reserve(new Word("not", Tag.NOT, 0));
-        reserve(new Word("or", Tag.OR, 0));
-        reserve(new Word("and", Tag.AND, 0));
+		adiciona_palavra_reservada(new Word("init", Tag.INIT,0));
+        adiciona_palavra_reservada(new Word("stop", Tag.STOP,0));
+        adiciona_palavra_reservada(new Word("is", Tag.IS,0));
+		adiciona_palavra_reservada(new Word("integer", Tag.INT,0));
+		adiciona_palavra_reservada(new Word("string", Tag.STR,0));
+        adiciona_palavra_reservada(new Word("real", Tag.REAL,0));
+		adiciona_palavra_reservada(new Word("if", Tag.IF,0));
+		adiciona_palavra_reservada(new Word("begin", Tag.BEGIN,0));
+        adiciona_palavra_reservada(new Word("end", Tag.END,0));
+		adiciona_palavra_reservada(new Word("else", Tag.ELSE,0));
+		adiciona_palavra_reservada(new Word("do", Tag.DO,0));
+		adiciona_palavra_reservada(new Word("while", Tag.WHILE,0));
+		adiciona_palavra_reservada(new Word("read", Tag.READ,0));
+		adiciona_palavra_reservada(new Word("write", Tag.WRITE, 0));
+		adiciona_palavra_reservada(new Word("not", Tag.NOT, 0));
+        adiciona_palavra_reservada(new Word("or", Tag.OR, 0));
+        adiciona_palavra_reservada(new Word("and", Tag.AND, 0));
 	}
 
 
 	/* Imprime todas as entradas da tabela de símbolos */
 	public void imprimirTabela() {
 		System.out.println("\n\n\n**** Tabela de símbolos ****\nEntrada\t\t|\t\tMais info");
-		for (Map.Entry<String, Word> entrada: words.entrySet()) {
+		for (Map.Entry<String, Word> entrada : words.entrySet()) {
 			System.out.println(entrada.getKey());
 		}
+	}
+	/** Método para inserir palavras reservadas na HashTable */
+	private void adiciona_palavra_reservada(Word w) {
+		words.put(w.getLexeme(), w); // lexema é a chave para entrada na
 	}
 
 }

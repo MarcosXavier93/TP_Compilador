@@ -22,7 +22,6 @@ public class Main {
 		Lexer L = null;
 		int line = -5;
 		try {
-			//L = new Lexer("D:\\- Particular\\Estudos\\Cefet\\OneDrive - aluno.cefetmg.br\\2020.2\\compil\\trab\\TP_Compilador\\src\\codigos_teste\\Teste1.txt");
 			L = new Lexer("codigos_teste/Teste2.txt");
 			
 			L.adicionapalavras();//Inicia adicionando palavras reservadas

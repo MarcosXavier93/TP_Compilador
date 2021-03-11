@@ -9,12 +9,12 @@ public class InvalidTokenException extends Exception {
 
     public InvalidTokenException(int line, char token)
     {
-        super("Error("+ line +"): Token '" + token + "' inválido");
+        super("Error  na Linha("+ line +"): Token '" + token + "' Nao esperado");
     }
 
     public InvalidTokenException(int line, String token)
     {
-        super("Error("+ line +"): Token '" + token + "' inválido");
+        super("Error na Linha("+ line +"): Token '" + token + "' Nao esperado");
     }
 
 }

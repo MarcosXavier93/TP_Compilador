@@ -36,6 +36,7 @@ public class Tag {
                 LT	= (int)'<',
                 LE      = 273, // <=
                 GL      = 274, // <>
+		NE      = 291, // !=
                 SUM     = (int)'+',		
 		MIN     = (int)'-',
                 OR      = 275, // or
@@ -47,9 +48,8 @@ public class Tag {
 		NUM     = 300,
 		ID      = 301,
 		LIT     = 302,
+                VOID    = 303,
 		EOF     = 65535;
-
-
 
 	public final static Set<Character> validASCIITokens = new HashSet<>(Arrays.asList(';', ',', '=', '(', ')', '-', '+', '*', '/'));
 

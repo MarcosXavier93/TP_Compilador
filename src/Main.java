@@ -8,17 +8,20 @@ Commit para reparar possíveis bugs
 import analisador_lexico.Lexer;
 import analisador_lexico.Tag;
 import analisador_lexico.Token;
+import analisador_sintatico.Parser;
+
 import exception.InvalidTokenException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+
 public class Main {
 	public static void main(String[] args) {
 		ArrayList<Token> tokens = new ArrayList<Token> ();
 		Lexer L = null;
 		int line = -5;
 		try {
-			L = new Lexer("codigos_teste/Teste2.txt");
+			L = new Lexer("codigos_teste/Teste1.txt");
 			L.adicionapalavras();//Inicia adicionando palavras reservadas
 			System.out.println("**** Tokens lidos ****");
 			// Apenas para entrar no laço
@@ -42,7 +45,11 @@ public class Main {
 			}
 			line++;
 			tokens.add(new Token(Tag.EOF, line));
-			L.imprimirTabela();
+			// L.imprimirTabela();
+			Parser P = new Parser(tokens);
+			System.out.println("\n\n\n**** Inicio Parser ****");
+			P.init();
+			P.imprimirTS();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

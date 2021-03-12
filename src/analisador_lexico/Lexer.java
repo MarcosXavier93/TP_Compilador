@@ -131,7 +131,7 @@ public class Lexer {
 			
 			if (Token.isLetter(sb.charAt(0)) == true) {  // O identificador não será aceito se começar com "_".
 				String s = sb.toString();
-				Word w = words.get(s);
+				Word w = words.get(s.toLowerCase());
 				if (w != null) {
 					Token T = new Token(w, line);        //palavra já existe na HashTable
 					return T;

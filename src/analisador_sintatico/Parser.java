@@ -415,7 +415,7 @@ public class Parser {
         switch(tag) {
             //assign-stmt ::= identifier "=" simple_expr
             case Tag.ID:
-                setCurAssignStmtType(tok, line); eat(Tag.ID); eat(Tag.EQ); simpleExpr();
+                setCurAssignStmtType(tok, line); eat(Tag.ID); eat(Tag.IS); simpleExpr();
                 break;
             default:
                 error();

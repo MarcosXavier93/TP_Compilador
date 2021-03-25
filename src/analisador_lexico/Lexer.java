@@ -143,7 +143,9 @@ public class Lexer {
 				w = new Word (s, Tag.ID, line);
 				words.put(s, w);
 				return w;
-			}
+			}else{
+                            throw new InvalidTokenException(line, sb.charAt(0));
+                        }
 		}
 
 		// Caracteres ASCII validos

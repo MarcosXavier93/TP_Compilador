@@ -1,4 +1,4 @@
-init
+init begin
 	read(a);
 	if(a == b) begin
 		read(a);

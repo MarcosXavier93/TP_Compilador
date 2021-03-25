@@ -2,6 +2,7 @@ init
 % Outro programa de teste
 i, j, k, @total is integer;
 nome is string
+begin
 write("Digite o seu nome: ");
 read(nome);
 write("Digite um valor inteiro: );

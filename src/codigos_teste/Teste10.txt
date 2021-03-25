@@ -1,6 +1,7 @@
-init
+init 
 	a;
 	%Declarando errado a variavel "a"%
+	begin
 	
 	read(a); 
 	

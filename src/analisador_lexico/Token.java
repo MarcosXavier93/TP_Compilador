@@ -105,8 +105,8 @@ public class Token {
                         case Tag.LE:
 				valor = "less_equals_relop";
 				break;
-                        case Tag.GL:
-                                valor = "greater_less_relop";
+                        case Tag.NE:
+                            valor = "not_equal_relop";
                                 break;
 			case Tag.SUM:
 				valor = "soma_addop";

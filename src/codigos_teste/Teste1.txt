@@ -1,6 +1,7 @@
-init
+init 
 a, b, $c, is integer;
 result is real;
+begin
 write("Digite o valor de a:"
 read (a);
 write("Digite o valor de c:"

@@ -1,5 +1,5 @@
 a, _valor, b_1, b_2, cc, 10_a : integer;
-init
+init begin
 write("Entre com o valor de a:");
 read (a);
 b_1 := a * a;

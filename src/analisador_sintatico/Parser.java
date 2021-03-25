@@ -2,62 +2,31 @@ package analisador_sintatico;
 
 import analisador_lexico.Tag;
 import analisador_lexico.Token;
-import analisador_lexico.Num;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Map;
 
 public class Parser {
-    private int curType;
-    private int resultExprType;
-    private int curConditionType;
-    private boolean startingCondition;
-
     private Token tok;
     private int tag;
     private int i;
     private int line;
+    private int curType;
+    private int resultExprType;
     private ArrayList<Token> tokens = new ArrayList<Token> ();
     
-    private Hashtable<String, Integer> TS = new Hashtable<>();
-
     public Parser(ArrayList<Token> tokens){
         this.tokens=tokens;
         i=0;
         tok=tokens.get(i);
         tag=tok.tag;
         line=tok.line;
-
         curType = Tag.VOID;
         resultExprType = Tag.VOID;
-        curConditionType = Tag.VOID;
-        startingCondition = false;
-    }
-
-    public Hashtable<String, Integer> getTS() {
-        return TS;
     }
 
     public void init(){
         program();
     };
-
-    private String type2String(int type){
-        String tipo = "int";
-        //Definir o tipo
-        if(type == Tag.STR){
-            tipo = "string";
-        }
-        return tipo;
-    }
-    
-    private void wrongExprType(int line, String tipo, String lexeme, String tokTipo, int tipoEsperado){
-        System.out.println("Error(" + line + "): Tipo '" + tipo + "' do "+ tokTipo +" '" + lexeme + "' incompatível com a expressão.");
-        System.out.println("Esperava '"+type2String(tipoEsperado)+"'");
-        System.out.println("Fim de arquivo inesperado.");
-        System.exit(0);
-    }
-
 
     private void advance(){
         i++;
@@ -76,17 +45,26 @@ public class Parser {
         tok.imprimeToken(tok);
         while(tag!=Tag.EOF)
             advance();
+    } 
+
+    /* Seta o tipo basico com que se esta trabalhando em uma expressao de atribuicao */
+    public void setCurType(int tipo){
+        curType = tipo;
+    }
+
+    public void resetResultExprType(){
+        resultExprType = Tag.VOID;
     }
 
     private void eat(int t){
         if(tag==t){
             //Checa se a tag e um tipo basico
             if(tag == Tag.INT || tag == Tag.STR){
-                curType = t;
+                setCurType(tag);
             }
             //Caso ; deve resetar o resultado esperado de uma expressao
             if(tag == Tag.PV){
-                resultExprType = Tag.VOID;
+                resetResultExprType();
             }
             //System.out.print("Token Consumido("+line+"): ");
             //tok.imprimeToken(tok);
@@ -95,183 +73,18 @@ public class Parser {
         else error();
     }
 
-    /* Indica o inicio de uma expr de condicao */
-    public void setStartingCondition(){
-        startingCondition = true;
-    }
-
-    /* Indica o fim de uma expr de condicao */
-    public void endStartingCondition(){
-        startingCondition = false;
-        curConditionType = Tag.VOID;
-    }
-    
-      /* Checa se o tipo dos termos (identificador) que estao formando a expressao estao corretos */
-    public void checkExprIDType(Token tok, int line){
-        // Caso trabalhando com um expr de condicao
-        if(startingCondition){
-            // Caso nao tenha identificado o tipo do primeiro termo da condicao
-            if(curConditionType == Tag.VOID){
-                // Checa se o ID existe na TS
-                if(!TS.containsKey(tok.getLexeme())){
-                    System.out.println("Error(" + line + "): Identificador '"+tok.getLexeme()+"' não declarado");
-                    System.out.println("Fim de arquivo inesperado.");
-                    System.exit(0);
-                }else{
-                    // Caso o identificador exista na TS pega o tipo dele
-                    curConditionType = TS.get(tok.getLexeme());
-                }
-            }else{
-                // Caso ja tenha identificado o primeiro termo da condicao tem que checar o segundo termo
-                // se o segundo termo tem tipo igual ao primeiro
-                // Checa se o ID existe na TS
-                if(!TS.containsKey(tok.getLexeme())){
-                    System.out.println("Error(" + line + "): Identificador '"+tok.getLexeme()+"' não declarado");
-                    System.out.println("Fim de arquivo inesperado.");
-                    System.exit(0);
-                }else{
-                    // Caso o identificador exista na TS pega o tipo dele
-                    int segundoTermoTipo = TS.get(tok.getLexeme());
-                    if(curConditionType != segundoTermoTipo){
-                        wrongExprType(line, type2String(segundoTermoTipo), tok.getLexeme(), "identificador", curConditionType);
-                    }
-                }
-            }
-        }
-        // Se resultExprType tem um valor diferente de VOID quer dizer que se esta trabalhando com uma assign-stmt
-        if(resultExprType != Tag.VOID) {
-            //Caso id nao tenha sido declarado
-            if (!TS.containsKey(tok.getLexeme())) {
-                System.out.println("Error(" + line + "): Identificador '" + tok.getLexeme() + "' não declarado");
-                System.out.println("Fim de arquivo inesperado.");
-                System.exit(0);
-            } else {
-                //Caso seja um identificador
-                int idType = TS.get(tok.getLexeme());
-                if (resultExprType != idType) {
-                    wrongExprType(line, type2String(idType), tok.getLexeme(), "identificador", resultExprType);
-                }
-            }
-        }
-    }
-
-    /* Checa se o tipo dos termos (num ou literal - NL) que estao formando a expressao estao corretos */
-    public void checkExprNLType(Token tok, int line){
-        // Caso trabalhando com um expr de condicao
-        if(startingCondition){
-            // Caso nao tenha identificado o tipo do primeiro termo da condicao
-            if(curConditionType == Tag.VOID){
-                //Caso seja um NUM
-                if (tok instanceof Num) {
-                    curConditionType = Tag.INT;
-                } else {
-                    //Caso contrario so pode ser um lit
-                    curConditionType = Tag.STR;
-                }
-            }else{
-                // Caso ja tenha identificado o primeiro termo da condicao tem que checar
-                // se o segundo termo tem tipo igual ao primeiro
-                //Caso seja um NUM
-                if (tok instanceof Num) {
-                    if(curConditionType != Tag.INT){
-                        wrongExprType(line, "int", String.valueOf(((Num) tok).value), "num", curConditionType);
-                    }
-                } else {
-                    if(curConditionType != Tag.STR){
-                        wrongExprType(line, "string", tok.getLexeme(), "literal", curConditionType);
-                    }
-                }
-            }
-        }
-
-        // Se resultExprType tem um valor diferente de VOID quer dizer que se esta trabalhando com uma assign-stmt
-        if(resultExprType != Tag.VOID) {
-            //Caso seja um  NUM
-            if (tok instanceof Num) {
-                if (resultExprType != Tag.INT) {
-                    wrongExprType(line, "int", String.valueOf(((Num) tok).value), "num", resultExprType);
-                }
-            } else {
-                //Caso contrario so pode ser um lit
-                if (resultExprType != Tag.STR) {
-                    wrongExprType(line, "string", tok.getLexeme(),  "literal", resultExprType);
-                }
-            }
-        }
-    }
-
-    /* Determina qual é o tipo do identificador que recebera o valor da expressao */
-    public void setCurAssignStmtType(Token tok, int line){
-        if(resultExprType == Tag.VOID){
-            //Caso id nao tenha sido declarado
-            if(!TS.containsKey(tok.getLexeme())){
-                System.out.println("Error(" + line + "): Identificador '"+tok.getLexeme()+"' não declarado");
-                System.out.println("Fim de arquivo inesperado.");
-                System.exit(0);
-            }else{
-                //Uma nova expressao de igualdade sera criada entao muda o tipo esperado da var que recebe
-                //o resultado final
-                resultExprType = TS.get(tok.getLexeme());
-            }
-        }
-    }
-
-    private void wrogStrOp(int line, String op){
-        System.out.println("Error(" + line + "): Operação '"+ op +"' inválida com 'string'");
-        System.exit(0);
-    }
-
-    public void putTS(Token tok, int line){
-        //Veriifica se tok ja foi declarado na TS
-        if(TS.containsKey(tok.getLexeme())){
-            System.out.println("Error(" + line + "): Redefinição de '"+tok.getLexeme()+"'");
-            System.out.println("Fim de arquivo inesperado.");
-            System.exit(0);
-        }else{
-            TS.put(tok.getLexeme(), curType);
-        }
-    }
-
-    public void imprimirTS(){
-        System.out.println("\n\n\n**** Identificadores na Tabela de símbolos ****\nEntrada - Tipo");
-        for (Map.Entry<String, Integer> entrada: TS.entrySet()) {
-            System.out.println(entrada.getKey()+" - "+type2String(entrada.getValue()));
-        }
-    }
-    
-     /* Checa se a operacao realizada na string esta correta ('+' é a unica operação aceita) */
-     public void checkStrOp(Token tok, int line){
-        if(resultExprType == Tag.STR){
-            switch (tok.tag){
-                case Tag.MIN:
-                    wrogStrOp(line, "-");
-                    break;
-                case Tag.OR:
-                    wrogStrOp(line, "||");
-                    break;
-                case Tag.MUL:
-                    wrogStrOp(line, "*");
-                    break;
-                case Tag.DIV:
-                    wrogStrOp(line, "/");
-                    break;
-                case Tag.AND:
-                    wrogStrOp(line, "&&");
-                    break;
-            }
-        }
-    }
-    
     private void program(){
         switch(tag) {
-            // program ::= program decl-list stmt-list end
+            // D:: program ::= program decl-list stmt-list end
+            // N:: program ::= init [decl-list] begin stmt-list stop
             case Tag.INIT:
-                eat(Tag.INIT); declList(); stmtList();
+                eat(Tag.INIT); declList(); eat(Tag.BEGIN); stmtList();
                 if (tag == Tag.EOF)
                     System.out.println("Fim de arquivo inesperado.");
                 else
-                    eat(Tag.END);
-                    imprimirTS();
+                    eat(Tag.STOP);
+                    //vs.imprimirTS();
+                    System.out.println("Deu bom!");
                 break;
             default:
                 error();
@@ -279,30 +92,21 @@ public class Parser {
     }
 
     private void declList(){
-        switch(tag) {
-            // decl-list ::= decl decl-list
-            case Tag.INT:
-            case Tag.STR:
-                decl(); declList();
-                break;
-            //decl-list ::= λ
-            case Tag.ID:
-            case Tag.IF:
-            case Tag.DO:
-            case Tag.READ:
-            case Tag.WRITE:
-                break;
-            default:
-                error();
-        }
+        // D:: decl-list ::= decl decl-list
+        // N:: decl ";" { decl ";"}
+        
+        decl();
+        eat(Tag.PV); 
     }
 
-    private void decl(){
+    private void decl(){        
+        identList();
+        
         switch(tag) {
-            //decl ::= type ident-list ";"
-            case Tag.INT:
-            case Tag.STR:
-                type(); identList(); eat(Tag.PV);
+            //D:: decl ::= type ident-list ";"
+            //N:: decl ::= ident-list is type
+            case Tag.IS:
+                type();
                 break;
             default:
                 error();
@@ -311,24 +115,15 @@ public class Parser {
 
     private void identList(){
         switch(tag) {
-            //ident-list ::= identifier ident-list'
+            //D:: ident-list ::= identifier ident-list'
+            //N:: ident-list ::= identifier {"," identifier}
             case Tag.ID:
-                putTS(tok, line); eat(Tag.ID); identListPrime();
+                eat(Tag.ID);
                 break;
-            default:
-                error();
-        }
-    }
 
-    private void identListPrime(){
-        switch(tag) {
-            //ident-list' ::= "," identifier ident-list'
             case Tag.VRG:
-                eat(Tag.VRG); putTS(tok, line); eat(Tag.ID); identListPrime();
-                break;
-            //ident-list' λ
-            case Tag.PV:
-                break;
+                eat(Tag.VRG); eat(Tag.ID);
+                break;    
             default:
                 error();
         }
@@ -336,14 +131,21 @@ public class Parser {
 
     private void type(){
         switch(tag) {
-            //type ::= int
+            //D:: type ::= int
+            //N:: type ::= int
             case Tag.INT:
                 eat(Tag.INT);
                 break;
-            //type ::= string
+            //D:: type ::= string
+            //N:: type ::= string
             case Tag.STR:
                 eat(Tag.STR);
                 break;
+            //D:: type ::= real 
+            //N:: type ::= real
+            case Tag.REAL:
+                eat(Tag.REAL);
+                break;    
             default:
                 error();
         }
@@ -351,34 +153,18 @@ public class Parser {
 
     private void stmtList(){
         switch(tag) {
-            //stmt-list ::= stmt stmt-list'
+            //D:: stmt-list ::= stmt stmt-list'
+            //N:: stmt-list ::= stmt ";" { stmt ";" }
             case Tag.ID:
             case Tag.IF:
             case Tag.DO:
             case Tag.READ:
             case Tag.WRITE:
-                stmt(); stmtListPrime();
+                stmt();
                 break;
-            default:
-                error();
-        }
-    }
-
-    private void stmtListPrime(){
-        switch(tag) {
-            //stmt-list' ::= stmt stmt-list'
-            case Tag.ID:
-            case Tag.IF:
-            case Tag.DO:
-            case Tag.READ:
-            case Tag.WRITE:
-                stmt(); stmtListPrime();
-                break;
-            //stmt-list' ::= λ
-            case Tag.ELSE:
-            case Tag.WHILE:
-            case Tag.END:
-                break;
+            case Tag.PV:
+                stmt(); eat(Tag.PV); 
+                break;      
             default:
                 error();
         }
@@ -386,25 +172,30 @@ public class Parser {
 
     private void stmt(){
         switch(tag) {
-            //stmt ::= assign-stmt ";"
+            //D:: stmt ::= assign-stmt ";"
+            //N:: stmt ::= assign-stmt
             case Tag.ID:
-                assignStmt(); eat(Tag.PV);
+                assignStmt();
                 break;
-            //stmt ::= if-stmt
+            //D:: stmt ::= if-stmt
+            //N:: stmt ::= if-stmt
             case Tag.IF:
                 ifStmt();
                 break;
-            //stmt ::= while-stmt
+            //D:: stmt ::= while-stmt
+            //N:: stmt ::= while-stmt
             case Tag.DO:
-                whileStmt();
+                doStmt();
                 break;
-            //stmt ::= read-stmt ";"
+            //D:: stmt ::= read-stmt ";"
+            //N:: stmt ::= read-stmt 
             case Tag.READ:
-                readStmt(); eat(Tag.PV);
+                readStmt();
                 break;
-            //stmt ::= write-stmt ";"
+            //D:: stmt ::= write-stmt ";"
+            //N:: stmt ::= write-stmt 
             case Tag.WRITE:
-                writeStmt(); eat(Tag.PV);
+                writeStmt();
                 break;
             default:
                 error();
@@ -413,9 +204,10 @@ public class Parser {
 
     private void assignStmt(){
         switch(tag) {
-            //assign-stmt ::= identifier "=" simple_expr
+            //D:: assign-stmt ::= identifier "=" simple_expr
+            //N:: assign-stmt ::= identifier ":=" simple_expr
             case Tag.ID:
-                setCurAssignStmtType(tok, line); eat(Tag.ID); eat(Tag.IS); simpleExpr();
+                eat(Tag.ID); eat(Tag.PPV); simpleExpr();
                 break;
             default:
                 error();
@@ -424,45 +216,39 @@ public class Parser {
 
     private void ifStmt(){
         switch(tag) {
-            //if-stmt ::= if  expression  then  stmt-list  if-stmt' end
+            //D:: if-stmt ::= if  expression  then  stmt-list  if-stmt' end
+            //N:: if-stmt ::= if "(" condition ")" begin stmt-list end else begin stmt-list end
             case Tag.IF:
-                eat(Tag.IF); setStartingCondition(); expression(); endStartingCondition(); stmtList(); ifStmtPrime(); eat(Tag.END);
+                eat(Tag.IF); eat(Tag.AP); condition(); eat(Tag.FP); eat(Tag.BEGIN); stmtList();
                 break;
-            default:
-                error();
-        }
-    }
-
-    private void ifStmtPrime(){
-        switch(tag) {
-            //if-stmt' ::= else stmt-list
             case Tag.ELSE:
-                eat(Tag.ELSE); stmtList();
-                break;
-            //if-stmt' ::= λ
+                eat(Tag.ELSE); eat(Tag.BEGIN); stmtList();
+                break;  
             case Tag.END:
-                break;
+                break;    
             default:
                 error();
         }
     }
 
-    private void whileStmt(){
+    private void doStmt(){
         switch(tag) {
-			//while-stmt ::= do stmt-list stmt-sufix
+			//D:: while-stmt ::= do stmt-list stmt-sufix
+            //N:: do-stmt ::= do stmt-list do-suffix.
             case Tag.DO:
-                eat(Tag.DO); stmtList(); stmtSufix();
+                eat(Tag.DO); stmtList(); doSufix();
                 break;
             default:
                 error();
         }
     }
 
-    private void stmtSufix(){
+    private void doSufix(){
         switch(tag) {
-            //stmt-sufix ::= while expression end
+            //D:: stmt-sufix ::= while expression end
+            //N:: stmt-sufix ::= while "(" condition ")"
             case Tag.WHILE:
-                eat(Tag.WHILE); setStartingCondition(); expression(); endStartingCondition(); eat(Tag.END);
+                eat(Tag.WHILE); eat(Tag.AP); condition(); eat(Tag.FP);
                 break;
             default:
                 error();
@@ -471,7 +257,8 @@ public class Parser {
 
     private void readStmt(){
         switch(tag) {
-            //read-stmt ::= scan  "("  identifier  ")"
+            //D:: read-stmt ::= scan  "("  identifier  ")"
+            //N:: read-stmt ::= read "(" identifier ")"
             case Tag.READ:
                 eat(Tag.READ); eat(Tag.AP); eat(Tag.ID); eat(Tag.FP);
                 break;
@@ -482,47 +269,41 @@ public class Parser {
 
     private void writeStmt(){
         switch(tag) {
-            //write-stmt ::= print  "("  simple-expr  ")"
+            //D:: write-stmt ::= print  "("  simple-expr  ")"
+            //N:: write-stmt ::= write "(" writable ")"
             case Tag.WRITE:
-                eat(Tag.WRITE); eat(Tag.AP); simpleExpr(); eat(Tag.FP);
+                eat(Tag.WRITE); eat(Tag.AP); writable(); eat(Tag.FP);
                 break;
             default:
                 error();
         }
     }
 
-    private void expression(){
+    private void writable() {
+        simpleExpr();
+    }
+    
+
+    private void condition(){
         switch(tag) {
-            //expression ::= simple-expr  expression'
+            //D:: expression ::= simple-expr  expression'
+            //N:: expression ::= simple-expr | simple-expr relop simple-expr
             case Tag.ID:
             case Tag.NUM:
             case Tag.LIT:
-            case Tag.MIN:
-            case Tag.NOT:
             case Tag.AP:
-                simpleExpr(); expressionPrime();
+            case Tag.NOT:
+            case Tag.MIN:
+                simpleExpr(); 
                 break;
-            default:
-                error();
-        }
-    }
-
-    private void expressionPrime(){
-        switch(tag) {
-            //expression' ::= relop  simple-expr
             case Tag.GT:
             case Tag.LT:
-            case Tag.LIT:
             case Tag.GE:
             case Tag.LE:
             case Tag.NE:
             case Tag.EQ:
                 relop(); simpleExpr();
-                break;
-            //expression' ::= λ
-            case Tag.END:
-            case Tag.FP:
-                break;
+                break;    
             default:
                 error();
         }
@@ -530,39 +311,31 @@ public class Parser {
 
     private void simpleExpr(){
         switch(tag) {
-            //simple-expr ::= term  simple-expr'
+            //D:: simple-expr ::= term  simple-expr'
+            //N:: simple-expr ::= term | simple-expr addop term
             case Tag.ID:
             case Tag.NUM:
             case Tag.LIT:
-            case Tag.MIN:
-            case Tag.NOT:
             case Tag.AP:
-                term();  simpleExprPrime();
+            case Tag.NOT:
+            case Tag.MIN:
+                term(); 
                 break;
             default:
                 error();
         }
+        simpleExpr(); simpleExpr_MIN();   
     }
 
-    private void simpleExprPrime(){
+    private void simpleExpr_MIN(){
         switch(tag) {
-            //simple-expr' ::= addop term simple-expr'
+            //D:: simple-expr ::= term  simple-expr'
+            //N:: simple-expr ::= term | simple-expr addop term   
             case Tag.MIN:
             case Tag.SUM:
             case Tag.OR:
-                addop(); term(); simpleExprPrime();
-                break;
-            //simple-expr' ::= λ
-            case Tag.END:
-            case Tag.GT:
-            case Tag.LT:
-            case Tag.FP:
-            case Tag.GE:
-            case Tag.LE:
-            case Tag.NE:
-            case Tag.EQ:
-            case Tag.PV:
-                break;
+                addop(); term();
+                break;    
             default:
                 error();
         }
@@ -570,61 +343,44 @@ public class Parser {
 
     private void term(){
         switch(tag) {
-            //term ::= factor-a  term'
+            //D:: term ::= factor-a  term'
+            //N:: term ::= factor-a | term mulop factor-a
             case Tag.ID:
             case Tag.NUM:
             case Tag.LIT:
-            case Tag.MIN:
-            case Tag.NOT:
             case Tag.AP:
-                factorA(); termPrime();
-                break;
-            default:
-                error();
-        }
-    }
-
-    private void termPrime(){
-        switch(tag) {
-            //term' ::= mulop factor-a term'
+            case Tag.NOT:
+            case Tag.MIN:
+                factorA(); 
+                break;  
             case Tag.MUL:
             case Tag.DIV:
             case Tag.AND:
-                mulop(); factorA(); termPrime();
-                break;
-            //term' ::= λ
-            case Tag.END:
-            case Tag.MIN:
-            case Tag.GT:
-            case Tag.LT:
-            case Tag.SUM:
-            case Tag.OR:
-            case Tag.FP:
-            case Tag.GE:
-            case Tag.LE:
-            case Tag.NE:
-            case Tag.EQ:
-            case Tag.PV:
-                break;
+                mulop(); factorA();    
             default:
                 error();
         }
+        term();  
     }
+
 
     private void factorA(){
         switch(tag) {
-            //factor-a ::= factor
+            //D:: factor-a ::= factor
+            //N:: factor-a ::= factor 
             case Tag.ID:
             case Tag.NUM:
             case Tag.LIT:
             case Tag.AP:
                 factor();
                 break;
-            //factor-a ::= !  factor
+            //D:: factor-a ::= !  factor
+            //N:: factor-a ::= not factor
             case Tag.NOT:
                 eat(Tag.NOT); factor();
                 break;
-            //factor-a ::= "-"  factor
+            //D:: factor-a ::= "-"  factor
+            //N:: factor-a ::= "-"  factor
             case Tag.MIN:
                 eat(Tag.MIN); factor();
                 break;
@@ -635,18 +391,21 @@ public class Parser {
 
     private void factor(){
         switch(tag) {
-            //factor ::= identifier
+            //D:: factor ::= identifier
+            //N:: factor ::= identifier 
             case Tag.ID:
-                checkExprIDType(tok, line); eat(Tag.ID);
+                eat(Tag.ID);
                 break;
-            //factor ::= constant
+            //D:: factor ::= constant
+            //N:: factor ::= constant 
             case Tag.NUM:
             case Tag.LIT:
                 constant();
                 break;
-            //factor ::= "("  expression  ")"
+            //D:: factor ::= "("  expression  ")"
+            //N:: factor ::= "(" expression ")"
             case Tag.AP:
-                eat(Tag.AP); expression(); eat(Tag.FP);
+                eat(Tag.AP); condition(); eat(Tag.FP);
                 break;
             default:
                 error();
@@ -655,27 +414,33 @@ public class Parser {
 
     private void relop(){
         switch(tag) {
-            //relop ::= "=="
+            //D:: relop ::= "=="
+            //N:: relop ::= "="
             case Tag.EQ:
                 eat(Tag.EQ);
                 break;
-            //relop ::= ">"
+            //D:: relop ::= ">"
+            //N:: relop ::= ">"
             case Tag.GT:
                 eat(Tag.GT);
                 break;
-            //relop ::= "<"
+            //D:: relop ::= "<"
+            //N:: relop ::= "<"
             case Tag.LT:
                 eat(Tag.LT);
                 break;
-            //relop ::= "!="
+            //D:: relop ::= "!="
+            //N:: relop ::= "<>"
             case Tag.NE:
                 eat(Tag.NE);
                 break;
-            //relop ::= ">="
+            //D:: relop ::= ">="
+            //N:: relop ::= ">="
             case Tag.GE:
                 eat(Tag.GE);
                 break;
-            //relop ::= "<="
+            //D:: relop ::= "<="
+            //N:: relop ::= "<="
             case Tag.LE:
                 eat(Tag.LE);
                 break;
@@ -686,17 +451,20 @@ public class Parser {
 
     private void addop(){
         switch(tag) {
-            //addop ::= "+"
+            //D:: addop ::= "+"
+            //N:: addop ::= "+"
             case Tag.SUM:
                 eat(Tag.SUM);
                 break;
-            //addop ::= "-"
+            //D:: addop ::= "-"
+            //N:: addop ::= "-"
             case Tag.MIN:
-                checkStrOp(tok, line); eat(Tag.MIN);
+                eat(Tag.MIN);
                 break;
-            //addop ::= "||"
+            //D:: addop ::= "||"
+            //N:: addop ::= "OR"
             case Tag.OR:
-                checkStrOp(tok, line); endStartingCondition(); eat(Tag.OR); setStartingCondition();
+                eat(Tag.OR);
                 break;
             default:
                 error();
@@ -705,17 +473,20 @@ public class Parser {
 
     private void mulop(){
         switch(tag) {
-            //mulop ::= "*"
+            //D:: mulop ::= "*"
+            //N:: mulop ::= "*"
             case Tag.MUL:
-                checkStrOp(tok, line); eat(Tag.MUL);
+                eat(Tag.MUL);
                 break;
-            //mulop ::= "/"
+            //D:: mulop ::= "/"
+            //N:: mulop ::= "/"
             case Tag.DIV:
-                checkStrOp(tok, line); eat(Tag.DIV);
+                eat(Tag.DIV);
                 break;
-            //mulop ::= "&&"
+            //D:: mulop ::= "&&"
+            //N:: mulop ::= "AND"
             case Tag.AND:
-                checkStrOp(tok, line); endStartingCondition(); eat(Tag.AND); setStartingCondition();
+                eat(Tag.AND);
                 break;
             default:
                 error();
@@ -724,17 +495,18 @@ public class Parser {
 
     private void constant() {
         switch (tag) {
-            //constant ::= integer_const
+            //D:: constant ::= integer_const
+            //N:: constant ::= integer_const
             case Tag.NUM:
-                checkExprNLType(tok, line); eat(Tag.NUM);
+                eat(Tag.NUM);
                 break;
-            //constant ::= literal
+            //D:: constant ::= literal
+            //N:: constant ::= literal
             case Tag.LIT:
-                checkExprNLType(tok, line); eat(Tag.LIT);
+                eat(Tag.LIT);
                 break;
             default:
                 error();
         }
     }
-
 }

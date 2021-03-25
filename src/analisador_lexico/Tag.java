@@ -10,24 +10,30 @@ public class Tag {
 		//Palavras reservadas
 		INIT    = 256,
                 STOP    = 257,
-                IS      = 258,
+
+                IS      = 258, // OBS
+
                 INT     = 259, //integer
                 STR     = 260, //string
-                REAL    = 261,
+                REAL    = 261, //OBS
+
                 IF      = 262,
-                BEGIN   = 263,
+                BEGIN   = 263, //OBS
 		END     = 264,
 		ELSE    = 265,
-		DO 	= 266,
+		
+                DO 	= 266,
                 WHILE   = 267,
+                
                 READ    = 268,
                 WRITE   = 269,
-                NOT     = 270,
+
+                NOT     = 270, //OBS
               
 		//Operadores e pontuação
 		PV 	= (int)';',
 		VRG     = (int)',',
-                PPV     = 271, // := assign
+                PPV     = 271, //PPV = ASSIGN
 		AP 	= (int)'(',
 		FP	= (int)')',
                 EQ      = (int)'=',
@@ -35,8 +41,7 @@ public class Tag {
                 GE      = 272, // >=
                 LT	= (int)'<',
                 LE      = 273, // <=
-                GL      = 274, // <>
-		NE      = 291, // !=
+                NE      = 274, // <>
                 SUM     = (int)'+',		
 		MIN     = (int)'-',
                 OR      = 275, // or

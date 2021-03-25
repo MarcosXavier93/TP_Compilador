@@ -49,7 +49,6 @@ public class Main {
 			Parser P = new Parser(tokens);
 			System.out.println("\n\n\n**** Inicio Parser ****");
 			P.init();
-			P.imprimirTS();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

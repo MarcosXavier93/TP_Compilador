@@ -1,7 +1,7 @@
 % Programa de Teste%
 Calculo de idade
 init
-	cont_ is int;
+	cont_ is integer;
 	media, idade, soma_ is integer;
 begin
 	cont_ = 5;

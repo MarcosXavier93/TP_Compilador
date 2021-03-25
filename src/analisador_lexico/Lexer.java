@@ -44,30 +44,28 @@ public class Lexer {
 
 	public Token scan() throws IOException, InvalidTokenException{
 		boolean is_comentario = false;
+                int line_comentario = 0;
 		//Desconsidera delimitadores na entrada
 		for (;; readch()) {
 			if (ch == (char)Tag.EOF) {
-				if (is_comentario)
-					throw new InvalidTokenException("Error(" + line + "): comentário não fechado");
-				break;
-			
+                            if (is_comentario)
+				throw new InvalidTokenException("Error(" + line_comentario + "): comentário não fechado");
+                            break;
 			} else if (ch == '%') {
-				is_comentario = !is_comentario;
+				is_comentario=!is_comentario;
+                                line_comentario = line;
 
 			} else if (ch == '\n') {
 				line++; //conta linhas
-
-		    } else if (ch == '*') {
+                        } /*else if (ch == '*') {
 				readch();
 				// operador de multiplicacao
 				return new Token(Tag.MUL, line);
-
 			} else if(ch == '/'){
 				readch();
 				// operador de divisao
 				return new Token(Tag.DIV, line);
-
-			} else if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b' || is_comentario)
+			}*/ else if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b' || is_comentario)
 				continue;
 			else break;
 		}
@@ -92,6 +90,12 @@ public class Lexer {
 					return new Token(Word.ppv, line);
 				else
 					throw new InvalidTokenException(line, ':');
+                        case '*':
+                                readch();
+                                return new Token(Tag.MUL, line);
+                        case '/':
+                                readch();
+                                return new Token(Tag.DIV, line);
 		}
 
 		//	Números

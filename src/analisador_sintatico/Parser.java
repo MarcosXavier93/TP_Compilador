@@ -78,14 +78,17 @@ public class Parser {
             // D:: program ::= program decl-list stmt-list end
             // N:: program ::= init [decl-list] begin stmt-list stop
             case Tag.INIT:
-                eat(Tag.INIT); declList(); eat(Tag.BEGIN); stmtList(); //precisa arrumar aqui [decl-list] para quando tem mais de um decl-list/variaveis declarando
+                eat(Tag.INIT); declList();  //precisa arrumar aqui [decl-list] para quando tem mais de um decl-list/variaveis declarando
+                if (tag == Tag.BEGIN)
+                    eat(Tag.BEGIN); stmtList();
+                
                 if (tag == Tag.EOF)
                     System.out.println("Fim de arquivo inesperado.");
                 else
                     eat(Tag.STOP);
                     //vs.imprimirTS();
-                    System.out.println("Deu bom!");
                 break;
+                
             default:
                 error();
         }
@@ -93,32 +96,29 @@ public class Parser {
 
     private void declList(){
         // D:: decl-list ::= decl decl-list
-        // N:: decl ";" { decl ";"}
-        
-        decl();
-        switch(tag){ //fix decl ";" { decl ";"}
+        // N:: decl-list ::= decl ";" { decl ";"}
+    
+        //fix decl ";" { decl ";"}
+        decl(); 
+        switch(tag) {
             case Tag.PV:
-                eat(Tag.PV);
-                break;
-            case Tag.ID:
-                System.out.println("oi");
+                eat(Tag.PV); declList();
+                break; 
             default:
                 error();
-        }
+        }   
     }
 
-    private void decl(){        
-        identList();
-        
+    private void decl(){      
+        identList();   
         switch(tag) {
             //D:: decl ::= type ident-list ";"
             //N:: decl ::= ident-list is type
             case Tag.IS:
-                eat(Tag.IS);
-                type();
+                eat(Tag.IS); type();
                 break;
             case Tag.VRG:
-                eat(Tag.VRG);
+                eat(Tag.VRG); decl();
                 break;
             default:
                 error();
@@ -130,9 +130,8 @@ public class Parser {
             //D:: ident-list ::= identifier ident-list'
             //N:: ident-list ::= identifier {"," identifier}
             case Tag.ID:
-                eat(Tag.ID);
+                eat(Tag.ID); 
                 break;
-
             case Tag.VRG:
                 eat(Tag.VRG); eat(Tag.ID);
                 break;    
@@ -156,8 +155,8 @@ public class Parser {
             //D:: type ::= real 
             //N:: type ::= real
             case Tag.REAL:
-                eat(Tag.REAL);
-                break;    
+                eat(Tag.REAL); 
+                break;        
             default:
                 error();
         }
@@ -336,7 +335,19 @@ public class Parser {
             default:
                 error();
         }
-        simpleExpr(); simpleExpr_MIN();   
+
+        switch(tag) {
+            case Tag.ID:
+            case Tag.NUM:
+            case Tag.LIT:
+            case Tag.AP:
+            case Tag.NOT:
+            case Tag.MIN:   
+                simpleExpr(); simpleExpr_MIN();    
+                break;
+            default:
+                error();
+        }
     }
 
     private void simpleExpr_MIN(){
@@ -364,15 +375,19 @@ public class Parser {
             case Tag.NOT:
             case Tag.MIN:
                 factorA(); 
-                break;  
-            case Tag.MUL:
-            case Tag.DIV:
-            case Tag.AND:
-                mulop(); factorA();    
+                break;     
             default:
                 error();
         }
-        term();  
+        
+        switch(tag) {
+            case Tag.MUL:
+            case Tag.DIV:
+            case Tag.AND:
+                term(); mulop(); factorA();  
+            default:
+                error();
+        }
     }
 
 

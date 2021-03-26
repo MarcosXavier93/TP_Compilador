@@ -1,7 +1,7 @@
 % Programa de Teste
 Calculo de idade%
 INIT 
-cont is int;
+cont is integer;
 media, idade, soma is integer;
 BEGIN
 cont := 5;

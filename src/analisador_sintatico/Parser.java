@@ -35,13 +35,13 @@ public class Parser {
         line=tok.line;
     }
 
-    private void error(){
+    private void error(String funcaoDoErro){
         if(tag==Tag.EOF) {
             if(line==-4)
                 System.out.println("Arquivo de entrada vazio");
             return;
         }
-        System.out.print("Error(" + line + "): Token não esperado:");
+        System.out.print(""+funcaoDoErro+" Error(" + line + "): Token não esperado:"); //debug
         tok.imprimeToken(tok);
         while(tag!=Tag.EOF)
             advance();
@@ -70,7 +70,7 @@ public class Parser {
             //tok.imprimeToken(tok);
             advance();
         }
-        else error();
+        else error("eat");
     }
 
     private void program(){
@@ -90,7 +90,7 @@ public class Parser {
                 break;
                 
             default:
-                error();
+                error("program");
         }
     }
 
@@ -102,10 +102,15 @@ public class Parser {
         decl(); 
         switch(tag) {
             case Tag.PV:
-                eat(Tag.PV); declList();
+                eat(Tag.PV);
+                if(tag == Tag.BEGIN){//fim declarações
+                    break;
+                }else{
+                    declList();
+                }
                 break; 
             default:
-                error();
+                error("declList");
         }   
     }
 
@@ -121,7 +126,7 @@ public class Parser {
                 eat(Tag.VRG); decl();
                 break;
             default:
-                error();
+                error("decl");
         }
     }
 
@@ -136,7 +141,7 @@ public class Parser {
                 eat(Tag.VRG); eat(Tag.ID);
                 break;    
             default:
-                error();
+                error("identList");
         }
     }
 
@@ -158,7 +163,7 @@ public class Parser {
                 eat(Tag.REAL); 
                 break;        
             default:
-                error();
+                error("type");
         }
     }
 
@@ -177,7 +182,7 @@ public class Parser {
                 stmt(); eat(Tag.PV); 
                 break;      
             default:
-                error();
+                error("stmtList");
         }
     }
 
@@ -209,7 +214,7 @@ public class Parser {
                 writeStmt();
                 break;
             default:
-                error();
+                error("stmt");
         }
     }
 
@@ -221,7 +226,7 @@ public class Parser {
                 eat(Tag.ID); eat(Tag.PPV); simpleExpr();
                 break;
             default:
-                error();
+                error("assignStmt");
         }
     }
 
@@ -238,7 +243,7 @@ public class Parser {
             case Tag.END:
                 break;    
             default:
-                error();
+                error("ifStmt");
         }
     }
 
@@ -250,7 +255,7 @@ public class Parser {
                 eat(Tag.DO); stmtList(); doSufix();
                 break;
             default:
-                error();
+                error("doStmt");
         }
     }
 
@@ -262,7 +267,7 @@ public class Parser {
                 eat(Tag.WHILE); eat(Tag.AP); condition(); eat(Tag.FP);
                 break;
             default:
-                error();
+                error("doSufix");
         }
     }
 
@@ -274,7 +279,7 @@ public class Parser {
                 eat(Tag.READ); eat(Tag.AP); eat(Tag.ID); eat(Tag.FP);
                 break;
             default:
-                error();
+                error("redStmt");
         }
     }
 
@@ -286,7 +291,7 @@ public class Parser {
                 eat(Tag.WRITE); eat(Tag.AP); writable(); eat(Tag.FP);
                 break;
             default:
-                error();
+                error("writeStmt");
         }
     }
 
@@ -316,7 +321,7 @@ public class Parser {
                 relop(); simpleExpr();
                 break;    
             default:
-                error();
+                error("condition");
         }
     }
 
@@ -333,7 +338,7 @@ public class Parser {
                 term(); 
                 break;
             default:
-                error();
+                error("simpleExprA");
         }
 
         switch(tag) {
@@ -346,7 +351,7 @@ public class Parser {
                 simpleExpr(); simpleExpr_MIN();    
                 break;
             default:
-                error();
+                error("simpleExprB");
         }
     }
 
@@ -360,7 +365,7 @@ public class Parser {
                 addop(); term();
                 break;    
             default:
-                error();
+                error("simpleExor_MIN");
         }
     }
 
@@ -374,10 +379,13 @@ public class Parser {
             case Tag.AP:
             case Tag.NOT:
             case Tag.MIN:
-                factorA(); 
+                factorA(); term();
                 break;     
+            case Tag.PV:
+                eat(Tag.PV);
+                break;
             default:
-                error();
+                error("termA");
         }
         
         switch(tag) {
@@ -386,7 +394,7 @@ public class Parser {
             case Tag.AND:
                 term(); mulop(); factorA();  
             default:
-                error();
+                error("termB");
         }
     }
 
@@ -412,7 +420,7 @@ public class Parser {
                 eat(Tag.MIN); factor();
                 break;
             default:
-                error();
+                error("factorA");
         }
     }
 
@@ -435,7 +443,7 @@ public class Parser {
                 eat(Tag.AP); condition(); eat(Tag.FP);
                 break;
             default:
-                error();
+                error("factor");
         }
     }
 
@@ -472,7 +480,7 @@ public class Parser {
                 eat(Tag.LE);
                 break;
             default:
-                error();
+                error("relop");
         }
     }
 
@@ -494,7 +502,7 @@ public class Parser {
                 eat(Tag.OR);
                 break;
             default:
-                error();
+                error("addop");
         }
     }
 
@@ -516,7 +524,7 @@ public class Parser {
                 eat(Tag.AND);
                 break;
             default:
-                error();
+                error("mulop");
         }
     }
 
@@ -533,7 +541,7 @@ public class Parser {
                 eat(Tag.LIT);
                 break;
             default:
-                error();
+                error("constant");
         }
     }
 }

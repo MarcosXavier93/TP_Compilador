@@ -78,7 +78,7 @@ public class Parser {
             // D:: program ::= program decl-list stmt-list end
             // N:: program ::= init [decl-list] begin stmt-list stop
             case Tag.INIT:
-                eat(Tag.INIT); declList(); eat(Tag.BEGIN); stmtList();
+                eat(Tag.INIT); declList(); eat(Tag.BEGIN); stmtList(); //precisa arrumar aqui [decl-list] para quando tem mais de um decl-list/variaveis declarando
                 if (tag == Tag.EOF)
                     System.out.println("Fim de arquivo inesperado.");
                 else
@@ -96,7 +96,15 @@ public class Parser {
         // N:: decl ";" { decl ";"}
         
         decl();
-        eat(Tag.PV); 
+        switch(tag){ //fix decl ";" { decl ";"}
+            case Tag.PV:
+                eat(Tag.PV);
+                break;
+            case Tag.ID:
+                System.out.println("oi");
+            default:
+                error();
+        }
     }
 
     private void decl(){        
@@ -106,7 +114,11 @@ public class Parser {
             //D:: decl ::= type ident-list ";"
             //N:: decl ::= ident-list is type
             case Tag.IS:
+                eat(Tag.IS);
                 type();
+                break;
+            case Tag.VRG:
+                eat(Tag.VRG);
                 break;
             default:
                 error();

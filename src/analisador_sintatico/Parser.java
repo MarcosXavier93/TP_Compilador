@@ -176,11 +176,13 @@ public class Parser {
             case Tag.DO:
             case Tag.READ:
             case Tag.WRITE:
-                stmt();
+                stmt(); eat(Tag.PV); stmtList();
                 break;
-            case Tag.PV:
+            case Tag.WHILE:
+                break;
+            /*case Tag.PV:
                 stmt(); eat(Tag.PV); 
-                break;      
+                break; */     
             default:
                 error("stmtList");
         }
@@ -310,8 +312,14 @@ public class Parser {
             case Tag.AP:
             case Tag.NOT:
             case Tag.MIN:
-                simpleExpr(); 
+                simpleExpr();
                 break;
+              
+            default:
+                error("condition");
+        }
+        
+        switch(tag){
             case Tag.GT:
             case Tag.LT:
             case Tag.GE:
@@ -319,9 +327,9 @@ public class Parser {
             case Tag.NE:
             case Tag.EQ:
                 relop(); simpleExpr();
-                break;    
+                break;  
             default:
-                error("condition");
+                error("conditionB");
         }
     }
 
@@ -335,20 +343,25 @@ public class Parser {
             case Tag.AP:
             case Tag.NOT:
             case Tag.MIN:
-                term(); 
+                term(); //simpleExpr();
                 break;
             default:
                 error("simpleExprA");
         }
 
         switch(tag) {
-            case Tag.ID:
-            case Tag.NUM:
-            case Tag.LIT:
-            case Tag.AP:
-            case Tag.NOT:
-            case Tag.MIN:   
-                simpleExpr(); simpleExpr_MIN();    
+            case Tag.MIN: 
+            case Tag.SUM:
+                addop(); term();
+                break;
+            case Tag.PV:
+            case Tag.FP:
+            case Tag.GT:
+            case Tag.LT:
+            case Tag.GE:
+            case Tag.LE:
+            case Tag.NE:
+            case Tag.EQ:
                 break;
             default:
                 error("simpleExprB");
@@ -380,22 +393,28 @@ public class Parser {
             case Tag.NOT:
             case Tag.MIN:
                 factorA(); term();
-                break;     
+                break;   
             case Tag.PV:
-                eat(Tag.PV);
+            case Tag.FP:
+            case Tag.SUM:
+            case Tag.GT:
                 break;
+            case Tag.MUL:
+            case Tag.DIV:
+            case Tag.AND:
+                term(); mulop(); factorA();
             default:
                 error("termA");
         }
         
-        switch(tag) {
+        /*switch(tag) {
             case Tag.MUL:
             case Tag.DIV:
             case Tag.AND:
                 term(); mulop(); factorA();  
             default:
                 error("termB");
-        }
+        }*/
     }
 
 

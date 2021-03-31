@@ -33,19 +33,19 @@ public class Token {
 			case Tag.INIT:
 				valor = "init_program";
 				break;
-                        case Tag.STOP:
+            case Tag.STOP:
 				valor = "stop_program";
 				break;
-                        case Tag.IS:
-                                valor = "is_decl";
-                                break;
+            case Tag.IS:
+                valor = "is_decl";
+                break;
 			case Tag.INT:
 				valor = "integer_type";
 				break;
 			case Tag.STR:
 				valor = "string_type";
 				break;
-                        case Tag.REAL:
+            case Tag.REAL:
 				valor = "real_type";
 				break;
 			case Tag.IF:
@@ -54,7 +54,7 @@ public class Token {
 			case Tag.BEGIN:
 				valor = "begin";
 				break;
-                        case Tag.END:
+            case Tag.END:
 				valor = "end";
 				break;
 			case Tag.ELSE:
@@ -72,7 +72,7 @@ public class Token {
 			case Tag.WRITE:
 				valor = "write";
 				break;
-                        case Tag.NOT:
+            case Tag.NOT:
 				valor = "not";
 				break;
 			case Tag.PV:
@@ -81,40 +81,40 @@ public class Token {
 			case Tag.VRG:
 				valor = "virgula";
 				break;
-                        case Tag.PPV:
+            case Tag.PPV:
 				valor = "assign"; // :=
 				break;
-                        case Tag.AP:
+            case Tag.AP:
 				valor = "abre_parent";
 				break;
 			case Tag.FP:
 				valor = "fecha_parent";
 				break;
-                        case Tag.EQ:
+            case Tag.EQ:
 				valor = "equal_relop";
 				break;
-                        case Tag.GT:
+            case Tag.GT:
 				valor = "greater_than_relop";
 				break;
-                        case Tag.GE:
+            case Tag.GE:
 				valor = "greater_equals_relop";
 				break;
-                        case Tag.LT:
+            case Tag.LT:
 				valor = "less_than_relop";
 				break;
-                        case Tag.LE:
+            case Tag.LE:
 				valor = "less_equals_relop";
 				break;
-                        case Tag.NE:
-                            valor = "not_equal_relop";
-                                break;
+            case Tag.NE:
+                valor = "not_equal_relop";
+                break;
 			case Tag.SUM:
 				valor = "soma_addop";
 				break;
 			case Tag.MIN:
 				valor = "menos_addop";
 				break;
-                        case Tag.OR:
+            case Tag.OR:
 				valor = "or_addop";
 				break;
 			case Tag.MUL:
@@ -123,9 +123,9 @@ public class Token {
 			case Tag.DIV:
 				valor = "div_mulop";
 				break;
-                        case Tag.AND:
-                                valor = "and_mulop";
-                                break;
+            case Tag.AND:
+                valor = "and_mulop";
+                break;
 			case Tag.NUM:
 				valor = "num";
 				break;

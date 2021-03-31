@@ -20,8 +20,8 @@ public class Parser {
         tok=tokens.get(i);
         tag=tok.tag;
         line=tok.line;
-        curType = Tag.VOID;
-        resultExprType = Tag.VOID;
+        curType=Tag.VOID;
+        resultExprType=Tag.VOID;
     }
 
     public void init(){
@@ -41,7 +41,7 @@ public class Parser {
                 System.out.println("Arquivo de entrada vazio");
             return;
         }
-        System.out.print(""+funcaoDoErro+" Error(" + line + "): Token não esperado:"); //debug
+        System.out.print(funcaoDoErro+";"+" Error(" + line + "): Token não esperado:"); //debug
         tok.imprimeToken(tok);
         while(tag!=Tag.EOF)
             advance();
@@ -66,11 +66,11 @@ public class Parser {
             if(tag == Tag.PV){
                 resetResultExprType();
             }
-            //System.out.print("Token Consumido("+line+"): ");
-            //tok.imprimeToken(tok);
+            System.out.print("Token Consumido("+line+"): ");
+            tok.imprimeToken(tok);
             advance();
         }
-        else error("eat");
+        else { System.out.println("Tag error: " + t); error("Error in: eat"); }
     }
 
     private void program(){
@@ -79,18 +79,20 @@ public class Parser {
             // N:: program ::= init [decl-list] begin stmt-list stop
             case Tag.INIT:
                 eat(Tag.INIT); declList();  //precisa arrumar aqui [decl-list] para quando tem mais de um decl-list/variaveis declarando
-                if (tag == Tag.BEGIN)
+                
+                if (tag == Tag.BEGIN) {
                     eat(Tag.BEGIN); stmtList();
                 
-                if (tag == Tag.EOF)
+                } else if (tag == Tag.EOF)
                     System.out.println("Fim de arquivo inesperado.");
+
                 else
                     eat(Tag.STOP);
                     //vs.imprimirTS();
                 break;
                 
             default:
-                error("program");
+                error("Error in: program");
         }
     }
 
@@ -103,14 +105,14 @@ public class Parser {
         switch(tag) {
             case Tag.PV:
                 eat(Tag.PV);
-                if(tag == Tag.BEGIN){//fim declarações
+                if(tag == Tag.BEGIN){ //fim declarações
                     break;
                 }else{
                     declList();
                 }
                 break; 
             default:
-                error("declList");
+                error("Error in: declList");
         }   
     }
 
@@ -126,7 +128,7 @@ public class Parser {
                 eat(Tag.VRG); decl();
                 break;
             default:
-                error("decl");
+                error("Error in: decl");
         }
     }
 
@@ -141,7 +143,7 @@ public class Parser {
                 eat(Tag.VRG); eat(Tag.ID);
                 break;    
             default:
-                error("identList");
+                error("Error in: identList");
         }
     }
 
@@ -163,7 +165,7 @@ public class Parser {
                 eat(Tag.REAL); 
                 break;        
             default:
-                error("type");
+                error("Error in: type");
         }
     }
 
@@ -180,11 +182,11 @@ public class Parser {
                 break;
             case Tag.WHILE:
                 break;
-            /*case Tag.PV:
+            /* case Tag.PV:
                 stmt(); eat(Tag.PV); 
                 break; */     
             default:
-                error("stmtList");
+                error("Error in: stmtList");
         }
     }
 
@@ -216,7 +218,7 @@ public class Parser {
                 writeStmt();
                 break;
             default:
-                error("stmt");
+                error("Error in: stmt");
         }
     }
 
@@ -228,7 +230,7 @@ public class Parser {
                 eat(Tag.ID); eat(Tag.PPV); simpleExpr();
                 break;
             default:
-                error("assignStmt");
+                error("Error in: assignStmt");
         }
     }
 
@@ -245,7 +247,7 @@ public class Parser {
             case Tag.END:
                 break;    
             default:
-                error("ifStmt");
+                error("Error in: ifStmt");
         }
     }
 
@@ -257,7 +259,7 @@ public class Parser {
                 eat(Tag.DO); stmtList(); doSufix();
                 break;
             default:
-                error("doStmt");
+                error("Error in: doStmt");
         }
     }
 
@@ -269,7 +271,7 @@ public class Parser {
                 eat(Tag.WHILE); eat(Tag.AP); condition(); eat(Tag.FP);
                 break;
             default:
-                error("doSufix");
+                error("Error in: doSufix");
         }
     }
 
@@ -281,7 +283,7 @@ public class Parser {
                 eat(Tag.READ); eat(Tag.AP); eat(Tag.ID); eat(Tag.FP);
                 break;
             default:
-                error("redStmt");
+                error("Error in: redStmt");
         }
     }
 
@@ -293,7 +295,7 @@ public class Parser {
                 eat(Tag.WRITE); eat(Tag.AP); writable(); eat(Tag.FP);
                 break;
             default:
-                error("writeStmt");
+                error("Error in: writeStmt");
         }
     }
 
@@ -316,7 +318,7 @@ public class Parser {
                 break;
               
             default:
-                error("condition");
+                error("Error in: condition");
         }
         
         switch(tag){
@@ -329,7 +331,7 @@ public class Parser {
                 relop(); simpleExpr();
                 break;  
             default:
-                error("conditionB");
+                error("Error in: conditionB");
         }
     }
 
@@ -346,7 +348,7 @@ public class Parser {
                 term(); //simpleExpr();
                 break;
             default:
-                error("simpleExprA");
+                error("Error in: simpleExprA");
         }
 
         switch(tag) {
@@ -364,7 +366,7 @@ public class Parser {
             case Tag.EQ:
                 break;
             default:
-                error("simpleExprB");
+                error("Error in: simpleExprB");
         }
     }
 
@@ -378,7 +380,7 @@ public class Parser {
                 addop(); term();
                 break;    
             default:
-                error("simpleExor_MIN");
+                error("Error in: simpleExor_MIN");
         }
     }
 
@@ -400,11 +402,16 @@ public class Parser {
             case Tag.GT:
                 break;
             case Tag.MUL:
+                mulop(); 
+                break;
             case Tag.DIV:
+                mulop(); 
+                break;
             case Tag.AND:
                 term(); mulop(); factorA();
+                break;
             default:
-                error("termA");
+                error("Error in: termA");
         }
         
         /*switch(tag) {
@@ -439,7 +446,7 @@ public class Parser {
                 eat(Tag.MIN); factor();
                 break;
             default:
-                error("factorA");
+                error("Error in: factorA");
         }
     }
 
@@ -462,7 +469,7 @@ public class Parser {
                 eat(Tag.AP); condition(); eat(Tag.FP);
                 break;
             default:
-                error("factor");
+                error("Error in: factor");
         }
     }
 
@@ -499,7 +506,7 @@ public class Parser {
                 eat(Tag.LE);
                 break;
             default:
-                error("relop");
+                error("Error in: relop");
         }
     }
 
@@ -521,7 +528,7 @@ public class Parser {
                 eat(Tag.OR);
                 break;
             default:
-                error("addop");
+                error("Error in: addop");
         }
     }
 
@@ -543,7 +550,7 @@ public class Parser {
                 eat(Tag.AND);
                 break;
             default:
-                error("mulop");
+                error("Error in: mulop");
         }
     }
 
@@ -560,7 +567,7 @@ public class Parser {
                 eat(Tag.LIT);
                 break;
             default:
-                error("constant");
+                error("Error in: constant");
         }
     }
 }

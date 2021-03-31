@@ -45,7 +45,7 @@ public class Main {
 			}
 			line++;
 			tokens.add(new Token(Tag.EOF, line));
-			// L.imprimirTabela();
+			//L.imprimirTabela();
 			Parser P = new Parser(tokens);
 			System.out.println("\n\n\n**** Inicio Parser ****");
 			P.init();

@@ -1,7 +1,7 @@
 init 
 	a, b is integer;
 	begin
-	if( a >= b)
+	if( a > b)
 	read(a);
 	end;
 stop

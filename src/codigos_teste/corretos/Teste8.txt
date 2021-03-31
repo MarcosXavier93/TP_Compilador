@@ -1,0 +1,7 @@
+init 
+	a, b is integer;
+	begin
+	if ( a > b) begin
+	read(a);
+	end
+stop

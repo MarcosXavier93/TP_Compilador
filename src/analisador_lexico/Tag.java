@@ -10,25 +10,19 @@ public class Tag {
 		//Palavras reservadas
 		INIT    = 256,
                 STOP    = 257,
-
-                IS      = 258, // OBS
-
+                IS      = 258, // ESPECIAL
                 INT     = 259, //integer
                 STR     = 260, //string
-                REAL    = 261, //OBS
-
+                REAL    = 261, //real
                 IF      = 262,
-                BEGIN   = 263, //OBS
+                BEGIN   = 263, //ESPECIAL
 		END     = 264,
 		ELSE    = 265,
-		
                 DO 	= 266,
                 WHILE   = 267,
-                
                 READ    = 268,
                 WRITE   = 269,
-
-                NOT     = 270, //OBS
+                NOT     = 270, //ESPECIAL
               
 		//Operadores e pontuação
 		PV 	= (int)';',

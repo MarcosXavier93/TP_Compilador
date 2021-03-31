@@ -70,42 +70,36 @@ public class Parser {
             tok.imprimeToken(tok);
             advance();
         }
-        else { System.out.println("Tag error: " + t); error("Error in: eat"); }
+        else { error("Error in: eat"); }
     }
 
     private void program(){
         switch(tag) {
-            // D:: program ::= program decl-list stmt-list end
-            // N:: program ::= init [decl-list] begin stmt-list stop
+            //G:: program ::= init [decl-list] begin stmt-list stop
             case Tag.INIT:
-                eat(Tag.INIT); declList();  //precisa arrumar aqui [decl-list] para quando tem mais de um decl-list/variaveis declarando
-                
+                eat(Tag.INIT); declList();  
                 if (tag == Tag.BEGIN) {
-                    eat(Tag.BEGIN); stmtList();
-                
-                } else if (tag == Tag.EOF)
+                    eat(Tag.BEGIN); stmtList(); 
+
+                } else if (tag == Tag.EOF) {
                     System.out.println("Fim de arquivo inesperado.");
 
-                else
+                } else {
                     eat(Tag.STOP);
-                    //vs.imprimirTS();
+                }
                 break;
-                
             default:
                 error("Error in: program");
         }
     }
 
     private void declList(){
-        // D:: decl-list ::= decl decl-list
-        // N:: decl-list ::= decl ";" { decl ";"}
-    
-        //fix decl ";" { decl ";"}
+        //G:: decl-list ::= decl ";" { decl ";"}
         decl(); 
         switch(tag) {
             case Tag.PV:
                 eat(Tag.PV);
-                if(tag == Tag.BEGIN){ //fim declarações
+                if(tag == Tag.BEGIN){ 
                     break;
                 }else{
                     declList();
@@ -119,8 +113,7 @@ public class Parser {
     private void decl(){      
         identList();   
         switch(tag) {
-            //D:: decl ::= type ident-list ";"
-            //N:: decl ::= ident-list is type
+            //G:: decl ::= ident-list is type
             case Tag.IS:
                 eat(Tag.IS); type();
                 break;
@@ -134,8 +127,7 @@ public class Parser {
 
     private void identList(){
         switch(tag) {
-            //D:: ident-list ::= identifier ident-list'
-            //N:: ident-list ::= identifier {"," identifier}
+            //G:: ident-list ::= identifier {"," identifier}
             case Tag.ID:
                 eat(Tag.ID); 
                 break;
@@ -149,18 +141,15 @@ public class Parser {
 
     private void type(){
         switch(tag) {
-            //D:: type ::= int
-            //N:: type ::= int
+            //G:: type ::= int
             case Tag.INT:
                 eat(Tag.INT);
                 break;
-            //D:: type ::= string
-            //N:: type ::= string
+            //G:: type ::= string
             case Tag.STR:
                 eat(Tag.STR);
                 break;
-            //D:: type ::= real 
-            //N:: type ::= real
+            //G:: type ::= real
             case Tag.REAL:
                 eat(Tag.REAL); 
                 break;        
@@ -171,10 +160,11 @@ public class Parser {
 
     private void stmtList(){
         switch(tag) {
-            //D:: stmt-list ::= stmt stmt-list'
-            //N:: stmt-list ::= stmt ";" { stmt ";" }
-            case Tag.ID:
+            //G:: stmt-list ::= stmt ";" { stmt ";" }
             case Tag.IF:
+                stmt(); stmtList();
+                break;
+            case Tag.ID:
             case Tag.DO:
             case Tag.READ:
             case Tag.WRITE:
@@ -182,9 +172,10 @@ public class Parser {
                 break;
             case Tag.WHILE:
                 break;
-            /* case Tag.PV:
-                stmt(); eat(Tag.PV); 
-                break; */     
+            case Tag.STOP:
+                break;    
+            case Tag.END:
+                break;
             default:
                 error("Error in: stmtList");
         }
@@ -192,28 +183,23 @@ public class Parser {
 
     private void stmt(){
         switch(tag) {
-            //D:: stmt ::= assign-stmt ";"
-            //N:: stmt ::= assign-stmt
+            //G:: stmt ::= assign-stmt
             case Tag.ID:
                 assignStmt();
                 break;
-            //D:: stmt ::= if-stmt
-            //N:: stmt ::= if-stmt
+            //G:: stmt ::= if-stmt
             case Tag.IF:
                 ifStmt();
                 break;
-            //D:: stmt ::= while-stmt
-            //N:: stmt ::= while-stmt
+            //G:: stmt ::= while-stmt
             case Tag.DO:
                 doStmt();
                 break;
-            //D:: stmt ::= read-stmt ";"
-            //N:: stmt ::= read-stmt 
+            //G:: stmt ::= read-stmt 
             case Tag.READ:
                 readStmt();
                 break;
-            //D:: stmt ::= write-stmt ";"
-            //N:: stmt ::= write-stmt 
+            //G:: stmt ::= write-stmt 
             case Tag.WRITE:
                 writeStmt();
                 break;
@@ -224,8 +210,7 @@ public class Parser {
 
     private void assignStmt(){
         switch(tag) {
-            //D:: assign-stmt ::= identifier "=" simple_expr
-            //N:: assign-stmt ::= identifier ":=" simple_expr
+            //G:: assign-stmt ::= identifier ":=" simple_expr
             case Tag.ID:
                 eat(Tag.ID); eat(Tag.PPV); simpleExpr();
                 break;
@@ -236,16 +221,13 @@ public class Parser {
 
     private void ifStmt(){
         switch(tag) {
-            //D:: if-stmt ::= if  expression  then  stmt-list  if-stmt' end
-            //N:: if-stmt ::= if "(" condition ")" begin stmt-list end else begin stmt-list end
+            //G:: if-stmt ::= if "(" condition ")" begin stmt-list end else begin stmt-list end
             case Tag.IF:
-                eat(Tag.IF); eat(Tag.AP); condition(); eat(Tag.FP); eat(Tag.BEGIN); stmtList();
-                break;
+                eat(Tag.IF); eat(Tag.AP); condition(); eat(Tag.FP); eat(Tag.BEGIN); stmtList(); eat(Tag.END);
+            
             case Tag.ELSE:
-                eat(Tag.ELSE); eat(Tag.BEGIN); stmtList();
-                break;  
-            case Tag.END:
-                break;    
+                eat(Tag.ELSE); eat(Tag.BEGIN); stmtList(); eat(Tag.END);
+                break;
             default:
                 error("Error in: ifStmt");
         }
@@ -253,8 +235,7 @@ public class Parser {
 
     private void doStmt(){
         switch(tag) {
-			//D:: while-stmt ::= do stmt-list stmt-sufix
-            //N:: do-stmt ::= do stmt-list do-suffix.
+            //G:: do-stmt ::= do stmt-list do-suffix.
             case Tag.DO:
                 eat(Tag.DO); stmtList(); doSufix();
                 break;
@@ -265,8 +246,7 @@ public class Parser {
 
     private void doSufix(){
         switch(tag) {
-            //D:: stmt-sufix ::= while expression end
-            //N:: stmt-sufix ::= while "(" condition ")"
+            //G:: stmt-sufix ::= while "(" condition ")"
             case Tag.WHILE:
                 eat(Tag.WHILE); eat(Tag.AP); condition(); eat(Tag.FP);
                 break;
@@ -277,8 +257,7 @@ public class Parser {
 
     private void readStmt(){
         switch(tag) {
-            //D:: read-stmt ::= scan  "("  identifier  ")"
-            //N:: read-stmt ::= read "(" identifier ")"
+            //G:: read-stmt ::= read "(" identifier ")"
             case Tag.READ:
                 eat(Tag.READ); eat(Tag.AP); eat(Tag.ID); eat(Tag.FP);
                 break;
@@ -289,8 +268,7 @@ public class Parser {
 
     private void writeStmt(){
         switch(tag) {
-            //D:: write-stmt ::= print  "("  simple-expr  ")"
-            //N:: write-stmt ::= write "(" writable ")"
+            //G:: write-stmt ::= write "(" writable ")"
             case Tag.WRITE:
                 eat(Tag.WRITE); eat(Tag.AP); writable(); eat(Tag.FP);
                 break;
@@ -303,11 +281,9 @@ public class Parser {
         simpleExpr();
     }
     
-
     private void condition(){
         switch(tag) {
-            //D:: expression ::= simple-expr  expression'
-            //N:: expression ::= simple-expr | simple-expr relop simple-expr
+            //G:: expression ::= simple-expr | simple-expr relop simple-expr
             case Tag.ID:
             case Tag.NUM:
             case Tag.LIT:
@@ -315,79 +291,62 @@ public class Parser {
             case Tag.NOT:
             case Tag.MIN:
                 simpleExpr();
+                switch(tag){
+                    case Tag.GT:
+                    case Tag.LT:
+                    case Tag.GE:
+                    case Tag.LE:
+                    case Tag.NE:
+                    case Tag.EQ:
+                        relop(); simpleExpr(); 
+                        break;
+                    case Tag.FP:
+                        break;
+                    default:
+                        error("Error in: condition, 'simple-expr relop simple-expr'");
+                }
                 break;
-              
             default:
-                error("Error in: condition");
-        }
-        
-        switch(tag){
-            case Tag.GT:
-            case Tag.LT:
-            case Tag.GE:
-            case Tag.LE:
-            case Tag.NE:
-            case Tag.EQ:
-                relop(); simpleExpr();
-                break;  
-            default:
-                error("Error in: conditionB");
+                error("Error in: condition, 'simple-expr'");
         }
     }
 
     private void simpleExpr(){
         switch(tag) {
-            //D:: simple-expr ::= term  simple-expr'
-            //N:: simple-expr ::= term | simple-expr addop term
+            //G:: simple-expr ::= term | simple-expr addop term
             case Tag.ID:
             case Tag.NUM:
             case Tag.LIT:
             case Tag.AP:
             case Tag.NOT:
             case Tag.MIN:
-                term(); //simpleExpr();
-                break;
+                term();
+                switch(tag){
+                    case Tag.MIN:    
+                    case Tag.SUM:
+                        addop(); term();
+                        break;
+                    case Tag.PV:
+                    case Tag.FP:
+                    case Tag.GT:
+                    case Tag.LT:
+                    case Tag.GE:
+                    case Tag.LE:
+                    case Tag.NE:
+                    case Tag.EQ:
+                        break;
+                    default:
+                        error("Error in: simpleExpr, 'simple-expr addop term'");
+                    }
+                break; 
             default:
-                error("Error in: simpleExprA");
-        }
-
-        switch(tag) {
-            case Tag.MIN: 
-            case Tag.SUM:
-                addop(); term();
-                break;
-            case Tag.PV:
-            case Tag.FP:
-            case Tag.GT:
-            case Tag.LT:
-            case Tag.GE:
-            case Tag.LE:
-            case Tag.NE:
-            case Tag.EQ:
-                break;
-            default:
-                error("Error in: simpleExprB");
-        }
-    }
-
-    private void simpleExpr_MIN(){
-        switch(tag) {
-            //D:: simple-expr ::= term  simple-expr'
-            //N:: simple-expr ::= term | simple-expr addop term   
-            case Tag.MIN:
-            case Tag.SUM:
-            case Tag.OR:
-                addop(); term();
-                break;    
-            default:
-                error("Error in: simpleExor_MIN");
+                error("Error in: simpleExpr, 'term'");   
         }
     }
 
     private void term(){
         switch(tag) {
-            //D:: term ::= factor-a  term'
-            //N:: term ::= factor-a | term mulop factor-a
+            //G:: term ::= factor-a | term mulop factor-a
             case Tag.ID:
             case Tag.NUM:
             case Tag.LIT:
@@ -402,46 +361,30 @@ public class Parser {
             case Tag.GT:
                 break;
             case Tag.MUL:
-                mulop(); 
-                break;
             case Tag.DIV:
-                mulop(); 
-                break;
             case Tag.AND:
-                term(); mulop(); factorA();
+                mulop(); factorA();
                 break;
             default:
                 error("Error in: termA");
         }
-        
-        /*switch(tag) {
-            case Tag.MUL:
-            case Tag.DIV:
-            case Tag.AND:
-                term(); mulop(); factorA();  
-            default:
-                error("termB");
-        }*/
     }
 
 
     private void factorA(){
         switch(tag) {
-            //D:: factor-a ::= factor
-            //N:: factor-a ::= factor 
+            //G:: factor-a ::= factor 
             case Tag.ID:
             case Tag.NUM:
             case Tag.LIT:
             case Tag.AP:
                 factor();
                 break;
-            //D:: factor-a ::= !  factor
-            //N:: factor-a ::= not factor
+            //G:: factor-a ::= not factor
             case Tag.NOT:
                 eat(Tag.NOT); factor();
                 break;
-            //D:: factor-a ::= "-"  factor
-            //N:: factor-a ::= "-"  factor
+            //G:: factor-a ::= "-"  factor
             case Tag.MIN:
                 eat(Tag.MIN); factor();
                 break;
@@ -452,19 +395,16 @@ public class Parser {
 
     private void factor(){
         switch(tag) {
-            //D:: factor ::= identifier
-            //N:: factor ::= identifier 
+            //G:: factor ::= identifier 
             case Tag.ID:
                 eat(Tag.ID);
                 break;
-            //D:: factor ::= constant
-            //N:: factor ::= constant 
+            //G:: factor ::= constant 
             case Tag.NUM:
             case Tag.LIT:
                 constant();
                 break;
-            //D:: factor ::= "("  expression  ")"
-            //N:: factor ::= "(" expression ")"
+            //G:: factor ::= "(" expression ")"
             case Tag.AP:
                 eat(Tag.AP); condition(); eat(Tag.FP);
                 break;
@@ -475,33 +415,27 @@ public class Parser {
 
     private void relop(){
         switch(tag) {
-            //D:: relop ::= "=="
-            //N:: relop ::= "="
+            //G:: relop ::= "="
             case Tag.EQ:
                 eat(Tag.EQ);
                 break;
-            //D:: relop ::= ">"
-            //N:: relop ::= ">"
+            //G:: relop ::= ">"
             case Tag.GT:
                 eat(Tag.GT);
                 break;
-            //D:: relop ::= "<"
-            //N:: relop ::= "<"
+            //G:: relop ::= "<"
             case Tag.LT:
                 eat(Tag.LT);
                 break;
-            //D:: relop ::= "!="
-            //N:: relop ::= "<>"
+            //G:: relop ::= "<>"
             case Tag.NE:
                 eat(Tag.NE);
                 break;
-            //D:: relop ::= ">="
-            //N:: relop ::= ">="
+            //G:: relop ::= ">="
             case Tag.GE:
                 eat(Tag.GE);
                 break;
-            //D:: relop ::= "<="
-            //N:: relop ::= "<="
+            //G:: relop ::= "<="
             case Tag.LE:
                 eat(Tag.LE);
                 break;
@@ -512,18 +446,15 @@ public class Parser {
 
     private void addop(){
         switch(tag) {
-            //D:: addop ::= "+"
-            //N:: addop ::= "+"
+            //G:: addop ::= "+"
             case Tag.SUM:
                 eat(Tag.SUM);
                 break;
-            //D:: addop ::= "-"
-            //N:: addop ::= "-"
+            //G:: addop ::= "-"
             case Tag.MIN:
                 eat(Tag.MIN);
                 break;
-            //D:: addop ::= "||"
-            //N:: addop ::= "OR"
+            //G:: addop ::= "OR"
             case Tag.OR:
                 eat(Tag.OR);
                 break;
@@ -534,18 +465,15 @@ public class Parser {
 
     private void mulop(){
         switch(tag) {
-            //D:: mulop ::= "*"
-            //N:: mulop ::= "*"
+            //G:: mulop ::= "*"
             case Tag.MUL:
                 eat(Tag.MUL);
                 break;
-            //D:: mulop ::= "/"
-            //N:: mulop ::= "/"
+            //G:: mulop ::= "/"
             case Tag.DIV:
                 eat(Tag.DIV);
                 break;
-            //D:: mulop ::= "&&"
-            //N:: mulop ::= "AND"
+            //G:: mulop ::= "AND"
             case Tag.AND:
                 eat(Tag.AND);
                 break;
@@ -556,13 +484,11 @@ public class Parser {
 
     private void constant() {
         switch (tag) {
-            //D:: constant ::= integer_const
-            //N:: constant ::= integer_const
+            //G:: constant ::= integer_const
             case Tag.NUM:
                 eat(Tag.NUM);
                 break;
-            //D:: constant ::= literal
-            //N:: constant ::= literal
+            //G:: constant ::= literal
             case Tag.LIT:
                 eat(Tag.LIT);
                 break;

@@ -1,7 +1,6 @@
 package analisador_lexico;
 
 public class Token {
-
 	public final int tag; //constante que representa o token
 	public int line; //linha que o token apareceu
 	private String lexeme = "1";
@@ -25,7 +24,6 @@ public class Token {
 	public String getLexeme(){
 		return lexeme;
 	}
-
 
 	public void imprimeToken(Token T) {
 		String valor;

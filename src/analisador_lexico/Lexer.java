@@ -8,7 +8,6 @@ import java.util.Map;
 import exception.InvalidTokenException;
 
 public class Lexer {
-
 	public static int line = 1; 	//contador de linhas
 	private char ch = ' '; 			//caractere lido do arquivo
 	private FileReader file;
@@ -22,16 +21,12 @@ public class Lexer {
 			System.out.println("Arquivo não encontrado");
 			throw e;
 		}
-
-	
 	}
-
 
 	/*Lê o próximo caractere do arquivo*/
 	public void readch() throws IOException {
 		ch = (char) file.read();
 	}
-
 
 	/* Lê o próximo caractere do arquivo e verifica se é igual a c*/
 	private boolean readch(char c) throws IOException{
@@ -40,7 +35,6 @@ public class Lexer {
 		ch = ' ';
 		return true;
 	}
-
 
 	public Token scan() throws IOException, InvalidTokenException{
 		boolean is_comentario = false;
@@ -57,15 +51,8 @@ public class Lexer {
 
 			} else if (ch == '\n') {
 				line++; //conta linhas
-                        } /*else if (ch == '*') {
-				readch();
-				// operador de multiplicacao
-				return new Token(Tag.MUL, line);
-			} else if(ch == '/'){
-				readch();
-				// operador de divisao
-				return new Token(Tag.DIV, line);
-			}*/ else if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b' || is_comentario)
+            } 
+			else if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b' || is_comentario)
 				continue;
 			else break;
 		}
@@ -90,12 +77,12 @@ public class Lexer {
 					return new Token(Word.ppv, line);
 				else
 					throw new InvalidTokenException(line, ':');
-                        case '*':
-                                readch();
-                                return new Token(Tag.MUL, line);
-                        case '/':
-                                readch();
-                                return new Token(Tag.DIV, line);
+            case '*':
+                readch();
+                return new Token(Tag.MUL, line);
+            case '/':
+                readch();
+                return new Token(Tag.DIV, line);
 		}
 
 		//	Números
@@ -144,8 +131,8 @@ public class Lexer {
 				words.put(s, w);
 				return w;
 			}else{
-                            throw new InvalidTokenException(line, sb.charAt(0));
-                        }
+                throw new InvalidTokenException(line, sb.charAt(0));
+            }
 		}
 
 		// Caracteres ASCII validos
@@ -161,24 +148,23 @@ public class Lexer {
 	public void adicionapalavras() {
 		// Insere palavras reservadas na HashTable
 		adiciona_palavra_reservada(new Word("init", Tag.INIT,0));
-                adiciona_palavra_reservada(new Word("stop", Tag.STOP,0));
-                adiciona_palavra_reservada(new Word("is", Tag.IS,0));
+        adiciona_palavra_reservada(new Word("stop", Tag.STOP,0));
+        adiciona_palavra_reservada(new Word("is", Tag.IS,0));
 		adiciona_palavra_reservada(new Word("integer", Tag.INT,0));
 		adiciona_palavra_reservada(new Word("string", Tag.STR,0));
-                adiciona_palavra_reservada(new Word("real", Tag.REAL,0));
+        adiciona_palavra_reservada(new Word("real", Tag.REAL,0));
 		adiciona_palavra_reservada(new Word("if", Tag.IF,0));
 		adiciona_palavra_reservada(new Word("begin", Tag.BEGIN,0));
-                adiciona_palavra_reservada(new Word("end", Tag.END,0));
+        adiciona_palavra_reservada(new Word("end", Tag.END,0));
 		adiciona_palavra_reservada(new Word("else", Tag.ELSE,0));
 		adiciona_palavra_reservada(new Word("do", Tag.DO,0));
 		adiciona_palavra_reservada(new Word("while", Tag.WHILE,0));
 		adiciona_palavra_reservada(new Word("read", Tag.READ,0));
 		adiciona_palavra_reservada(new Word("write", Tag.WRITE, 0));
 		adiciona_palavra_reservada(new Word("not", Tag.NOT, 0));
-                adiciona_palavra_reservada(new Word("or", Tag.OR, 0));
-                adiciona_palavra_reservada(new Word("and", Tag.AND, 0));
+        adiciona_palavra_reservada(new Word("or", Tag.OR, 0));
+        adiciona_palavra_reservada(new Word("and", Tag.AND, 0));
 	}
-
 
 	/* Imprime todas as entradas da tabela de símbolos */
 	public void imprimirTabela() {
@@ -187,6 +173,7 @@ public class Lexer {
 			System.out.println(entrada.getKey());
 		}
 	}
+
 	/** Método para inserir palavras reservadas na HashTable */
 	private void adiciona_palavra_reservada(Word w) {
 		words.put(w.getLexeme(), w); // lexema é a chave para entrada

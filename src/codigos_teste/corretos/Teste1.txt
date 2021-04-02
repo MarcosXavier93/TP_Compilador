@@ -1,11 +1,12 @@
-init
-a, b, $c, is integer;
+init 
+a, b, $c is integer;
 result is real;
-write("Digite o valor de a:"
+begin
+write("Digite o valor de a:");
 read (a);
-write("Digite o valor de c:"
+write("Digite o valor de c:");
 read (c);
-b := 10
+b := 10;
 result := (a * c)/(b + 5 - 345);
 write("O resultado e:");
 write(result);

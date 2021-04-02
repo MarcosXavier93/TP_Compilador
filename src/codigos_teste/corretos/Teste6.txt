@@ -1,19 +1,22 @@
-init
+init 
 a, b, c, maior is integer;
+begin
 write("Digite uma idade: ");
 read(a);
 write("Digite outra idade: ");
 read(b);
 write("Digite mais uma idade: ");
-read(c;
+read(c);
 maior := 0;
-if ( a>b and a>c )
+if ((a>b) and (a>c)) begin
 maior := a;
-else
-if (b>c)
+end else begin
+if (b>c) begin
 maior := b;
-else
+end else begin
 maior := c;
+end
+end
 write("Maior idade: ");
 write(maior);
-end
+stop

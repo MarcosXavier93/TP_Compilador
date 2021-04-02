@@ -1,18 +1,19 @@
 % Programa de Teste
 Calculo de idade%
-INIT
-cont is int;
+INIT 
+cont, qts is integer;
 media, idade, soma is integer;
-begin
+BEGIN
 cont := 5;
 soma := 0;
+qts := 1;
 do
 write("Altura:" );
-read (altura);
+read (altura); 
 soma := soma+altura;
 cont := cont - 1;
-while(cont > 0)
-media := soma / qts
+while(cont > 0);
+media := soma / qts;
 write("Media: ");
 write (media);
 STOP

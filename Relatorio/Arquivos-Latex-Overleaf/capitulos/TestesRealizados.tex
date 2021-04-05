@@ -1,0 +1,1841 @@
+\chapter{Testes realizados}
+Para testar todo o compilador construído, foram propostos sete exemplos de teste, abordando algumas possibilidade de programas a serem compilados.
+Apartir desses arquivos podemos visualizar os seguintes retorno do compilador :
+\newline
+
+\section{Teste 1}
+
+\begin{lstlisting}[caption={Teste1.txt},label={lst:label},language=C]
+
+init
+a, b, $c, is integer;
+result is real;
+write("Digite o valor de a:"
+read (a);
+write("Digite o valor de c:"
+read (c);
+b := 10
+result := (a * c)/(b + 5 - 345);
+write("O resultado e:");
+write(result);
+stop
+
+
+\end{lstlisting}\newline
+Para o código acima  o compilador obteve a seguinte saida :
+
+\begin{lstlisting}[caption={Saida para o Codigo de teste  : Teste1.txt},label={Entrada 1},language=C]
+**** Inicio Parser ****
+Token Consumido(1): < init_program >
+Token Consumido(2): < identifier, a >
+Token Consumido(2): < virgula >
+Token Consumido(2): < identifier, b >
+Token Consumido(2): < virgula >
+Token Consumido(2): < identifier, c >
+Token Consumido(2): < virgula >
+Error in: identList; Error(2): Token n?£o esperado:< is_decl >
+Fim de arquivo inesperado.
+
+
+\end{lstlisting}\newline
+NO exemplo acima, a declaração da ultima variável foi declarada errada, dessa forma, o programa é abortado.
+
+\subsection{Correção do Teste 1}
+Foram feitas as devidas correções no código acima para adequar as regras da gramatica da linguagem .Assim, obtemos o seguinte resultado.
+
+
+\begin{lstlisting}[caption={Saida Correta para o Codigo de teste  : Teste1.txt},label={Entrada 1},language=C]
+**** Tokens lidos ****
+< init_program >
+< identifier, a >
+< virgula >      
+< identifier, b >
+< virgula >
+Error  na Linha(2): Token '$' Nao esperado
+< identifier, c >
+< is_decl >
+< integer_type >
+< ponto_virgula >
+< identifier, result >
+< is_decl >
+< real_type >
+< ponto_virgula >
+< begin >
+< write >
+< abre_parent >
+< literal, "Digite o valor de a:" >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, a >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, "Digite o valor de c:" >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, c >
+< fecha_parent >
+< ponto_virgula >
+< identifier, b >
+< assign >
+< num, 10 >
+< ponto_virgula >
+< identifier, result >
+< assign >
+< abre_parent >
+< identifier, a >
+< mult_mulop >
+< identifier, c >
+< fecha_parent >
+< div_mulop >
+< abre_parent >
+< identifier, b >
+< soma_addop >
+< num, 5 >
+< menos_addop >
+< num, 345 >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, "O resultado e:" >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, result >
+< fecha_parent >
+< ponto_virgula >
+< stop_program >
+
+
+
+**** Inicio Parser ****
+Token Consumido(1): < init_program >
+Token Consumido(2): < identifier, a >
+Token Consumido(2): < virgula >
+Token Consumido(2): < identifier, b >
+Token Consumido(2): < virgula >
+Token Consumido(2): < identifier, c >
+Token Consumido(2): < is_decl >
+Token Consumido(2): < integer_type >
+Token Consumido(2): < ponto_virgula >
+Token Consumido(3): < identifier, result >
+Token Consumido(3): < is_decl >
+Token Consumido(3): < real_type >
+Token Consumido(3): < ponto_virgula >
+Token Consumido(4): < begin >
+Token Consumido(5): < write >
+Token Consumido(5): < abre_parent >
+Token Consumido(5): < literal, "Digite o valor de a:" >
+Token Consumido(5): < fecha_parent >
+Token Consumido(5): < ponto_virgula >
+Token Consumido(6): < read >
+Token Consumido(6): < abre_parent >
+Token Consumido(6): < identifier, a >
+Token Consumido(6): < fecha_parent >
+Token Consumido(6): < ponto_virgula >
+Token Consumido(7): < write >
+Token Consumido(7): < abre_parent >
+Token Consumido(7): < literal, "Digite o valor de c:" >
+Token Consumido(7): < fecha_parent >
+Token Consumido(7): < ponto_virgula >
+Token Consumido(8): < read >
+Token Consumido(8): < abre_parent >
+Token Consumido(8): < identifier, c >
+Token Consumido(8): < fecha_parent >
+Token Consumido(8): < ponto_virgula >
+Token Consumido(9): < identifier, b >
+Token Consumido(9): < assign >
+Token Consumido(9): < num, 10 >
+Token Consumido(9): < ponto_virgula >
+Token Consumido(10): < identifier, result >
+Token Consumido(10): < assign >
+Token Consumido(10): < abre_parent >
+Token Consumido(10): < identifier, a >
+Token Consumido(10): < mult_mulop >
+Token Consumido(10): < identifier, c >
+Token Consumido(10): < fecha_parent >
+Token Consumido(10): < div_mulop >
+Token Consumido(10): < abre_parent >
+Token Consumido(10): < identifier, b >
+Token Consumido(10): < soma_addop >
+Token Consumido(10): < num, 5 >
+Token Consumido(10): < menos_addop >
+Token Consumido(10): < num, 345 >
+Token Consumido(10): < fecha_parent >
+Token Consumido(10): < ponto_virgula >
+Token Consumido(11): < write >
+Token Consumido(11): < abre_parent >
+Token Consumido(11): < literal, "O resultado e:" >
+Token Consumido(11): < fecha_parent >
+Token Consumido(11): < ponto_virgula >
+Token Consumido(12): < write >
+Token Consumido(12): < abre_parent >
+Token Consumido(12): < identifier, result >
+Token Consumido(12): < fecha_parent >
+Token Consumido(12): < ponto_virgula >
+
+
+
+\end{lstlisting}\newline
+
+
+
+
+% Teste 2 -----------------------------------------------------
+\section{Teste 2}
+\begin{lstlisting}[caption={Teste2.txt},label={lst:label},language=C]a, a, _valor, b_1, b_2 : integer;
+init
+write("Entre com o valor de a:");
+read (a);
+b_1 := a * a;
+write("O valor de b1 e:");
+write (b_1);
+b_2 = b + a/2 * (a + 5);
+write("O valor de b1 e:");
+Write (b1);
+stop
+
+\end{lstlisting}\newline
+
+Para o código acima o compilador obteve a seguinte saida :
+
+\begin{lstlisting}[caption={Saida para o Codigo de teste  : Teste2.txt},label={Entrada 1},language=Correta C]
+ 
+**** Tokens lidos ****
+< identifier, a >
+< virgula >
+Error  na Linha(1): Token '_' Nao esperado
+< identifier, b_1 >
+< virgula >
+< identifier, b_2 >
+Error  na Linha(1): Token ':' Nao esperado
+< integer_type >
+< ponto_virgula >
+< init_program >
+< write >
+< abre_parent >
+< literal, "Entre com o valor de a:" >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, a >
+< fecha_parent >
+< ponto_virgula >
+< identifier, b_1 >
+< assign >
+< identifier, a >
+< mult_mulop >
+< identifier, a >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, "O valor de b1 e:" >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, b_1 >
+< fecha_parent >
+< ponto_virgula >
+< identifier, b_2 >
+< equal_relop >
+< identifier, b >
+< soma_addop >
+< identifier, a >
+< div_mulop >
+< num, 2 >
+< mult_mulop >
+< abre_parent >
+< identifier, a >
+< soma_addop >
+< num, 5 >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, "O valor de b1 e:" >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, b1 >
+< fecha_parent >
+< ponto_virgula >
+< stop_program >
+
+
+
+**** Inicio Parser ****
+Error in: program; Error(1): Token n?£o esperado:< identifier, a >
+\end{lstlisting}\newline
+No Exemplo acima, foi reportado um Token não esperado, pois se esperava o identificador init para inicio de qualquer programa.
+
+
+\subsection{Correção do Teste 2}
+Foram feitas as devidas correções no código acima para adequar as regras da gramatica da linguagem .Assim, obtemos o seguinte resultado.
+
+
+\begin{lstlisting}[caption={Saida Correta para o Codigo de teste  : Teste2.txt},label={Entrada 1},language=C]
+
+\end{lstlisting}\newline
+
+%Teste 3 --------------------------------------
+
+\section{Teste 3}
+
+
+\newline
+\begin{lstlisting}[caption={Teste3.txt},label={lst:label}]
+% Programa de Teste Calculo de idade %
+INIT
+cont is int;
+media, idade, soma is integer;
+begin
+cont := 5;
+soma := 0;
+do
+write("Altura:" );
+read (altura);
+soma := soma+altura;
+cont := cont - 1;
+while(cont > 0)
+media := soma / qts
+write("Media: ");
+write (media);
+STOP
+\end{lstlisting}
+
+
+Para o código acima o compilador obteve a seguinte saída :
+
+\begin{lstlisting}[caption={Saída para o Código de teste  : Teste3.txt},label={Entrada 1},language=C]
+**** Tokens lidos ****
+< init_program >
+< identifier, cont >
+< is_decl >
+< identifier, int >
+< ponto_virgula >
+< identifier, media >
+< virgula >
+< identifier, idade >
+< virgula >
+< identifier, soma >
+< is_decl >
+< integer_type >
+< ponto_virgula >
+< begin >
+< identifier, cont >
+< assign >
+< num, 5 >
+< ponto_virgula >
+< identifier, soma >
+< assign >
+< num, 0 >
+< ponto_virgula >
+< do >
+< write >
+< abre_parent >
+< literal, "Altura:" >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, altura >
+< fecha_parent >
+< ponto_virgula >
+< identifier, soma >
+< assign >
+< identifier, soma >
+< soma_addop >
+< identifier, altura >
+< ponto_virgula >
+< identifier, cont >
+< assign >
+< identifier, cont >
+< menos_addop >
+< num, 1 >
+< ponto_virgula >
+< while >
+< abre_parent >
+< identifier, cont >
+< greater_than_relop >
+< num, 0 >
+< fecha_parent >
+< identifier, media >
+< assign >
+< identifier, soma >
+< div_mulop >
+< identifier, qts >
+< write >
+< abre_parent >
+< literal, "Media: " >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, media >
+< fecha_parent >
+< ponto_virgula >
+< stop_program >
+
+
+
+**** Inicio Parser ****
+Token Consumido(3): < init_program >
+Token Consumido(4): < identifier, cont >
+Token Consumido(4): < is_decl >
+Error in: type; Error(4): Token n?£o esperado:< identifier, int >
+Fim de arquivo inesperado.
+\end{lstlisting}
+No exemplo acima , o programa reportou um erro pois foi definido um tipo de variável inexistente na gramatica para essa linguagem. O tipo de variável int não foi modelado para essa gramatica.
+
+\subsection{Correção do Teste 3}
+Foram feitas as devidas correções no código acima para adequar as regras da gramatica da linguagem .Assim, obtemos o seguinte resultado.
+
+
+\begin{lstlisting}[caption={Saida Correta para o Codigo de teste  : Teste3.txt},label={Entrada 1},language=C]
+**** Tokens lidos ****
+< init_program >
+< identifier, cont >
+< virgula >
+< identifier, qts >
+< is_decl >
+< integer_type >
+< ponto_virgula >
+< identifier, media >
+< virgula >
+< identifier, idade >
+< virgula >
+< identifier, soma >
+< is_decl >
+< integer_type >
+< ponto_virgula >
+< begin >
+< identifier, cont >
+< assign >
+< num, 5 >
+< ponto_virgula >
+< identifier, soma >
+< assign >
+< num, 0 >
+< ponto_virgula >
+< identifier, qts >
+< assign >
+< num, 1 >
+< ponto_virgula >
+< do >
+< write >
+< abre_parent >
+< literal, "Altura:" >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, altura >
+< fecha_parent >
+< ponto_virgula >
+< identifier, soma >
+< assign >
+< identifier, soma >
+< soma_addop >
+< identifier, altura >
+< ponto_virgula >
+< identifier, cont >
+< assign >
+< identifier, cont >
+< menos_addop >
+< num, 1 >
+< ponto_virgula >
+< while >
+< abre_parent >
+< identifier, cont >
+< greater_than_relop >
+< num, 0 >
+< fecha_parent >
+< ponto_virgula >
+< identifier, media >
+< assign >
+< identifier, soma >
+< div_mulop >
+< identifier, qts >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, "Media: " >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, media >
+< fecha_parent >
+< ponto_virgula >
+< stop_program >
+
+
+
+**** Inicio Parser ****
+Token Consumido(3): < init_program >
+Token Consumido(4): < identifier, cont >
+Token Consumido(4): < virgula >
+Token Consumido(4): < identifier, qts >
+Token Consumido(4): < is_decl >
+Token Consumido(4): < integer_type >
+Token Consumido(4): < ponto_virgula >
+Token Consumido(5): < identifier, media >
+Token Consumido(5): < virgula >
+Token Consumido(5): < identifier, idade >
+Token Consumido(5): < virgula >
+Token Consumido(5): < identifier, soma >
+Token Consumido(5): < is_decl >
+Token Consumido(5): < integer_type >
+Token Consumido(5): < ponto_virgula >
+Token Consumido(6): < begin >
+Token Consumido(7): < identifier, cont >
+Token Consumido(7): < assign >
+Token Consumido(7): < num, 5 >
+Token Consumido(7): < ponto_virgula >
+Token Consumido(8): < identifier, soma >
+Token Consumido(8): < assign >
+Token Consumido(8): < num, 0 >
+Token Consumido(8): < ponto_virgula >
+Token Consumido(9): < identifier, qts >
+Token Consumido(9): < assign >
+Token Consumido(9): < num, 1 >
+Token Consumido(9): < ponto_virgula >
+Token Consumido(10): < do >
+Token Consumido(11): < write >
+Token Consumido(11): < abre_parent >
+Token Consumido(11): < literal, "Altura:" >
+Token Consumido(11): < fecha_parent >
+Token Consumido(11): < ponto_virgula >
+Token Consumido(12): < read >
+Token Consumido(12): < abre_parent >
+Token Consumido(12): < identifier, altura >
+Token Consumido(12): < fecha_parent >
+Token Consumido(12): < ponto_virgula >
+Token Consumido(13): < identifier, soma >
+Token Consumido(13): < assign >
+Token Consumido(13): < identifier, soma >
+Token Consumido(13): < soma_addop >
+Token Consumido(13): < identifier, altura >
+Token Consumido(13): < ponto_virgula >
+Token Consumido(14): < identifier, cont >
+Token Consumido(14): < assign >
+Token Consumido(14): < identifier, cont >
+Token Consumido(14): < menos_addop >
+Token Consumido(14): < num, 1 >
+Token Consumido(14): < ponto_virgula >
+Token Consumido(15): < while >
+Token Consumido(15): < abre_parent >
+Token Consumido(15): < identifier, cont >
+Token Consumido(15): < greater_than_relop >
+Token Consumido(15): < num, 0 >
+Token Consumido(15): < fecha_parent >
+Token Consumido(15): < ponto_virgula >
+Token Consumido(16): < identifier, media >
+Token Consumido(16): < assign >
+Token Consumido(16): < identifier, soma >
+Token Consumido(16): < div_mulop >
+Token Consumido(16): < identifier, qts >
+Token Consumido(16): < ponto_virgula >
+Token Consumido(17): < write >
+Token Consumido(17): < abre_parent >
+Token Consumido(17): < literal, "Media: " >
+Token Consumido(17): < fecha_parent >
+Token Consumido(17): < ponto_virgula >
+Token Consumido(18): < write >
+Token Consumido(18): < abre_parent >
+Token Consumido(18): < identifier, media >
+Token Consumido(18): < fecha_parent >
+Token Consumido(18): < ponto_virgula >
+\end{lstlisting}\newline
+
+
+
+
+%-------------------Teste 4 ------------------------
+\section{Teste 4}
+
+
+\begin{lstlisting}[caption={Teste4.txt},label={lst:label},language=C]
+init
+% Outro programa de teste
+i, j, k, @total is integer;
+nome is string
+write("Digite o seu nome: ");
+read(nome);
+write("Digite um valor inteiro: );
+read (I);
+k := i * (5-i * 50 / 10;
+j := i * 10;
+k := i* j / k;
+k := 4 + a $;
+write(nome);
+write(", os números gerados sao: ");
+write(i);
+write(j);
+write(k);
+\end{lstlisting}
+
+Para o codigo acima o compilador obteve a seguinte saida :
+
+\begin{lstlisting}[caption={Saida para o Codigo de teste  : Teste4.txt},label={Entrada 1},language=C]
+**** Tokens lidos ****
+< init_program >
+Error(2): coment?¡rio n?£o fechado
+
+
+
+**** Inicio Parser ****
+Token Consumido(1): < init_program >
+Fim de arquivo inesperado.
+
+
+\end{lstlisting}
+No código acima, não foi fechado o comentário, assim, erro para iniciar o programa, pois era esperado o {\%} para fim de comentário.
+
+
+\subsection{Correção do Teste 4}
+Foram feitas as devidas correções no código acima para adequar as regras da gramatica da linguagem .Assim, obtemos o seguinte resultado.
+
+
+\begin{lstlisting}[caption={Saida Correta para o Codigo de teste  : Teste4.txt},label={Entrada 1},language=C]
+
+
+**** Tokens lidos ****
+< init_program >
+< identifier, i >
+< virgula >
+< identifier, j >
+< virgula >
+< identifier, k >
+< virgula >
+Error  na Linha(3): Token '@' Nao esperado
+< identifier, total >
+< is_decl >
+< integer_type >
+< ponto_virgula >
+< identifier, nome >
+< is_decl >
+< string_type >
+< ponto_virgula >
+< begin >
+< write >
+< abre_parent >
+< literal, "Digite o seu nome: " >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, nome >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, "Digite um valor inteiro: " >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, i >
+< fecha_parent >
+< ponto_virgula >
+< identifier, k >
+< assign >
+< abre_parent >
+< abre_parent >
+< identifier, i >
+< mult_mulop >
+< num, 5 >
+< fecha_parent >
+< menos_addop >
+< abre_parent >
+< identifier, i >
+< mult_mulop >
+< num, 50 >
+< fecha_parent >
+< fecha_parent >
+< div_mulop >
+< num, 10 >
+< ponto_virgula >
+< identifier, j >
+< assign >
+< identifier, i >
+< mult_mulop >
+< num, 10 >
+< ponto_virgula >
+< identifier, k >
+< assign >
+< abre_parent >
+< identifier, i >
+< mult_mulop >
+< identifier, j >
+< fecha_parent >
+< div_mulop >
+< identifier, k >
+< ponto_virgula >
+< identifier, k >
+< assign >
+< num, 4 >
+< soma_addop >
+< identifier, a >
+Error  na Linha(13): Token '$' Nao esperado
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, nome >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, ", os n?ºmeros gerados sao: " >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, i >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, j >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, k >
+< fecha_parent >
+< ponto_virgula >
+< stop_program >
+
+
+
+**** Inicio Parser ****
+Token Consumido(1): < init_program >
+Token Consumido(3): < identifier, i >
+Token Consumido(3): < virgula >
+Token Consumido(3): < identifier, j >
+Token Consumido(3): < virgula >
+Token Consumido(3): < identifier, k >
+Token Consumido(3): < virgula >
+Token Consumido(3): < identifier, total >
+Token Consumido(3): < is_decl >
+Token Consumido(3): < integer_type >
+Token Consumido(3): < ponto_virgula >
+Token Consumido(4): < identifier, nome >
+Token Consumido(4): < is_decl >
+Token Consumido(4): < string_type >
+Token Consumido(4): < ponto_virgula >
+Token Consumido(5): < begin >
+Token Consumido(6): < write >
+Token Consumido(6): < abre_parent >
+Token Consumido(6): < literal, "Digite o seu nome: " >
+Token Consumido(6): < fecha_parent >
+Token Consumido(6): < ponto_virgula >
+Token Consumido(7): < read >
+Token Consumido(7): < abre_parent >
+Token Consumido(7): < identifier, nome >
+Token Consumido(7): < fecha_parent >
+Token Consumido(7): < ponto_virgula >
+Token Consumido(8): < write >
+Token Consumido(8): < abre_parent >
+Token Consumido(8): < literal, "Digite um valor inteiro: " >
+Token Consumido(8): < fecha_parent >
+Token Consumido(8): < ponto_virgula >
+Token Consumido(9): < read >
+Token Consumido(9): < abre_parent >
+Token Consumido(9): < identifier, i >
+Token Consumido(9): < fecha_parent >
+Token Consumido(9): < ponto_virgula >
+Token Consumido(10): < identifier, k >
+Token Consumido(10): < assign >
+Token Consumido(10): < abre_parent >
+Token Consumido(10): < abre_parent >
+Token Consumido(10): < identifier, i >
+Token Consumido(10): < mult_mulop >
+Token Consumido(10): < num, 5 >
+Token Consumido(10): < fecha_parent >
+Token Consumido(10): < menos_addop >
+Token Consumido(10): < abre_parent >
+Token Consumido(10): < identifier, i >
+Token Consumido(10): < mult_mulop >
+Token Consumido(10): < num, 50 >
+Token Consumido(10): < fecha_parent >
+Token Consumido(10): < fecha_parent >
+Token Consumido(10): < div_mulop >
+Token Consumido(10): < num, 10 >
+Token Consumido(10): < ponto_virgula >
+Token Consumido(11): < identifier, j >
+Token Consumido(11): < assign >
+Token Consumido(11): < identifier, i >
+Token Consumido(11): < mult_mulop >
+Token Consumido(11): < num, 10 >
+Token Consumido(11): < ponto_virgula >
+Token Consumido(12): < identifier, k >
+Token Consumido(12): < assign >
+Token Consumido(12): < abre_parent >
+Token Consumido(12): < identifier, i >
+Token Consumido(12): < mult_mulop >
+Token Consumido(12): < identifier, j >
+Token Consumido(12): < fecha_parent >
+Token Consumido(12): < div_mulop >
+Token Consumido(12): < identifier, k >
+Token Consumido(12): < ponto_virgula >
+Token Consumido(13): < identifier, k >
+Token Consumido(13): < assign >
+Token Consumido(13): < num, 4 >
+Token Consumido(13): < soma_addop >
+Token Consumido(13): < identifier, a >
+Token Consumido(13): < ponto_virgula >
+Token Consumido(14): < write >
+Token Consumido(14): < abre_parent >
+Token Consumido(14): < identifier, nome >
+Token Consumido(14): < fecha_parent >
+Token Consumido(14): < ponto_virgula >
+Token Consumido(15): < write >
+Token Consumido(15): < abre_parent >
+Token Consumido(15): < literal, ", os n?ºmeros gerados sao: " >
+Token Consumido(15): < fecha_parent >
+Token Consumido(15): < ponto_virgula >
+Token Consumido(16): < write >
+Token Consumido(16): < abre_parent >
+Token Consumido(16): < identifier, i >
+Token Consumido(16): < fecha_parent >
+Token Consumido(16): < ponto_virgula >
+Token Consumido(17): < write >
+Token Consumido(17): < abre_parent >
+Token Consumido(17): < identifier, j >
+Token Consumido(17): < fecha_parent >
+Token Consumido(17): < ponto_virgula >
+Token Consumido(18): < write >
+Token Consumido(18): < abre_parent >
+Token Consumido(18): < identifier, k >
+Token Consumido(18): < fecha_parent >
+Token Consumido(18): < ponto_virgula >
+
+
+\end{lstlisting}\newline
+
+
+
+
+%-------------------Teste 5 ------------------------
+\section{Teste 5}
+
+
+
+\begin{lstlisting}[caption={Teste5.txt},label={lst:label},language=C]
+init
+i, j, k, @total is integer;
+nome is string
+write("Digite o seu nome: ");
+read(nome);
+write("Digite um valor inteiro: );
+read (I);
+k := i * (5-i * 50 / 10;
+j := i * 10;
+k := i* j / k;
+k := 4 + a $;
+write(nome);
+write(", os números gerados sao: ");
+write(i);
+write(j);
+write(k);
+
+\end{lstlisting}
+
+Para o codigo acima o compilador obteve a seguinte saida :
+
+\begin{lstlisting}[caption={Saida para o Codigo de teste  : Teste5.txt},label={Entrada 1},language=C]
+
+**** Tokens lidos ****
+< init_program >
+< identifier, i >
+< virgula >
+< identifier, j >
+< virgula >
+< identifier, k >
+< virgula >
+Error  na Linha(2): Token '@' Nao esperado
+< identifier, total >
+< is_decl >
+< integer_type >
+< ponto_virgula >
+< identifier, nome >
+< is_decl >
+< string_type >
+< write >
+< abre_parent >
+< literal, "Digite o seu nome: " >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, nome >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+Error  na Linha(6): Token '"' Nao esperado
+< read >
+< abre_parent >
+< identifier, i >
+< fecha_parent >
+< ponto_virgula >
+< identifier, k >
+< assign >
+< identifier, i >
+< mult_mulop >
+< abre_parent >
+< num, 5 >
+< menos_addop >
+< identifier, i >
+< mult_mulop >
+< num, 50 >
+< div_mulop >
+< num, 10 >
+< ponto_virgula >
+< identifier, j >
+< assign >
+< identifier, i >
+< mult_mulop >
+< num, 10 >
+< ponto_virgula >
+< identifier, k >
+< assign >
+< identifier, i >
+< mult_mulop >
+< identifier, j >
+< div_mulop >
+< identifier, k >
+< ponto_virgula >
+< identifier, k >
+< assign >
+< num, 4 >
+< soma_addop >
+< identifier, a >
+Error  na Linha(10): Token '$' Nao esperado
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, nome >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, ", os n?ºmeros gerados sao: " >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, i >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, j >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, k >
+< fecha_parent >
+< ponto_virgula >
+
+
+
+**** Inicio Parser ****
+Token Consumido(1): < init_program >
+Token Consumido(2): < identifier, i >
+Token Consumido(2): < virgula >
+Token Consumido(2): < identifier, j >
+Token Consumido(2): < virgula >
+Token Consumido(2): < identifier, k >
+Token Consumido(2): < virgula >
+Token Consumido(2): < identifier, total >
+Token Consumido(2): < is_decl >
+Token Consumido(2): < integer_type >
+Token Consumido(2): < ponto_virgula >
+Token Consumido(3): < identifier, nome >
+Token Consumido(3): < is_decl >
+Token Consumido(3): < string_type >
+Error in: declList; Error(4): Token n?£o esperado:< write >
+Fim de arquivo inesperado.
+
+\end{lstlisting}
+No Código acima, não foi declarado o begin. Assim o comando write foi dado como inesperado, pois era esperado o identificador begin.
+
+\subsection{Correção do Teste 5}
+Foram feitas as devidas correções no código acima para adequar as regras da gramatica da linguagem .Assim, obtemos o seguinte resultado.
+
+
+\begin{lstlisting}[caption={Saida Correta para o Codigo de teste  : Teste5.txt},label={Entrada 1},language=C]
+
+
+**** Tokens lidos ****
+< init_program >
+< identifier, i >
+< virgula >
+< identifier, j >
+< virgula >
+< identifier, k >
+< virgula >
+Error  na Linha(3): Token '@' Nao esperado
+< identifier, total >
+< is_decl >
+< integer_type >
+< ponto_virgula >
+< identifier, nome >
+< is_decl >
+< string_type >
+< ponto_virgula >
+< begin >
+< write >
+< abre_parent >
+< literal, "Digite o seu nome: " >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, nome >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, "Digite um valor inteiro: " >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, i >
+< fecha_parent >
+< ponto_virgula >
+< identifier, k >
+< assign >
+< abre_parent >
+< abre_parent >
+< identifier, i >
+< mult_mulop >
+< num, 5 >
+< fecha_parent >
+< menos_addop >
+< abre_parent >
+< identifier, i >
+< mult_mulop >
+< num, 50 >
+< fecha_parent >
+< fecha_parent >
+< div_mulop >
+< num, 10 >
+< ponto_virgula >
+< identifier, j >
+< assign >
+< identifier, i >
+< mult_mulop >
+< num, 10 >
+< ponto_virgula >
+< identifier, k >
+< assign >
+< abre_parent >
+< identifier, i >
+< mult_mulop >
+< identifier, j >
+< fecha_parent >
+< div_mulop >
+< identifier, k >
+< ponto_virgula >
+< identifier, k >
+< assign >
+< num, 4 >
+< soma_addop >
+< identifier, a >
+Error  na Linha(13): Token '$' Nao esperado
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, nome >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, ", os n?ºmeros gerados sao: " >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, i >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, j >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, k >
+< fecha_parent >
+< ponto_virgula >
+< stop_program >
+
+
+
+**** Inicio Parser ****
+Token Consumido(1): < init_program >
+Token Consumido(3): < identifier, i >
+Token Consumido(3): < virgula >
+Token Consumido(3): < identifier, j >
+Token Consumido(3): < virgula >
+Token Consumido(3): < identifier, k >
+Token Consumido(3): < virgula >
+Token Consumido(3): < identifier, total >
+Token Consumido(3): < is_decl >
+Token Consumido(3): < integer_type >
+Token Consumido(3): < ponto_virgula >
+Token Consumido(4): < identifier, nome >
+Token Consumido(4): < is_decl >
+Token Consumido(4): < string_type >
+Token Consumido(4): < ponto_virgula >
+Token Consumido(5): < begin >
+Token Consumido(6): < write >
+Token Consumido(6): < abre_parent >
+Token Consumido(6): < literal, "Digite o seu nome: " >
+Token Consumido(6): < fecha_parent >
+Token Consumido(6): < ponto_virgula >
+Token Consumido(7): < read >
+Token Consumido(7): < abre_parent >
+Token Consumido(7): < identifier, nome >
+Token Consumido(7): < fecha_parent >
+Token Consumido(7): < ponto_virgula >
+Token Consumido(8): < write >
+Token Consumido(8): < abre_parent >
+Token Consumido(8): < literal, "Digite um valor inteiro: " >
+Token Consumido(8): < fecha_parent >
+Token Consumido(8): < ponto_virgula >
+Token Consumido(9): < read >
+Token Consumido(9): < abre_parent >
+Token Consumido(9): < identifier, i >
+Token Consumido(9): < fecha_parent >
+Token Consumido(9): < ponto_virgula >
+Token Consumido(10): < identifier, k >
+Token Consumido(10): < assign >
+Token Consumido(10): < abre_parent >
+Token Consumido(10): < abre_parent >
+Token Consumido(10): < identifier, i >
+Token Consumido(10): < mult_mulop >
+Token Consumido(10): < num, 5 >
+Token Consumido(10): < fecha_parent >
+Token Consumido(10): < menos_addop >
+Token Consumido(10): < abre_parent >
+Token Consumido(10): < identifier, i >
+Token Consumido(10): < mult_mulop >
+Token Consumido(10): < num, 50 >
+Token Consumido(10): < fecha_parent >
+Token Consumido(10): < fecha_parent >
+Token Consumido(10): < div_mulop >
+Token Consumido(10): < num, 10 >
+Token Consumido(10): < ponto_virgula >
+Token Consumido(11): < identifier, j >
+Token Consumido(11): < assign >
+Token Consumido(11): < identifier, i >
+Token Consumido(11): < mult_mulop >
+Token Consumido(11): < num, 10 >
+Token Consumido(11): < ponto_virgula >
+Token Consumido(12): < identifier, k >
+Token Consumido(12): < assign >
+Token Consumido(12): < abre_parent >
+Token Consumido(12): < identifier, i >
+Token Consumido(12): < mult_mulop >
+Token Consumido(12): < identifier, j >
+Token Consumido(12): < fecha_parent >
+Token Consumido(12): < div_mulop >
+Token Consumido(12): < identifier, k >
+Token Consumido(12): < ponto_virgula >
+Token Consumido(13): < identifier, k >
+Token Consumido(13): < assign >
+Token Consumido(13): < num, 4 >
+Token Consumido(13): < soma_addop >
+Token Consumido(13): < identifier, a >
+Token Consumido(13): < ponto_virgula >
+Token Consumido(14): < write >
+Token Consumido(14): < abre_parent >
+Token Consumido(14): < identifier, nome >
+Token Consumido(14): < fecha_parent >
+Token Consumido(14): < ponto_virgula >
+Token Consumido(15): < write >
+Token Consumido(15): < abre_parent >
+Token Consumido(15): < literal, ", os n?ºmeros gerados sao: " >
+Token Consumido(15): < fecha_parent >
+Token Consumido(15): < ponto_virgula >
+Token Consumido(16): < write >
+Token Consumido(16): < abre_parent >
+Token Consumido(16): < identifier, i >
+Token Consumido(16): < fecha_parent >
+Token Consumido(16): < ponto_virgula >
+Token Consumido(17): < write >
+Token Consumido(17): < abre_parent >
+Token Consumido(17): < identifier, j >
+Token Consumido(17): < fecha_parent >
+Token Consumido(17): < ponto_virgula >
+Token Consumido(18): < write >
+Token Consumido(18): < abre_parent >
+Token Consumido(18): < identifier, k >
+Token Consumido(18): < fecha_parent >
+Token Consumido(18): < ponto_virgula >
+
+
+\end{lstlisting}\newline
+
+% Teste 6
+
+
+%-------------------Teste 6 ------------------------
+\section{Teste 6}
+
+
+\begin{lstlisting}[caption={Teste6.txt},label={lst:label},language=C]
+init
+a, b, c, maior is integer;
+write("Digite uma idade: ");
+read(a);
+write("Digite outra idade: ");
+read(b);
+write("Digite mais uma idade: ");
+read(c;
+maior := 0;
+if ( a>b and a>c )
+maior := a;
+else
+if (b>c)
+maior := b;
+else
+maior := c;
+write("Maior idade: ");
+write(maior);
+end
+\end{lstlisting}
+
+Para o codigo acima o compilador obteve a seguinte saida :
+
+\begin{lstlisting}[caption={Saida para o Codigo de teste  : Teste6.txt},label={Entrada 1},language=C]
+**** Tokens lidos ****
+< init_program >
+< identifier, a >
+< virgula >
+< identifier, b >
+< virgula >
+< identifier, c >
+< virgula >
+< identifier, maior >
+< is_decl >
+< integer_type >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, "Digite uma idade: " >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, a >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, "Digite outra idade: " >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, b >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, "Digite mais uma idade: " >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, c >
+< ponto_virgula >
+< identifier, maior >
+< assign >
+< num, 0 >
+< ponto_virgula >
+< if >
+< abre_parent >
+< identifier, a >
+< greater_than_relop >
+< identifier, b >
+< and_mulop >
+< identifier, a >
+< greater_than_relop >
+< identifier, c >
+< fecha_parent >
+< identifier, maior >
+< assign >
+< identifier, a >
+< ponto_virgula >
+< else >
+< if >
+< abre_parent >
+< identifier, b >
+< greater_than_relop >
+< identifier, c >
+< fecha_parent >
+< identifier, maior >
+< assign >
+< identifier, b >
+< ponto_virgula >
+< else >
+< identifier, maior >
+< assign >
+< identifier, c >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, "Maior idade: " >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, maior >
+< fecha_parent >
+< ponto_virgula >
+< end >
+
+
+
+**** Inicio Parser ****
+Token Consumido(1): < init_program >
+Token Consumido(2): < identifier, a >
+Token Consumido(2): < virgula >
+Token Consumido(2): < identifier, b >
+Token Consumido(2): < virgula >
+Token Consumido(2): < identifier, c >
+Token Consumido(2): < virgula >
+Token Consumido(2): < identifier, maior >
+Token Consumido(2): < is_decl >
+Token Consumido(2): < integer_type >
+Token Consumido(2): < ponto_virgula >
+Error in: identList; Error(3): Token n?£o esperado:< write >
+Fim de arquivo inesperado.
+\end{lstlisting}
+No Código acima, não foi declarado o begin. Assim o comando write foi dado como inesperado, pois era esperado o identificador begin.
+
+
+\subsection{Correção do Teste 6}
+Foram feitas as devidas correções no código acima para adequar as regras da gramatica da linguagem .Assim, obtemos o seguinte resultado.
+
+
+\begin{lstlisting}[caption={Saida Correta para o Codigo de teste  : Teste6.txt},label={Entrada 1},language=C]
+
+
+**** Tokens lidos ****
+< init_program >
+< identifier, a >
+< virgula >
+< identifier, b >
+< virgula >
+< identifier, c >
+< virgula >
+< identifier, maior >
+< is_decl >
+< integer_type >
+< ponto_virgula >
+< begin >
+< write >
+< abre_parent >
+< literal, "Digite uma idade: " >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, a >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, "Digite outra idade: " >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, b >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< literal, "Digite mais uma idade: " >
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, c >
+< fecha_parent >
+< ponto_virgula >
+< identifier, maior >
+< assign >
+< num, 0 >
+< ponto_virgula >
+< if >
+< abre_parent >
+< abre_parent >
+< identifier, a >
+< greater_than_relop >
+< identifier, b >
+< fecha_parent >
+< and_mulop >
+< abre_parent >
+< identifier, a >
+< greater_than_relop >
+< identifier, c >
+< fecha_parent >
+< fecha_parent >
+< begin >
+< identifier, maior >
+< assign >
+< identifier, a >
+< ponto_virgula >
+< end >
+< else >
+< begin >
+< if >
+< abre_parent >
+< identifier, b >
+< greater_than_relop >
+< identifier, c >
+< fecha_parent >
+< begin >
+< identifier, maior >
+< assign >
+< identifier, b >
+< ponto_virgula >
+< end >
+< else >
+< begin >
+< identifier, maior >
+< assign >
+< identifier, c >
+< ponto_virgula >
+< end >
+< end >
+< write >
+< abre_parent >
+< literal, "Maior idade: " >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, maior >
+< fecha_parent >
+< ponto_virgula >
+< stop_program >
+
+
+
+**** Inicio Parser ****
+Token Consumido(1): < init_program >
+Token Consumido(2): < identifier, a >
+Token Consumido(2): < virgula >
+Token Consumido(2): < identifier, b >
+Token Consumido(2): < virgula >
+Token Consumido(2): < identifier, c >
+Token Consumido(2): < virgula >
+Token Consumido(2): < identifier, maior >
+Token Consumido(2): < is_decl >
+Token Consumido(2): < integer_type >
+Token Consumido(2): < ponto_virgula >
+Token Consumido(3): < begin >
+Token Consumido(4): < write >
+Token Consumido(4): < abre_parent >
+Token Consumido(4): < literal, "Digite uma idade: " >
+Token Consumido(4): < fecha_parent >
+Token Consumido(4): < ponto_virgula >
+Token Consumido(5): < read >
+Token Consumido(5): < abre_parent >
+Token Consumido(5): < identifier, a >
+Token Consumido(5): < fecha_parent >
+Token Consumido(5): < ponto_virgula >
+Token Consumido(6): < write >
+Token Consumido(6): < abre_parent >
+Token Consumido(6): < literal, "Digite outra idade: " >
+Token Consumido(6): < fecha_parent >
+Token Consumido(6): < ponto_virgula >
+Token Consumido(7): < read >
+Token Consumido(7): < abre_parent >
+Token Consumido(7): < identifier, b >
+Token Consumido(7): < fecha_parent >
+Token Consumido(7): < ponto_virgula >
+Token Consumido(8): < write >
+Token Consumido(8): < abre_parent >
+Token Consumido(8): < literal, "Digite mais uma idade: " >
+Token Consumido(8): < fecha_parent >
+Token Consumido(8): < ponto_virgula >
+Token Consumido(9): < read >
+Token Consumido(9): < abre_parent >
+Token Consumido(9): < identifier, c >
+Token Consumido(9): < fecha_parent >
+Token Consumido(9): < ponto_virgula >
+Token Consumido(10): < identifier, maior >
+Token Consumido(10): < assign >
+Token Consumido(10): < num, 0 >
+Token Consumido(10): < ponto_virgula >
+Token Consumido(11): < if >
+Token Consumido(11): < abre_parent >
+Token Consumido(11): < abre_parent >
+Token Consumido(11): < identifier, a >
+Token Consumido(11): < greater_than_relop >
+Token Consumido(11): < identifier, b >
+Token Consumido(11): < fecha_parent >
+Token Consumido(11): < and_mulop >
+Token Consumido(11): < abre_parent >
+Token Consumido(11): < identifier, a >
+Token Consumido(11): < greater_than_relop >
+Token Consumido(11): < identifier, c >
+Token Consumido(11): < fecha_parent >
+Token Consumido(11): < fecha_parent >
+Token Consumido(11): < begin >
+Token Consumido(12): < identifier, maior >
+Token Consumido(12): < assign >
+Token Consumido(12): < identifier, a >
+Token Consumido(12): < ponto_virgula >
+Token Consumido(13): < end >
+Token Consumido(13): < else >
+Token Consumido(13): < begin >
+Token Consumido(14): < if >
+Token Consumido(14): < abre_parent >
+Token Consumido(14): < identifier, b >
+Token Consumido(14): < greater_than_relop >
+Token Consumido(14): < identifier, c >
+Token Consumido(14): < fecha_parent >
+Token Consumido(14): < begin >
+Token Consumido(15): < identifier, maior >
+Token Consumido(15): < assign >
+Token Consumido(15): < identifier, b >
+Token Consumido(15): < ponto_virgula >
+Token Consumido(16): < end >
+Token Consumido(16): < else >
+Token Consumido(16): < begin >
+Token Consumido(17): < identifier, maior >
+Token Consumido(17): < assign >
+Token Consumido(17): < identifier, c >
+Token Consumido(17): < ponto_virgula >
+Token Consumido(18): < end >
+Token Consumido(19): < end >
+Token Consumido(20): < write >
+Token Consumido(20): < abre_parent >
+Token Consumido(20): < literal, "Maior idade: " >
+Token Consumido(20): < fecha_parent >
+Token Consumido(20): < ponto_virgula >
+Token Consumido(21): < write >
+Token Consumido(21): < abre_parent >
+Token Consumido(21): < identifier, maior >
+Token Consumido(21): < fecha_parent >
+Token Consumido(21): < ponto_virgula >
+
+
+\end{lstlisting}\newline
+
+% Teste 7
+
+
+
+%-------------------Teste 7 ------------------------
+\section{Teste 7}
+
+
+
+\begin{lstlisting}[caption={Teste7.txt},label={lst:label},language=C]
+% Programa de Teste Calculo de idade %
+init
+	cont_ is integer;
+	media, idade, soma_ is integer;
+begin
+	cont_ := 5;
+	soma := 0;
+	do
+		write(“Altura:” );
+		read (altura);
+		soma := soma + altura;
+		cont_ := cont_ - 1;
+	while(cont_ > 0);
+	write(“Media: ”);
+	write (soma / qtd);
+stop
+\end{lstlisting}
+
+Para o codigo acima o compilador obteve a seguinte saida :
+
+\begin{lstlisting}[caption={Saida para o Codigo de teste  : Teste.txt},label={Entrada 1},language=C]
+**** Tokens lidos ****
+< init_program >
+< identifier, cont_ >
+< is_decl >
+< integer_type >
+< ponto_virgula >
+< identifier, media >
+< virgula >
+< identifier, idade >
+< virgula >
+< identifier, soma_ >
+< is_decl >
+< integer_type >
+< ponto_virgula >
+< begin >
+< identifier, cont_ >
+< assign >
+< num, 5 >
+< ponto_virgula >
+< identifier, soma >
+< assign >
+< num, 0 >
+< ponto_virgula >
+< do >
+< write >
+< abre_parent >
+Error  na Linha(9): Token 'â' Nao esperado
+Error  na Linha(9): Token '?' Nao esperado
+Error  na Linha(9): Token '?' Nao esperado
+< identifier, Altura >
+Error  na Linha(9): Token ':' Nao esperado
+Error  na Linha(9): Token '?' Nao esperado
+Error  na Linha(9): Token '?' Nao esperado
+< fecha_parent >
+< ponto_virgula >
+< read >
+< abre_parent >
+< identifier, altura >
+< fecha_parent >
+< ponto_virgula >
+< identifier, soma >
+< assign >
+< identifier, soma >
+< soma_addop >
+< identifier, altura >
+< ponto_virgula >
+< identifier, cont_ >
+< assign >
+< identifier, cont_ >
+< menos_addop >
+< num, 1 >
+< ponto_virgula >
+< while >
+< abre_parent >
+< identifier, cont_ >
+< greater_than_relop >
+< num, 0 >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+Error  na Linha(14): Token 'â' Nao esperado
+Error  na Linha(14): Token '?' Nao esperado
+Error  na Linha(14): Token '?' Nao esperado
+< identifier, media >
+Error  na Linha(14): Token ':' Nao esperado
+Error  na Linha(14): Token 'â' Nao esperado
+Error  na Linha(14): Token '?' Nao esperado
+Error  na Linha(14): Token '?' Nao esperado
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, soma >
+< div_mulop >
+< identifier, qtd >
+< fecha_parent >
+< ponto_virgula >
+< stop_program >
+
+
+
+**** Inicio Parser ****
+Token Consumido(2): < init_program >
+Token Consumido(3): < identifier, cont_ >
+Token Consumido(3): < is_decl >
+Token Consumido(3): < integer_type >
+Token Consumido(3): < ponto_virgula >
+Token Consumido(4): < identifier, media >
+Token Consumido(4): < virgula >
+Token Consumido(4): < identifier, idade >
+Token Consumido(4): < virgula >
+Token Consumido(4): < identifier, soma_ >
+Token Consumido(4): < is_decl >
+Token Consumido(4): < integer_type >
+Token Consumido(4): < ponto_virgula >
+Token Consumido(5): < begin >
+Token Consumido(6): < identifier, cont_ >
+Token Consumido(6): < assign >
+Token Consumido(6): < num, 5 >
+Token Consumido(6): < ponto_virgula >
+Token Consumido(7): < identifier, soma >
+Token Consumido(7): < assign >
+Token Consumido(7): < num, 0 >
+Token Consumido(7): < ponto_virgula >
+Token Consumido(8): < do >
+Token Consumido(9): < write >
+Token Consumido(9): < abre_parent >
+Token Consumido(9): < identifier, Altura >
+Token Consumido(9): < fecha_parent >
+Token Consumido(9): < ponto_virgula >
+Token Consumido(10): < read >
+Token Consumido(10): < abre_parent >
+Token Consumido(10): < identifier, altura >
+Token Consumido(10): < fecha_parent >
+Token Consumido(10): < ponto_virgula >
+Token Consumido(11): < identifier, soma >
+Token Consumido(11): < assign >
+Token Consumido(11): < identifier, soma >
+Token Consumido(11): < soma_addop >
+Token Consumido(11): < identifier, altura >
+Token Consumido(11): < ponto_virgula >
+Token Consumido(12): < identifier, cont_ >
+Token Consumido(12): < assign >
+Token Consumido(12): < identifier, cont_ >
+Token Consumido(12): < menos_addop >
+Token Consumido(12): < num, 1 >
+Token Consumido(12): < ponto_virgula >
+Token Consumido(13): < while >
+Token Consumido(13): < abre_parent >
+Token Consumido(13): < identifier, cont_ >
+Token Consumido(13): < greater_than_relop >
+Token Consumido(13): < num, 0 >
+Token Consumido(13): < fecha_parent >
+Token Consumido(13): < ponto_virgula >
+Token Consumido(14): < write >
+Token Consumido(14): < abre_parent >
+Token Consumido(14): < identifier, media >
+Token Consumido(14): < fecha_parent >
+Token Consumido(14): < ponto_virgula >
+Token Consumido(15): < write >
+Token Consumido(15): < abre_parent >
+Token Consumido(15): < identifier, soma >
+Token Consumido(15): < div_mulop >
+Token Consumido(15): < identifier, qtd >
+Token Consumido(15): < fecha_parent >
+Token Consumido(15): < ponto_virgula >
+\end{lstlisting}
+O Código acima esta escrito conforme a gramatica da linguagem . Não foi reportado nenhum erro.
+
+
+\newline
+
+
+%-------------------Teste 8 ------------------------
+\section{Teste 8}
+
+
+
+\begin{lstlisting}[caption={Teste8.txt},label={lst:label},language=C]
+init 
+a, b is integer;
+begin
+if ( a > b) begin
+write ("O maior numero e: ");
+write (a);
+end else begin
+write ("O menor numero e: ");
+write (b);
+end
+stop
+\end{lstlisting}
+
+Para o codigo acima o compilador obteve a seguinte saida :
+
+\begin{lstlisting}[caption={Saida para o Codigo de teste  : Teste8.txt},label={Entrada 1},language=C]
+**** Tokens lidos ****
+< init_program >
+< identifier, a >
+< virgula >
+< identifier, b >
+< is_decl >
+< integer_type >
+< ponto_virgula >
+< begin >
+< if >
+< abre_parent >
+< identifier, a >
+< greater_than_relop >
+< identifier, b >
+< fecha_parent >
+< begin >
+< write >
+< abre_parent >
+< literal, "O maior numero e: " >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, a >
+< fecha_parent >
+< ponto_virgula >
+< end >
+< else >
+< begin >
+< write >
+< abre_parent >
+< literal, "O menor numero e: " >
+< fecha_parent >
+< ponto_virgula >
+< write >
+< abre_parent >
+< identifier, b >
+< fecha_parent >
+< ponto_virgula >
+< end >
+< stop_program >
+
+
+
+**** Inicio Parser ****
+Token Consumido(1): < init_program >
+Token Consumido(2): < identifier, a >
+Token Consumido(2): < virgula >
+Token Consumido(2): < identifier, b >
+Token Consumido(2): < is_decl >
+Token Consumido(2): < integer_type >
+Token Consumido(2): < ponto_virgula >
+Token Consumido(3): < begin >
+Token Consumido(4): < if >
+Token Consumido(4): < abre_parent >
+Token Consumido(4): < identifier, a >
+Token Consumido(4): < greater_than_relop >
+Token Consumido(4): < identifier, b >
+Token Consumido(4): < fecha_parent >
+Token Consumido(4): < begin >
+Token Consumido(5): < write >
+Token Consumido(5): < abre_parent >
+Token Consumido(5): < literal, "O maior numero e: " >
+Token Consumido(5): < fecha_parent >
+Token Consumido(5): < ponto_virgula >
+Token Consumido(6): < write >
+Token Consumido(6): < abre_parent >
+Token Consumido(6): < identifier, a >
+Token Consumido(6): < fecha_parent >
+Token Consumido(6): < ponto_virgula >
+Token Consumido(7): < end >
+Token Consumido(7): < else >
+Token Consumido(7): < begin >
+Token Consumido(8): < write >
+Token Consumido(8): < abre_parent >
+Token Consumido(8): < literal, "O menor numero e: " >
+Token Consumido(8): < fecha_parent >
+Token Consumido(8): < ponto_virgula >
+Token Consumido(9): < write >
+Token Consumido(9): < abre_parent >
+Token Consumido(9): < identifier, b >
+Token Consumido(9): < fecha_parent >
+Token Consumido(9): < ponto_virgula >
+Token Consumido(10): < end >
+
+\end{lstlisting}O Código acima foi criado seguindo as regras de derivação da gramatica da linguagem. Não foram encontrados erros.

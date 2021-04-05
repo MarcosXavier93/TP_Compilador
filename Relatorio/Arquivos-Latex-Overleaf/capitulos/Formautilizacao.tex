@@ -1,0 +1,59 @@
+\chapter{Forma de Utilização}
+\usepackage{}
+Para que seja possível a utilização deste programa, basta entrar no terminal e navegar até o diretório: "TP{\_}Compilador/src/", e então, digitar o seguinte comando :
+\begin{lstlisting}[language=Java, caption={Entrada terminal},label={Terminal para inicio do Programa}]
+    javac Main.java
+    java Main
+\end{lstlisting}
+Acima podemos ver duas linhas de comando, a primeira serve para que possa compilar a classe Main.java e então, é criado o executável e assim, podemos acessar a classe a partir da linha seguinte, java Main .
+\newline
+Definimos qual arquivo de teste que o programa deve compilar dentro da classe Main, no seguinte trecho de código:
+\begin{lstlisting}[language=Java, caption={Indicando arquivo para teste},label={Terminal para inicio do Programa}]
+public class Main {
+	public static void main(String[] args) {
+		ArrayList<Token> tokens = new ArrayList<Token> ();
+		Lexer L = null;
+		int line = -5;
+		try {
+			L = new Lexer("codigos_teste/corretos/Teste1.txt");
+			L.adicionapalavras();//Inicia adicionando palavras reservadas
+			System.out.println("**** Tokens lidos ****");
+			// Apenas para entrar no laço
+			Token T = new Token(0, line);
+			while (T.tag != Tag.EOF) {
+				try {
+					T = L.scan();
+					if(T.tag == Tag.EOF)
+						break;
+					T.imprimeToken(T);
+					tokens.add(T);
+					line = T.line;
+				} catch (InvalidTokenException | IOException e) {
+					System.out.println(e.getMessage());
+					try {
+						L.readch();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+			line++;
+			tokens.add(new Token(Tag.EOF, line));
+			//L.imprimirTabela();
+			Parser P = new Parser(tokens);
+			System.out.println("\n\n\n**** Inicio Parser ****");
+			P.init();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+}
+			
+\end{lstlisting}
+\newline 
+Na linha 7 (sete) do trecho do código destacado acima, mostra como determinamos qual programa nosso compilador irá testar.
+Veja que criamos uma pasta chamada testes para que seja incluídos somente os arquivos de teste do programa. Foram criados 10 arquivos de teste.
+
+
+
+

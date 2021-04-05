@@ -1,0 +1,98 @@
+\chapter{Documentação}
+O Analisador Sintático tem a função de solicitar ao Analisador léxico o próximo Tokens desde o inicio do programa ate o final, e apos a cada solicitação, verificar se o Token lido esta em consonância com o que foi determinado pela gramatica do programa.
+\newline
+O Projeto foi desenvolvido em conjunto com as plataformas Visual Studio Code e Apache Netbeans, a principio todo o código seria criado somente "a mão" criando as pastas e arquivos manualmente, porém, devido a algumas facilidades que o Netbeans  oferece, o projeto foi alterado em alguns parâmetros para que seja possível abrir no Netbeans.
+Uma dessas facilidades é a opção de geração da Documentação do projeto, assim o fizemos e esta documentação gerada automaticamente pelo Netbeans se encontra no diretório: " /TP{\_}Compilador/Projeto/dist/javadoc/" . Para esta implementação foi acatado o modelo abordado pelo autor do livro base da disciplina: Aho .
+\section{Tabela Frist-Follow e LL(1)}
+
+Para evitar o retrocesso métodos baseados em 
+tabela são utilizados. Para auxiliar na construção 
+das tabelas sintáticas deve serutilizado as funções first(α)
+e follow(A)
+\subsection{Frist}
+
+Defina First(α), onde α é qualquer cadeia de 
+símbolos da gramática, como sendo o conjunto 
+de símbolos terminais que iniciam as cadeias 
+derivadas de α. Se α → * ε, então ε está no 
+First(α)
+\subsection{Calculando Frist(X)}
+
+Para calcular o First(X) para todo símbolo X da 
+gramática, aplique as seguintes regras até que não haja 
+mais terminais ou e que possam ser acrescentados a 
+algum dos conjuntos First.
+
+
+\begin{itemize}
+    \item 
+       Se X é um símbolo terminal, então First(X)= {X}
+    \item
+        Se X é um símbolo não-terminal e X → Y
+1
+Y
+2
+..Y
+k
+ é 
+uma produção para k ≥ 1, então acrescente a ao 
+First(X) se, para algum i, a  estiver em First( Y\i ), e ε
+estiver em todos os First(Y\1),...,First(Y\i-1); ou seja,Y\1
+...Y\i-1 → ε. Se ε está em First(Y\ j ) para todo j=1, 2, …, k então ε está em First(X).
+
+    \item
+       Se X → e é uma produção de X então ε está em  First(X).
+    
+   \end{itemize}
+\section{Follow(A)}
+
+Defina Follow(A), para o não-termianl A, como 
+sendo o conjunto de terminais a que podem 
+aparecer imediatamente à direita de A em uma 
+forma sentencial; ou seja, o conjunto de terminais 
+a tais que exista uma derivação na forma S → 
+αAaβ, para algum α, β.
+\subsection{Calculando Follow(A)}
+
+Para calcular o Follow(A) para todos os nãoterminais da gramática aplique as seguintes 
+regras até que nada mais possa ser 
+acresncentado a nenhum dos conjuntos Follow
+
+   
+\begin{itemize}
+    
+       \item  Coloque {\$} (símbolo de final de cadeia) em 
+Follow(S), onde S é o símbolo inicial da 
+gramática.
+\item
+ Se houver uma produção A → αBβ, então tudo 
+no First(β) exceto ε está em Follow(B).
+\item
+Se houver uma produção A → αB, ou uma 
+produção A → αBβ onde Firts(β) contém ε , 
+então inclua Follow(A) ao Follow(B).
+   \end{itemize}
+   
+   
+\section{LL(1)}
+
+Análise LL(1)
+   
+\begin{itemize}
+\item Conceitualmente, o analisador LL(1) constrói uma derivação mais à esquerda
+para o programa, partindo do símbolo inicial
+\item A cada passo da derivação, o prefixo de terminais da forma sentencial tem 
+que casar com um prefixo da entrada
+\item Caso exista mais de uma regra para o não-terminal que vai gerar o próximo 
+passo da derivação, o analisador usa o primeiro token após esse prefixo para 
+escolher qual regra usar
+
+\item Esse processo continua até todo o programa ser derivado ou acontecer um 
+erro (o prefixo de terminais da forma sentencial não casa com um prefixo do 
+programa)
+
+   \end{itemize}
+   Assim, foi criado as tabelas de Frist e Follow da Gramatica e estao dispostas no arquivo Criado pelo Programa Microsoft Excel.
+   O Arquivo encontra-se na pasta raiz deste trabalho,pode ser encontrado pelo nome : "AnaliseSintatica\_FristFollow\_LL1"
+   
+   

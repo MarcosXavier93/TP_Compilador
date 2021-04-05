@@ -1,0 +1,136 @@
+%Modelo desenvolvido pelo discente Bruno Sávio Fichos do curso de Engenharia Mecânica do CEFET-MG
+%Versao 2021.1
+
+\documentclass[12pt,oneside, bibliography=totoc]{report}
+\usepackage{definitions}
+\usepackage{listings}
+\pagestyle{plain}
+
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=ynt
+]{biblatex}
+\addbibresource{refs.bib}
+
+
+\lstset{ 
+  language=Octave,                % the language of the code
+  basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
+  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line 
+                                  % will be numbered
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  %backgroundcolor=\color{bg},    % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  frame=single,                   % adds a frame around the code
+  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+  tabsize=4,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                 % show the filename of files included with \lstinputlisting;
+                                  % also try caption instead of title
+  keywordstyle=\color{blue}, %blue     % keyword style
+  commentstyle=\color{dkgreen}, %dkgreen   % comment style
+  stringstyle=\color{mauve}, %mauve      % string literal style
+  escapeinside={\%*}{*)},         % if you want to add a comment within your code
+  morekeywords={*,...}            % if you want to add more keywords to the set
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\makeglossaries
+\pagenumbering{gobble}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{multicol}
+\setlength{\columnsep}{1cm}
+\definecolor{cefetblue}{RGB}{2, 65, 112}
+\PassOptionsToPackage{pdftex}{graphicx}
+\usepackage{graphicx}   
+    
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc} 
+\usepackage[brazil]{babel}
+\usepackage{epstopdf}
+\usepackage{soul}
+\usepackage{array}
+\usepackage[table]{xcolor}  % 'table' option loads »colortbl«
+\usepackage{lipsum}
+\usepackage{subfig}
+\RequirePackage[numbers]{natbib}
+\usepackage{microtype} %melhor divisao de espaco entre letras/palavras
+% aumentando as margens originais do documento
+%\addtolength{\hoffset}{-1.5cm}
+\usepackage{biblatex}
+
+\usepackage{listings}
+\usepackage{color}
+\makeglossaries
+\input{listas/abreviacoes.tex}
+\makenomenclature
+\usepackage{listings}
+\usepackage{color}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\addbibresource{refs.bib}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\begin{document}
+    
+    \input{capa.tex}
+    \input{subcapa.tex}
+    %\input{termo_aprovacao.tex}
+    %\include{tcc1/parte1}
+    %\include{tcc1/parte2}
+    %\include{tcc1/parte3}
+    %\input{dedicatoria.tex}
+    %\input{agradecimentos.tex}
+    
+  \clearpage
+    \input{capitulos/resumo.tex}
+    \input{capitulos/abstract.tex}
+        \listoffigures
+    \pagebreak
+    \listoftables
+    \printglossary[type=\acronymtype]
+    \printglossary
+    \printnomenclature
+    \clearpage
+    
+    \tableofcontents{}
+    \clearpage
+    \setcounter{page}{1}
+    \pagenumbering{arabic}
+ 
+    \include{capitulos/introducao}
+    \include{capitulos/palavras-reservadas}
+    \include{capitulos/Melhorias}
+    \include{capitulos/Formautilizacao}
+    \include{capitulos/Documentação}
+    \include{capitulos/Planejamento}
+    \include{capitulos/TestesRealizados}
+    \include{capitulos/metodologia}
+    \include{capitulos/propostas_futuros}
+    \include{listas/simbolos}
+    \include{referencias}
+
+\end{document}

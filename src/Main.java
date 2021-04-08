@@ -9,6 +9,7 @@ import analisador_lexico.Lexer;
 import analisador_lexico.Tag;
 import analisador_lexico.Token;
 import analisador_sintatico.Parser;
+import analisador_semantico.VerificadorSemantico;
 
 import exception.InvalidTokenException;
 import java.io.FileNotFoundException;
@@ -21,7 +22,7 @@ public class Main {
 		Lexer L = null;
 		int line = -5;
 		try {
-			L = new Lexer("codigos_teste/corretos/Teste8.txt");
+			L = new Lexer("codigos_teste/errados/Teste9.txt");
 			L.adicionapalavras();//Inicia adicionando palavras reservadas
 			System.out.println("**** Tokens lidos ****");
 			// Apenas para entrar no laço
@@ -49,6 +50,9 @@ public class Main {
 			Parser P = new Parser(tokens);
 			System.out.println("\n\n\n**** Inicio Parser ****");
 			P.init();
+			System.out.println("\n\n\n**** Inicio Verificador ****");
+			VerificadorSemantico V = new VerificadorSemantico();
+			V.imprimirTS();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

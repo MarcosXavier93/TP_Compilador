@@ -2,6 +2,7 @@ package analisador_sintatico;
 
 import analisador_lexico.Tag;
 import analisador_lexico.Token;
+import analisador_semantico.VerificadorSemantico;  // MUDANÇA
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -10,9 +11,8 @@ public class Parser {
     private int tag;
     private int i;
     private int line;
-    private int curType;
-    private int resultExprType;
     private ArrayList<Token> tokens = new ArrayList<Token> ();
+    private VerificadorSemantico vs;  // MUDANÇA
     
     public Parser(ArrayList<Token> tokens){
         this.tokens=tokens;
@@ -20,9 +20,17 @@ public class Parser {
         tok=tokens.get(i);
         tag=tok.tag;
         line=tok.line;
-        curType=Tag.VOID;
-        resultExprType=Tag.VOID;
+        //curType=Tag.VOID;
+        //resultExprType=Tag.VOID;
+
+        vs = new VerificadorSemantico(); // MUDANÇA
     }
+
+    // MUDANÇA
+    public Hashtable<String, Integer> getTS() {
+        return vs.getTS();
+    }
+    // -
 
     public void init(){
         program();
@@ -48,23 +56,23 @@ public class Parser {
     } 
 
     /* Seta o tipo basico com que se esta trabalhando em uma expressao de atribuicao */
-    public void setCurType(int tipo){
+    /*public void setCurType(int tipo){
         curType = tipo;
     }
 
     public void resetResultExprType(){
         resultExprType = Tag.VOID;
-    }
+    }*/
 
     private void eat(int t){
         if(tag==t){
             //Checa se a tag e um tipo basico
             if(tag == Tag.INT || tag == Tag.STR){
-                setCurType(tag);
+                vs.setCurType(tag);
             }
             //Caso ; deve resetar o resultado esperado de uma expressao
             if(tag == Tag.PV){
-                resetResultExprType();
+                vs.resetResultExprType();
             }
             System.out.print("Token Consumido("+line+"): ");
             tok.imprimeToken(tok);
@@ -86,6 +94,7 @@ public class Parser {
 
                 } else {
                     eat(Tag.STOP);
+                    vs.imprimirTS();  // MUDANÇA
                 }
                 break;
             default:
@@ -129,11 +138,11 @@ public class Parser {
         switch(tag) {
             //G:: ident-list ::= identifier {"," identifier}
             case Tag.ID:
-                eat(Tag.ID); 
+                vs.putTS(tok, line); eat(Tag.ID);     // MUDANÇA
                 break;
             case Tag.VRG:
-                eat(Tag.VRG); eat(Tag.ID);
-                break;    
+                eat(Tag.VRG); vs.putTS(tok, line); eat(Tag.ID);  // MUDANÇA
+                break;     
             default:
                 error("Error in: identList");
         }
@@ -212,7 +221,7 @@ public class Parser {
         switch(tag) {
             //G:: assign-stmt ::= identifier ":=" simple_expr
             case Tag.ID:
-                eat(Tag.ID); eat(Tag.PPV); simpleExpr();
+                vs.setCurAssignStmtType(tok, line); eat(Tag.ID); eat(Tag.PPV); simpleExpr(); // MUDANÇA
                 break;
             default:
                 error("Error in: assignStmt");
@@ -223,8 +232,8 @@ public class Parser {
         switch(tag) {
             //G:: if-stmt ::= if "(" condition ")" begin stmt-list end else begin stmt-list end
             case Tag.IF:
-                eat(Tag.IF); eat(Tag.AP); condition(); eat(Tag.FP); eat(Tag.BEGIN); stmtList(); eat(Tag.END);
-            
+                eat(Tag.IF); eat(Tag.AP); vs.setStartingCondition(); condition(); vs.endStartingCondition(); eat(Tag.FP); eat(Tag.BEGIN); stmtList(); eat(Tag.END);
+ 
             case Tag.ELSE:
                 eat(Tag.ELSE); eat(Tag.BEGIN); stmtList(); eat(Tag.END);
                 break;
@@ -248,7 +257,7 @@ public class Parser {
         switch(tag) {
             //G:: stmt-sufix ::= while "(" condition ")"
             case Tag.WHILE:
-                eat(Tag.WHILE); eat(Tag.AP); condition(); eat(Tag.FP);
+                eat(Tag.WHILE); eat(Tag.AP); vs.setStartingCondition(); condition(); vs.endStartingCondition(); eat(Tag.FP);
                 break;
             default:
                 error("Error in: doSufix");
@@ -397,7 +406,7 @@ public class Parser {
         switch(tag) {
             //G:: factor ::= identifier 
             case Tag.ID:
-                eat(Tag.ID);
+                vs.checkExprIDType(tok, line); eat(Tag.ID);
                 break;
             //G:: factor ::= constant 
             case Tag.NUM:
@@ -452,11 +461,11 @@ public class Parser {
                 break;
             //G:: addop ::= "-"
             case Tag.MIN:
-                eat(Tag.MIN);
+                vs.checkStrOp(tok, line); eat(Tag.MIN);
                 break;
             //G:: addop ::= "OR"
             case Tag.OR:
-                eat(Tag.OR);
+                vs.checkStrOp(tok, line); vs.endStartingCondition(); eat(Tag.OR); vs.setStartingCondition();
                 break;
             default:
                 error("Error in: addop");
@@ -467,15 +476,15 @@ public class Parser {
         switch(tag) {
             //G:: mulop ::= "*"
             case Tag.MUL:
-                eat(Tag.MUL);
+                vs.checkStrOp(tok, line); eat(Tag.MUL);
                 break;
             //G:: mulop ::= "/"
             case Tag.DIV:
-                eat(Tag.DIV);
+                vs.checkStrOp(tok, line); eat(Tag.DIV);
                 break;
             //G:: mulop ::= "AND"
             case Tag.AND:
-                eat(Tag.AND);
+                vs.checkStrOp(tok, line); vs.endStartingCondition(); eat(Tag.AND); vs.setStartingCondition();
                 break;
             default:
                 error("Error in: mulop");
@@ -486,11 +495,11 @@ public class Parser {
         switch (tag) {
             //G:: constant ::= integer_const
             case Tag.NUM:
-                eat(Tag.NUM);
+                vs.checkExprNLType(tok, line); eat(Tag.NUM);
                 break;
             //G:: constant ::= literal
             case Tag.LIT:
-                eat(Tag.LIT);
+                vs.checkExprNLType(tok, line); eat(Tag.LIT);
                 break;
             default:
                 error("Error in: constant");

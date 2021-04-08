@@ -1,0 +1,5 @@
+init 
+a is integer;
+begin
+a := "Marcos";
+stop

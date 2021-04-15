@@ -5,11 +5,9 @@ palavras reservadas) instalados na Tabela de Símbolos. Nas etapas seguintes, is
 Commit para reparar possíveis bugs
 
 */
-import analisador_lexico.Lexer;
-import analisador_lexico.Tag;
-import analisador_lexico.Token;
+import analisador_lexico.*;
 import analisador_sintatico.Parser;
-import analisador_semantico.VerificadorSemantico;
+import analisador_semantico.*;
 
 import exception.InvalidTokenException;
 import java.io.FileNotFoundException;
@@ -50,9 +48,11 @@ public class Main {
 			Parser P = new Parser(tokens);
 			System.out.println("\n\n\n**** Inicio Parser ****");
 			P.init();
-			System.out.println("\n\n\n**** Inicio Verificador ****");
-			VerificadorSemantico V = new VerificadorSemantico();
-			V.imprimirTS();
+			System.out.println("\n\n\n**** Inicio Verificador Semantico ****");
+			//VerificadorSemantico V = new VerificadorSemantico();
+			//V.imprimirTS();
+
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

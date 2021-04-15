@@ -1,9 +1,7 @@
 package analisador_semantico;
   
 import java.util.Hashtable;
-import analisador_lexico.Tag;
-import analisador_lexico.Token;
-import analisador_lexico.Num;
+import analisador_lexico.*;
 import java.util.Map; 
 
 public class VerificadorSemantico {
@@ -21,7 +19,7 @@ public class VerificadorSemantico {
     }
 
     public void putTS(Token tok, int line){
-        //Veriifica se tok ja foi declarado na TS
+        //Veriifica caso o token ja esta inserido na Tabela de Simbolos
         if(TS.containsKey(tok.getLexeme())){
             System.out.println("Error(" + line + "): Redefinição de '"+tok.getLexeme()+"'");
             System.out.println("Fim de arquivo inesperado.");
@@ -211,7 +209,8 @@ public class VerificadorSemantico {
     }
 
     /* Determina qual é o tipo do identificador que recebera o valor da expressao */
-    public void setCurAssignStmtType(Token tok, int line){
+    public void setCurAssignStmtType(Token tok, int line) {
+       
         if(resultExprType == Tag.VOID){
             //Caso id nao tenha sido declarado
             if(!TS.containsKey(tok.getLexeme())){
@@ -219,8 +218,7 @@ public class VerificadorSemantico {
                 System.out.println("Fim de arquivo inesperado.");
                 System.exit(0);
             }else{
-                //Uma nova expressao de igualdade sera criada entao muda o tipo esperado da var que recebe
-                //o resultado final
+                System.out.println("Cai aqui.");
                 resultExprType = TS.get(tok.getLexeme());
             }
         }

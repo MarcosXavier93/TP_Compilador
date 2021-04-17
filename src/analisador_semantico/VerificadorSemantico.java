@@ -196,6 +196,7 @@ public class VerificadorSemantico {
     /* Indica o inicio de uma expr de condicao */
     public void setStartingCondition(){
         startingCondition = true;
+        //curConditionType = Tag.INT;
     }
 
     /* Indica o fim de uma expr de condicao */
@@ -209,7 +210,7 @@ public class VerificadorSemantico {
         curConditionType = tipo;
     }
 
-    /* Seta o tipo basico com que se esta trabalhando em uma expressao de atribuicao */
+    /* Seta o tipo de cada variável declarada */
     public void setCurType(int tipo){
         curType = tipo;
         for(int i=0;i<tokens.size();i++){

@@ -1,0 +1,5 @@
+init 
+a, b is integer;
+begin
+a := b;
+stop

@@ -1,0 +1,7 @@
+%erro reuso de variavel%
+init 
+a, b is integer;
+b is string;
+begin
+a := b;
+stop

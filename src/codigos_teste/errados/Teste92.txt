@@ -1,8 +1,9 @@
-init 
+%erro atribuição tipos diferentes%
+init
 a, c is integer;
 b is string;
-d is real;
-e is string;
 begin
-a := c;
+a := 2;
+b := "hi";
+a := b;
 stop

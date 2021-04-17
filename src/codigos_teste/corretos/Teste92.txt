@@ -1,0 +1,8 @@
+init
+c is integer;
+a, b is string;
+begin
+a := "oi";
+b := "hi";
+a := b;
+stop

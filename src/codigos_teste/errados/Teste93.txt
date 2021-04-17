@@ -1,0 +1,12 @@
+% variavel usada no if nao declarada%
+init 
+a, b, c, maior is integer;
+begin
+a:=1;
+b:=2;
+if (e > b) begin
+maior := a;
+end else begin
+maior := b;
+end
+stop

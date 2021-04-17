@@ -1,0 +1,13 @@
+%error no if%
+init 
+a, b, c, maior is integer;
+e is string;
+begin
+a:=1;
+b:=2;
+if (a e c) begin
+maior := a;
+end else begin
+maior := b;
+end
+stop

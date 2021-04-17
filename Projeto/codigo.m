@@ -1,0 +1,3 @@
+INIT
+PUSHN 0
+STOP

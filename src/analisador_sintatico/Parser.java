@@ -13,6 +13,7 @@ public class Parser {
     private int line;
     private ArrayList<Token> tokens = new ArrayList<Token> ();
     private VerificadorSemantico vs;  // MUDANÇA
+    private int nID;
     
     public Parser(ArrayList<Token> tokens){
         this.tokens=tokens;
@@ -22,7 +23,6 @@ public class Parser {
         line=tok.line;
         //curType=Tag.VOID;
         //resultExprType=Tag.VOID;
-
         vs = new VerificadorSemantico(); // MUDANÇA
     }
 

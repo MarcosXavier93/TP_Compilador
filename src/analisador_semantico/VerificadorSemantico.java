@@ -2,6 +2,7 @@ package analisador_semantico;
   
 import java.util.Hashtable;
 import analisador_lexico.*;
+import java.util.ArrayList;
 import java.util.Map; 
 
 public class VerificadorSemantico {
@@ -10,6 +11,7 @@ public class VerificadorSemantico {
     private int curConditionType;
     private boolean startingCondition;
     private Hashtable<String, Integer> TS = new Hashtable<>();
+    private ArrayList<Token> tokens = new ArrayList<Token> ();
 
     public VerificadorSemantico(){
         curType = Tag.VOID;
@@ -25,6 +27,7 @@ public class VerificadorSemantico {
             System.out.println("Fim de arquivo inesperado.");
             System.exit(0);
         }else{
+            tokens.add(tok);
             TS.put(tok.getLexeme(), curType);
         }
     }
@@ -209,6 +212,10 @@ public class VerificadorSemantico {
     /* Seta o tipo basico com que se esta trabalhando em uma expressao de atribuicao */
     public void setCurType(int tipo){
         curType = tipo;
+        for(int i=0;i<tokens.size();i++){
+            TS.replace(tokens.get(i).toString(), curType);
+        }
+        tokens.clear();
     }
     
     /* Determina qual é o tipo do identificador que recebera o valor da expressao */

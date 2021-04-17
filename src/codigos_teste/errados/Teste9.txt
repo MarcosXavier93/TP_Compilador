@@ -1,5 +1,5 @@
 init 
-a is integer;
+b is integer;
 begin
 a := "Marcos";
 stop

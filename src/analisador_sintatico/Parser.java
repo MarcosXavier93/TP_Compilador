@@ -55,19 +55,10 @@ public class Parser {
             advance();
     } 
 
-    /* Seta o tipo basico com que se esta trabalhando em uma expressao de atribuicao */
-    /*public void setCurType(int tipo){
-        curType = tipo;
-    }
-
-    public void resetResultExprType(){
-        resultExprType = Tag.VOID;
-    }*/
-
     private void eat(int t){
         if(tag==t){
             //Checa se a tag e um tipo basico
-            if(tag == Tag.INT || tag == Tag.STR){
+            if(tag == Tag.INT || tag == Tag.STR || tag == Tag.REAL){
                 vs.setCurType(tag);
             }
             //Caso ; deve resetar o resultado esperado de uma expressao
@@ -87,15 +78,16 @@ public class Parser {
             case Tag.INIT:
                 eat(Tag.INIT); declList();  
                 if (tag == Tag.BEGIN) {
-                    eat(Tag.BEGIN); stmtList(); 
-
+                    eat(Tag.BEGIN); stmtList();
+                    if(tag == Tag.STOP){
+                        eat(Tag.STOP);
+                    }else{
+                        System.out.println("Fim de arquivo inesperado.");
+                    }
                 } else if (tag == Tag.EOF) {
                     System.out.println("Fim de arquivo inesperado.");
-
-                } else {
-                    eat(Tag.STOP);
-                    vs.imprimirTS();  // MUDANÇA
                 }
+                vs.imprimirTS();  // MUDANÇA
                 break;
             default:
                 error("Error in: program");
@@ -232,7 +224,7 @@ public class Parser {
         switch(tag) {
             //G:: if-stmt ::= if "(" condition ")" begin stmt-list end else begin stmt-list end
             case Tag.IF:
-                eat(Tag.IF); eat(Tag.AP); vs.setStartingCondition(); condition(); vs.endStartingCondition(); eat(Tag.FP); eat(Tag.BEGIN); stmtList(); eat(Tag.END);
+                eat(Tag.IF); vs.setStartingCondition(); eat(Tag.AP);  condition();  eat(Tag.FP); vs.endStartingCondition(); eat(Tag.BEGIN); stmtList(); eat(Tag.END);
  
             case Tag.ELSE:
                 eat(Tag.ELSE); eat(Tag.BEGIN); stmtList(); eat(Tag.END);
@@ -457,7 +449,7 @@ public class Parser {
         switch(tag) {
             //G:: addop ::= "+"
             case Tag.SUM:
-                eat(Tag.SUM);
+                vs.checkStrOp(tok, line); eat(Tag.SUM);
                 break;
             //G:: addop ::= "-"
             case Tag.MIN:

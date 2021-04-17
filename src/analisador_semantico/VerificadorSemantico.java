@@ -21,7 +21,7 @@ public class VerificadorSemantico {
     public void putTS(Token tok, int line){
         //Veriifica caso o token ja esta inserido na Tabela de Simbolos
         if(TS.containsKey(tok.getLexeme())){
-            System.out.println("Error(" + line + "): Redefinição de '"+tok.getLexeme()+"'");
+            System.out.println("Error(" + line + "): Reuso de variável '"+tok.getLexeme()+"'");
             System.out.println("Fim de arquivo inesperado.");
             System.exit(0);
         }else{
@@ -160,10 +160,13 @@ public class VerificadorSemantico {
         System.exit(0);
     }
 
-    /* Checa se a operacao realizada na string esta correta ('+' é a unica operação aceita) */
+    /* Checa se a operacao é realizada com string, se for da error */
     public void checkStrOp(Token tok, int line){
         if(resultExprType == Tag.STR){
             switch (tok.tag){
+                case Tag.SUM:
+                    wrogStrOp(line, "+");
+                    break;
                 case Tag.MIN:
                     wrogStrOp(line, "-");
                     break;
@@ -199,7 +202,7 @@ public class VerificadorSemantico {
     }
 
     /* Seta o tipo basico com que se esta trabalhando em uma condicao de if ou while */
-    public void setCurConditionType(int tipo){
+    public void setCurConditionType(int tipo){             ///NAAAAAAAAAAO USADO
         curConditionType = tipo;
     }
 
@@ -207,10 +210,9 @@ public class VerificadorSemantico {
     public void setCurType(int tipo){
         curType = tipo;
     }
-
+    
     /* Determina qual é o tipo do identificador que recebera o valor da expressao */
     public void setCurAssignStmtType(Token tok, int line) {
-       
         if(resultExprType == Tag.VOID){
             //Caso id nao tenha sido declarado
             if(!TS.containsKey(tok.getLexeme())){
@@ -218,7 +220,8 @@ public class VerificadorSemantico {
                 System.out.println("Fim de arquivo inesperado.");
                 System.exit(0);
             }else{
-                System.out.println("Cai aqui.");
+                //Uma nova expressao de igualdade sera criada entao muda o tipo esperado da var que recebe
+                //o resultado final
                 resultExprType = TS.get(tok.getLexeme());
             }
         }

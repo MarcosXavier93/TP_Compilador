@@ -51,17 +51,25 @@ public class GeradorCodigo {
         }
         // Empilha o valor inteiro 0
         codigo += "PUSHN " + qtd + '\n';
-        //token = it.next(); // Consome PV
+        tratarDecl();
+    }
+     
+    public void tratarDecl() {
+        //G: decl                   ::= ident-list is type
+
+    }
+    
+    public void tratarIdentList() {
+        //G: ident-list             ::= identifier {";" identifier}
     }
 
     public boolean tratarSimpleExpression() {
-        //D: simple-expr			::= term  simple-expr'
-        //N: simple-expr            ::= term | simple-expr addop term
+        //G: simple-expr            ::= term | simple-expr addop term
         boolean str = tratarTerm();
 
         int tag = token.getTag();
         if(tag == Tag.SUM || tag == Tag.MIN || tag == Tag.OR){
-            token = it.next(); // Consome + ou - ou ||
+            token = it.next(); // Consome + ou - ou or
 
             // Operacao
             if(tag == Tag.SUM || tag == Tag.OR) {
@@ -73,8 +81,7 @@ public class GeradorCodigo {
                 else
                     codigo += "ADD" + '\n';
             }else if (tag == Tag.MIN){
-                codigo += "SUB" + '\n';
-                //else Tem que ver o operando para &&
+                codigo += "SUB" + '\n'; 
             }
             tratarTerm();
         }
@@ -82,13 +89,12 @@ public class GeradorCodigo {
     }
 
     public boolean tratarTerm() {
-        //D: term                ::= factor-a  term'
-        //N: term                ::= factor-a | term mulop factor-a 
+        //G: term                ::= factor-a | term mulop factor-a 
         boolean str = tratarFactorA();
 
         int tag = token.getTag();
         if(tag == Tag.MUL || tag == Tag.DIV || tag == Tag.AND){
-            token = it.next(); // Consome * ou / ou &&
+            token = it.next(); // Consome * ou / ou AND
         
             // Operacao
             if(tag == Tag.MUL || tag == Tag.AND) {
@@ -102,17 +108,16 @@ public class GeradorCodigo {
     }
 
     public boolean tratarFactorA() {
-        //D: factor-a			::= factor  |  !  factor  |  "-"  factor
-        //N: factor-a           ::= factor | not factor | "-" factor
+        //G: factor-a           ::= factor | not factor | "-" factor
         boolean menos=false, negativo=false;
 
         if(token.tag == Tag.MIN) {
             menos = true;
-            token = it.next(); // Consome -
+            token = it.next(); // Consome "-""
         }
         else if(token.tag == Tag.NOT) {
             negativo = true;
-            token = it.next(); // Consome !
+            token = it.next(); // Consome NOT
         }
 
         boolean str = tratarFactor();
@@ -127,8 +132,7 @@ public class GeradorCodigo {
     }
 
     public boolean tratarFactor() {
-        //D: factor          	::= identifier  |  constant  |  "("  expression  ")"
-        //N: factor          	::= identifier  |  constant  |  "("  expression  ")"
+        //G: factor          	::= identifier  |  constant  |  "("  expression  ")"
         boolean str = false;
         switch (token.getTag()) {
             case Tag.ID:
@@ -158,8 +162,7 @@ public class GeradorCodigo {
     }
 
     public void tratarExpression() {
-        //D: expression			::= simple-expr  expression'
-        //N: expression			::= simple-expr | simple-expr relop simple-expr
+        //G: expression			::= simple-expr | simple-expr relop simple-expr
         tratarSimpleExpression();
 
         int tag = token.getTag();
@@ -177,7 +180,7 @@ public class GeradorCodigo {
                 case (int) '<':
                     codigo += "INF\n";
                     break;
-                case Tag.NE:    // !=
+                case Tag.NE:    // <>
                     codigo += "EQUAL\n";
                     codigo += "NOT\n";
                     break;
@@ -192,7 +195,7 @@ public class GeradorCodigo {
     }
 
     public int tratarRelop(){
-        //relop				::= "==" |  ">" | "<" | "<>" | ">=" | "<="
+        //G: relop				::= "==" |  ">" | "<" | "<>" | ">=" | "<="
         int tag = token.getTag();
         switch (tag) {
             case Tag.EQ:    // ==
@@ -215,7 +218,7 @@ public class GeradorCodigo {
     }
 
     public void tratarStmtList() {
-        //N: stmt-list ::= stmt ";" { stmt ";" }
+        //G: stmt-list ::= stmt ";" { stmt ";" }
 
         tratarStmt();
         switch (token.tag){
@@ -231,7 +234,7 @@ public class GeradorCodigo {
     }
 
     public void tratarStmt() {
-        //N: stmt ::= assign-stmt | if-stmt | do-stmt | read-stmt | write-stmt
+        //G: stmt ::= assign-stmt | if-stmt | do-stmt | read-stmt | write-stmt
 
         switch (token.getTag()) {
             case Tag.ID:
@@ -257,14 +260,14 @@ public class GeradorCodigo {
     }
 
     public void tratarIf() {
-        // N: if-stmt ::= if "(" condition ")" begin stmt-list end | if "(" condition ")" begin stmt-list end else begin stmt-list end
+        //G: if-stmt ::= if "(" condition ")" begin stmt-list end | if "(" condition ")" begin stmt-list end else begin stmt-list end
         
         token = it.next();  // Consome if
-        token = it.next(); // Consome Abre Parênteses.
+        token = it.next(); // Consome AP.
         int destino = cont_label++;
         int fim = cont_label++;
         tratarCondition();
-        token = it.next();  // Consome Fecha Parênteses.
+        token = it.next();  // Consome FP.
         codigo += "JZ " + (char)destino + '\n';
         token = it.next();  // Consome begin
         tratarStmtList();
@@ -285,20 +288,19 @@ public class GeradorCodigo {
     }
 
     public void tratarWhile() {
-        //D: while-stmt			::= do stmt-list stmt-sufix
-        //N: while-stmt         ::= do stmt-list do-suffix
+        //G: while-stmt         ::= do stmt-list do-suffix
         token = it.next(); //Consome DO
         int destino = cont_label++;
         label_atual = destino;
         codigo += (char)destino + ":\n";
         tratarStmtList();
         tratarStmtDo();
-        codigo += "NOT\n";  // Nega o que está no topo da pilha pois o jz verifica se é 0 para saltar
+        codigo += "NOT\n";  
         codigo += "JZ " + (char)destino + '\n';
     }
 
     public void tratarStmtDo() {
-        //N: do-sufix			::= while "(" condition ")" end
+        //G: do-sufix			::= while "(" condition ")" end
         token = it.next(); //Consome WHILE
         token = it.next(); //Consome AP
         tratarCondition();
@@ -307,9 +309,9 @@ public class GeradorCodigo {
     }
 
     public void tratarRead() {
-        //N: read-stmt          ::= read "(" identifier ")" 
+        //G: read-stmt          ::= read "(" identifier ")" 
 
-        token = it.next(); //Consome Scan
+        token = it.next(); //Consome READ
         token = it.next(); //Consome AP
         int pos = variaveis.get(token.getLexeme());
         boolean str=false;
@@ -329,9 +331,9 @@ public class GeradorCodigo {
     }
 
     public void tratarWrite() {
-        //N: write-stmt          ::= write "(" writable ")" 
+        //G: write-stmt          ::= write "(" writable ")" 
 
-        token = it.next(); //Consome PRINT
+        token = it.next(); //Consome WRITE
         token = it.next(); //Consome AP
         boolean str = writable();
         token = it.next(); //Consome FP
@@ -342,16 +344,15 @@ public class GeradorCodigo {
     }
 
     public void tratarAssign() {
-        //D: assign-stmt			::= identifier "=" simple_expr
-        //N: assign-stmt			::= identifier ":=" simple_expr
+        //G: assign-stmt			::= identifier ":=" simple_expr
         int pos = variaveis.get(token.getLexeme());
         // Pega proximo token
-        token = it.next(); // Consome :=
+        token = it.next(); // Consome :
+        token = it.next(); // Consome =
         tratarSimpleExpression();
         codigo += "STOREL " + pos + '\n';
     }
 
-    // Varre os tokens e gera o código referente a eles
     public void gerar() {
         token = it.next();
         codigo += "INIT\n";

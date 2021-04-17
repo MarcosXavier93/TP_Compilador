@@ -21,7 +21,7 @@ public class Main {
 		Lexer L = null;
 		int line = -5;
 		try {
-			L = new Lexer("codigos_teste/corretos/Teste2.txt");
+			L = new Lexer("codigos_teste/corretos/Teste8.txt");
 			L.adicionapalavras();//Inicia adicionando palavras reservadas
 			System.out.println("**** Tokens lidos ****");
 			// Apenas para entrar no laço
@@ -49,7 +49,7 @@ public class Main {
 			Parser P = new Parser(tokens);
 			System.out.println("\n\n\n**** Inicio Parser ****");
 			P.init();
-			//System.out.println("\n\n\n**** Inicio Verificador Semantico ****");
+			System.out.println("\n\n\n**** Inicio Verificador Semantico ****");
 			//VerificadorSemantico V = new VerificadorSemantico();
 			//V.imprimirTS();
 			GeradorCodigo gerador = new GeradorCodigo("codigo.m", tokens, P.getTS());

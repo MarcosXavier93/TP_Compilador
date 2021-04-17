@@ -21,8 +21,6 @@ public class Parser {
         tok=tokens.get(i);
         tag=tok.tag;
         line=tok.line;
-        //curType=Tag.VOID;
-        //resultExprType=Tag.VOID;
         vs = new VerificadorSemantico(); // MUDANÇA
     }
 

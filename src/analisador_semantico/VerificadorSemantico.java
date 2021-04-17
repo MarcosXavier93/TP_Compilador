@@ -113,23 +113,20 @@ public class VerificadorSemantico {
         }
     }
 
-    /* Checa se o tipo dos termos (num ou literal - NL) que estao formando a expressao estao corretos */
+    /* Checa se o tipo dos termos que estao formando a expressao estao corretos */
     public void checkExprNLType(Token tok, int line){
         // Caso trabalhando com um expr de condicao
         if(startingCondition){
             // Caso nao tenha identificado o tipo do primeiro termo da condicao
             if(curConditionType == Tag.VOID){
-                //Caso seja um NUM
                 if (tok instanceof Num) {
                     curConditionType = Tag.INT;
                 } else {
-                    //Caso contrario so pode ser um lit
                     curConditionType = Tag.STR;
                 }
             }else{
                 // Caso ja tenha identificado o primeiro termo da condicao tem que checar
                 // se o segundo termo tem tipo igual ao primeiro
-                //Caso seja um NUM
                 if (tok instanceof Num) {
                     if(curConditionType != Tag.INT){
                         wrongExprType(line, "int", String.valueOf(((Num) tok).value), "num", curConditionType);
@@ -143,20 +140,17 @@ public class VerificadorSemantico {
         }
         // Se resultExprType tem um valor diferente de VOID quer dizer que se esta trabalhando com uma assign-stmt
         if(resultExprType != Tag.VOID) {
-            //Caso seja um  NUM
             if (tok instanceof Num) {
                 if (resultExprType != Tag.INT) {
                     wrongExprType(line, "int", String.valueOf(((Num) tok).value), "num", resultExprType);
                 }
             } else {
-                //Caso contrario so pode ser um lit
                 if (resultExprType != Tag.STR) {
                     wrongExprType(line, "string", tok.getLexeme(),  "literal", resultExprType);
                 }
             }
         }
     }
-
 
     private void wrogStrOp(int line, String op){
         System.out.println("Error(" + line + "): Operação '"+ op +"' inválida com 'string'");
@@ -195,8 +189,7 @@ public class VerificadorSemantico {
 
     /* Indica o inicio de uma expr de condicao */
     public void setStartingCondition(){
-        startingCondition = true;
-        //curConditionType = Tag.INT;
+        this.startingCondition = true;
     }
 
     /* Indica o fim de uma expr de condicao */
@@ -206,8 +199,10 @@ public class VerificadorSemantico {
     }
 
     /* Seta o tipo basico com que se esta trabalhando em uma condicao de if ou while */
-    public void setCurConditionType(int tipo){             ///NAAAAAAAAAAO USADO
-        curConditionType = tipo;
+    public void setCurConditionType(int tipo){
+        if(this.startingCondition){
+            this.curConditionType = tipo;
+        }
     }
 
     /* Seta o tipo de cada variável declarada */
